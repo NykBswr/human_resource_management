@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.gradcolor {
+    background: linear-gradient(93deg, #FF9898 0.48%, #3E2681 100%);
+}
+
+.gradcolor2 {
+    background: linear-gradient(136deg, #EBAEAE 14.73%, #3E2681 86.33%);
+}
+
+.gradcolor:hover {
+    transition: 10s;
+    background: linear-gradient(-136deg, #FF9898 0.48%, #3E2681 100%);
+}
