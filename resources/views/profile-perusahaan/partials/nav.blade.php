@@ -1,7 +1,9 @@
 <nav class="w-full fixed py-8 px-14 flex justify-between items-center">
     {{-- Left Nav --}}
     <div class="">
-        <a href="#first"><img src="{{ URL::asset('img/logo-white.svg') }}"></a>
+        <a href="#first">
+            <img src="{{ URL::asset('img/logo-white.svg') }}">
+        </a>
     </div>
     {{-- Hamburger Menu (untuk layar kecil) --}}
     <div class="md:hidden">

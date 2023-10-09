@@ -15,3 +15,8 @@
     transition: 10s;
     background: linear-gradient(-136deg, #FF9898 0.48%, #3E2681 100%);
 }
+
+.gradcolor3 {
+    background: linear-gradient(93deg, #FF9898 0.48%, #3E2681 100%);
+    border-bottom-left-radius: 30px;
+}

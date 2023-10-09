@@ -94,7 +94,7 @@
 <section id="fifth" class="py-20">
     <div class="flex flex-col items-center justify-center">
         <div class="w-full h-[30rem] bg-tertiary">
-            <h1 class= "text-primary font-bold text-5xl text-center my-10">Companies we Worked <br/>With in Since 2222</h1>
+            <h1 class= "text-primary font-bold text-4xl text-center my-16">Companies we Worked <br/>With in Since 2222</h1>
             <div class="w-full flex flex-row items-stretch justify-center">
                 <div class="bg-secondary rounded-xl my-5 flex items-center justify-center flex-shrink mr-5 w-40 lg:w-48 h-28">
                     {{-- Company 1 --}}
@@ -127,9 +127,12 @@
             </h1>
             <input class="bg-secondary rounded-md text-primary flex flex-start gap-3 w-[25rem] px-6 py-3 mb-4" type="text" id="nama" placeholder="Name" name="nama" value="" />
             <input class="bg-secondary rounded-md text-primary flex flex-start gap-3 w-[25rem] px-6 py-3 mb-4" type="text" id="email" placeholder="Email" name="email" value="" />
-            <input class="bg-secondary rounded-md text-primary flex flex-start gap-3 w-[25rem] px-6 pt-3 pb-28" type="text" id="text" placeholder="Text" name="text" value="" />
+            <input class="bg-secondary rounded-md text-primary flex flex-start gap-3 w-[25rem] px-6 pt-3 pb-28 mb-4" type="text" id="text" placeholder="Text" name="text" value="" />
+            <button class="btn py-3 px-6 gradcolor text-white rounded-md">
+                Get in Touch
+            </button>
         </div>
     </div>
 </section>
 
-
+@include('profile-perusahaan.partials.footers')
