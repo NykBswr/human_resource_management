@@ -18,9 +18,13 @@ Route::get('/', function () {
 });
 
 Route::get('/login', function () {
-return view('login.main');
+return view('signin.main');
 });
 
 Route::get('/dashboard', function () {
 return view('dashboard.main');
+});
+
+Route::get('/dashboard/profile', function () {
+return view('dashboard.profile.main');
 });

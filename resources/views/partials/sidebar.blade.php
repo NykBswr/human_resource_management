@@ -2,7 +2,7 @@
     <div class="flex flex-col justify-center items-center">
         <img class="w-24 h-14 mb-10 cursor-pointer" src="{{ URL::asset('img/logo-white.svg') }}" id="logo">
         <div class="">
-            <a href="">
+            <a href="/dashboard">
                 <h1 class="text-primary py-5 px-12 mb-5 text-xl bg-tertiary rounded-md">Dashboard</h1>
             </a>
             <a href="">

@@ -9,7 +9,7 @@
             <h1 class="font-bold text-primary text-6xl mb-10">Login</h1>
             <input class="bg-secondary rounded-md text-primary flex flex-start gap-3 w-[20rem] lg:w-[25rem] px-6 py-3 mb-4" type="text" id="email" placeholder="Your Email" name="email" value="" />
             <input class="bg-secondary rounded-md text-primary flex flex-start gap-3 w-[20rem] lg:w-[25rem] px-6 py-3 mb-4" type="text" id="password" placeholder="Password" name="password" value="" />
-            <a href="#">
+            <a href="/dashboard">
             <button class="btn py-3 px-6 gradcolor text-white rounded-md mb-10 lg:mb-5">
                 Sign in Now
             </button>

@@ -11,15 +11,15 @@
         </div>
     </div>
     <div class="hidden flex-col items-end" id="profile">
-        <div class="flex flex-col justify-center px-5 py-5 mt-5 mr-10 bg-secondary rounded-2xl">
-            <a href="#profile">
-                <h1 class="text-primary py-5 px-12 mb-5 text-xl bg-tertiary rounded-md">Profile</h1>
+        <div class="flex flex-col justify-center px-5 py-5 mt-5 mr-10 ml-10 bg-secondary rounded-2xl">
+            <a href="/dashboard/profile">
+                <h1 class="w-full text-primary py-5 px-12 mb-5 text-xl bg-tertiary rounded-md">Profile</h1>
             </a>
             <a href="/">
-                <h1 class="text-primary py-5 px-12 mb-5 text-xl bg-tertiary rounded-md">Company Profile</h1>
+                <h1 class="w-full text-primary py-5 px-12 mb-5 text-xl bg-tertiary rounded-md">Company Profile</h1>
             </a>
             <a href="#signout">
-                <h1 class="text-primary py-5 px-12 mb-5 text-xl bg-tertiary rounded-md">Sign Out</h1>
+                <h1 class="w-full text-primary py-5 px-12 mb-5 text-xl bg-tertiary rounded-md">Sign Out</h1>
             </a>
         </div>
     </div>
