@@ -14,8 +14,6 @@
             DASHBOARD
         </h1>
         <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
-        <div class="w-full h-full bg-secondary rounded-2xl flex items-center">
-            
-        </div>
+        
     </div>
 </section>

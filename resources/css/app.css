@@ -12,7 +12,7 @@
 }
 
 .gradcolor:hover {
-    transition: 10s;
+    transition: 500ms;
     background: linear-gradient(-136deg, #FF9898 0.48%, #3E2681 100%);
 }
 
