@@ -12,8 +12,8 @@
                     </svg>
                 </a>
             </div>
-            <h1 class="w-full text-2xl text-center text-primary flex justify-center">
-                TASK
+            <h1 class="w-full text-2xl text-center text-primary flex justify-center uppercase">
+                Contents of TASK
             </h1>
             <div class="bg-transparant p-3 rounded-xl flex justify-start">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 37 24" fill="none">
@@ -36,16 +36,21 @@
             </div>
             <div class="w-full">
                 <label class="text-primary" for="task">Task</label>
-                <input type="text" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4" name="task"
+                <input type="text" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4" name="taskname"
                     value="{{ $task->taskname }}" readonly="readonly" disabled="disabled" />
             </div>
             <div class="w-full ">
                 <label class="text-primary" for="task">Task Description</label>
                 <div class="flex">
-                    <input type="text" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4" name="task"
+                    <input type="text" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4" name="taskdescriptions"
                     value="{{ $task->taskdescriptions }}" readonly="readonly" disabled="disabled" />
                     <a class="gradcolor rounded-md text-primary flex justify-center gap-3 mt-4 w-1/4 px-6 py-3 mb-4" href="{{'/storage/filetask/' . $task->file }}">Download Task</a>
                 </div>
+                @error('task')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
         </div>
     </div>

@@ -9,17 +9,10 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-
-    protected $primaryKey = 'id';
-
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('facilities', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->integer('position')->nullable();
-            $table->string('salary')->default('0');
             $table->timestamps();
         });
     }
@@ -29,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('facilities');
     }
 };

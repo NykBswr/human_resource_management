@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Performance extends Model
 {
     use HasFactory;
+    protected $fillable = ['feedback', 'rating'];
     public function task()
     {
         return $this->belongsTo(Task::class, 'task_id');

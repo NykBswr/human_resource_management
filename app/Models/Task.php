@@ -9,8 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Task extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['taskname', 'taskdescriptions', 'file', 'deadline', 'employee_id', 'progress'];
+
     public function performances()
     {
-        return $this->hasMany(Performance::class, 'task_id');
+        return $this->hasOne(Performance::class, 'task_id');
+    }
+    public function performance()
+    {
+        return $this->hasOne(Performance::class);
     }
 }

@@ -2,18 +2,28 @@
     <div class="flex flex-col justify-center items-center">
         <img class="w-24 h-14 mb-10 cursor-pointer" src="{{ URL::asset('img/logo-white.svg') }}" id="logo">
         <div class="">
-            <a href="/dashboard" class="{{ Request::is('dashboard') ? 'text-primary' : 'text-slate-500' }}">
+            {{-- <a href="/dashboard" class="{{ Request::is('dashboard') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Dashboard</h1>
-            </a>
+            </a> --}}
             <a href="/task" class="{{ Request::is('task') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Task</h1>
             </a>
+            @can('manager')
+            <a href="/createtask" class="{{ Request::is('createtask') ? 'text-primary' : 'text-slate-500' }}">
+                <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Input Task</h1>
+            </a>
+            @endcan
             <a href="" class="{{ Request::is('') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Payroll and Administration</h1>
             </a>
             <a href="" class="{{ Request::is('') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Reports and Analysis</h1>
             </a>
+            @can('atasan')
+            <a href="/userlist" class="{{ Request::is('userlist') ? 'text-primary' : 'text-slate-500' }}">
+                <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Employee List</h1>
+            </a>
+            @endcan
         </div>
     </div>
 </div>
