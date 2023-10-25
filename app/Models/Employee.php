@@ -20,9 +20,12 @@ class Employee extends Model
     {
         return $this->hasMany(Task::class, 'employee_id');
     }
-    // Relasi dengan Performances
     public function performances()
     {
         return $this->hasMany(Performance::class, 'employee_id');
+    }
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'employee_id');
     }
 }

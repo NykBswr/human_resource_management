@@ -80,7 +80,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="w-full pr-5">
+                        <div class="w-full pr-5 mt-4">
                             <label class="text-primary" for="password">Password</label>
                             <input type="password" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4" name="password" required/>
                             @error('password')

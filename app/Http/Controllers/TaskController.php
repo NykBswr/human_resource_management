@@ -24,7 +24,7 @@ class TaskController extends Controller
 
         // Periksa apakah data pengguna dan karyawan ada atau tidak
         if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
-            return redirect('/dashboard');
+            return redirect('/task');
         }
 
         $tasksQuery = DB::table('tasks')
@@ -70,7 +70,7 @@ class TaskController extends Controller
             $employee->role = $role[$employee->role];
         }
 
-        return view('dashboard.task', [
+        return view('task.task', [
             'employee' => $employee,
             'tasks' => $tasks,
             'typeFilter' => $typeFilter,
@@ -85,7 +85,7 @@ class TaskController extends Controller
         ->first();
 
         if (auth()->user()->role !== 1 && auth()->user()->role !== 3) {
-        return redirect('/dashboard');
+            return redirect('/task');
         }
 
         if ($employee->role !== null) {
@@ -127,7 +127,7 @@ class TaskController extends Controller
             $tasks = $tasks->all();
         }
 
-        return view('dashboard.createtask', [
+        return view('task.createtask', [
         'employee' => $employee,
         'employeeid' => $employeeid,
         'task' => $tasks
@@ -136,6 +136,15 @@ class TaskController extends Controller
 
     public function create(Request $request)
     {
+        $employee = User::join('employees', 'users.employee_id', '=', 'employees.id')
+        ->select('users.*', 'employees.position')
+        ->where('users.id', auth()->user()->id)
+        ->first();
+
+        if ($employee->role != '3' && $employee->role != '1') {
+            return redirect('/task');
+        }
+
         $request->validate([
             'task' => 'required|string',
             'taskdesc' => 'nullable|string',
@@ -179,14 +188,23 @@ class TaskController extends Controller
      */
     public function show($id)
     {
+        $employee = User::join('employees', 'users.employee_id', '=', 'employees.id')
+        ->select('users.*', 'employees.position')
+        ->where('users.id', auth()->user()->id)
+        ->first();
+        
+        // Periksa apakah data pengguna dan karyawan ada atau tidak
+        if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
+        return redirect('/task');
+        }
+
         $task = DB::table('tasks')
         ->join('employees', 'tasks.employee_id', '=', 'employees.id')
         ->where('tasks.id', $id)
         ->select('tasks.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary')
         ->first();
-        
 
-        return view('dashboard.isitask', [
+        return view('task.isitask', [
         'task' => $task
         ]);
     }
@@ -202,7 +220,7 @@ class TaskController extends Controller
         ->where('tasks.id', $id)
         ->first();
 
-        return view('dashboard.edittask', [
+        return view('task.edittask', [
         'task' => $task,
     ]);
     }
@@ -210,9 +228,17 @@ class TaskController extends Controller
     //  Submit
     public function update(Request $request, Task $task)
     {
+        $employee = User::join('employees', 'users.employee_id', '=', 'employees.id')
+        ->select('users.*', 'employees.position')
+        ->where('users.id', auth()->user()->id)
+        ->first();
+        
+        if ($employee->role != '3' && $employee->role != '0') {
+            return redirect('/task');
+        }
         // Validasi input
         $request->validate([
-        'file2' => 'required|mimes:pdf,doc,docx|max:2048',
+            'file2' => 'required|mimes:pdf,doc,docx|max:2048',
         ]);
 
         // Simpan file yang diunggah ke folder "filetask" dalam direktori penyimpanan publik
@@ -232,7 +258,15 @@ class TaskController extends Controller
     // Edit Task
     public function edittask(Request $request, Task $task)
     {
-        // Validasi input
+        $employee = User::join('employees', 'users.employee_id', '=', 'employees.id')
+        ->select('users.*', 'employees.position')
+        ->where('users.id', auth()->user()->id)
+        ->first();
+        
+        if ($employee->role != '3' && $employee->role != '1') {
+            return redirect('/task');
+        }
+
         $validatedData = $request->validate([
             'taskname' => 'required|string',
             'taskdescriptions' => 'nullable|string',
@@ -256,25 +290,52 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        $employee = User::join('employees', 'users.employee_id', '=', 'employees.id')
+        ->select('users.*', 'employees.position')
+        ->where('users.id', auth()->user()->id)
+        ->first();
+
+        if ($employee->role != '3' && $employee->role != '2') {
+            return redirect('/task');
+        }
+
         $task->delete();
         return redirect('/task');
     }
 
     public function feedback($id)
     {
-        $task = DB::table('tasks')
-        ->join('employees', 'tasks.employee_id', '=', 'employees.id')
-        ->select('tasks.*', 'employees.firstname', 'employees.lastname', 'employees.position')
-        ->where('tasks.id', $id)
+        $employee = User::join('employees', 'users.employee_id', '=', 'employees.id')
+        ->select('users.*', 'employees.position')
+        ->where('users.id', auth()->user()->id)
         ->first();
 
-        return view('dashboard.inputfeedback', [
+        if ($employee->role != '3' && $employee->role != '1') {
+        return redirect('/task');
+        }
+
+        $task = DB::table('tasks')
+            ->join('employees', 'tasks.employee_id', '=', 'employees.id')
+            ->select('tasks.*', 'employees.firstname', 'employees.lastname', 'employees.position')
+            ->where('tasks.id', $id)
+            ->first();
+
+        return view('task.inputfeedback', [
         'task' => $task,
         ]);
     }
 
     public function inputfeedback(Request $request, $id)
     {
+        $employee = User::join('employees', 'users.employee_id', '=', 'employees.id')
+        ->select('users.*', 'employees.position')
+        ->where('users.id', auth()->user()->id)
+        ->first();
+
+        if ($employee->role != '3' && $employee->role != '1') {
+            return redirect('/task');
+        }
+
         // Mengambil objek Task berdasarkan ID
         $task = Task::findOrFail($id);
 

@@ -1,9 +1,9 @@
 <nav class="fixed w-full h-auto" id="navbar">
     <div class="flex w-full justify-between items-center h-auto gradcolor3 px-10 py-5">
         <div class="flex flex-col cursor-pointer" id="burger">
-            <div class="bg-primary rounded-xl h-1.5 w-10 mb-2"></div>
-            <div class="bg-primary rounded-xl h-1.5 w-10 mb-2"></div>
-            <div class="bg-primary rounded-xl h-1.5 w-10"></div>
+            <div class="humber bg-primary rounded-xl h-1.5 w-10 mb-2"></div>
+            <div class="humber bg-primary rounded-xl h-1.5 w-10 mb-2"></div>
+            <div class="humber bg-primary rounded-xl h-1.5 w-10"></div>
         </div>
         <div class="flex items-center">
             <h1 class="text-primary mr-5 text-xl">Welcome, {{ $employee->firstname ." ".$employee->lastname ." - ". $employee->role}}</h1>
@@ -17,11 +17,14 @@
                     <h1 class="w-full text-primary py-5 px-12 mb-5 text-xl bg-tertiary hover:bg-opacity-50 rounded-md">Add Employee</h1>
                 </a>
             @endif
-            <a href="dashboard/profile/{{ auth()->user()->id }}/edit">
+            <a href="/dashboard/profile/{{ auth()->user()->id }}/edit">
                 <h1 class="w-full text-primary py-5 px-12 mb-5 text-xl bg-tertiary hover:bg-opacity-50 rounded-md">Profile</h1>
             </a>
             <a href="/">
                 <h1 class="w-full text-primary py-5 px-12 mb-5 text-xl bg-tertiary hover:bg-opacity-50 rounded-md">Company Profile</h1>
+            </a>
+            <a href="/dashboard/changepassword/{{ auth()->user()->id }}">
+                <h1 class="w-full text-primary py-5 px-12 mb-5 text-xl bg-tertiary hover:bg-opacity-50 rounded-md">Change Password</h1>
             </a>
             <form class="bg-tertiary hover:bg-opacity-50 w-full py-5 px-12 rounded-md" action="/logout" method="post">
                 @csrf

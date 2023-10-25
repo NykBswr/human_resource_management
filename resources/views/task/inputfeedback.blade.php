@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="w-full h-[90%] bg-dark rounded-2xl flex flex-col items-center justify-center py-16 px-20">
-            <div class="w-full h-full overflow-auto">
+            <div class="w-full h-full overflow-auto px-5">
                 <div class="w-full flex">
                     <div class="w-1/2 pr-5">
                         <label class="text-primary" for="firstname">First Name</label>
@@ -70,9 +70,10 @@
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <button type="submit" class="mt-2 w-1/12 py-3 px-6 bg-purple-500 hover:bg-purple-700 text-white rounded-md" name="revisi">Revise</button>
-                    <button type="submit" class="mt-2 w-2/12 py-3 px-6 gradcolor text-white rounded-md">Submit Feedback</button>
+                    <div class="flex flex-row justify-end">
+                        <button type="submit" class="mt-2 w-1/12 py-3 px-6 mr-2 gradcolorrevisi text-white rounded-md" name="revisi">Revise</button>
+                        <button type="submit" class="mt-2 w-2/12 py-3 px-6 gradcolor text-white rounded-md">Submit Feedback</button>
+                    </div>
                 </form>
             </div>
         </div>

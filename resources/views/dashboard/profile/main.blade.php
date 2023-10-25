@@ -52,11 +52,37 @@
                         </div>
                         <input type="hidden" name="oldImage" value="{{ $employee->image }}">
                     </form>
+
                     <!-- JavaScript to automatically submit the form when an image is selected -->
                     <script>
                         document.getElementById('image').addEventListener('change', function () {
                             document.getElementById('imageForm').submit();
                         });
+                    </script>
+
+
+                    @if (session()->has('success'))
+                    <div class="w-full h-auto bg-green-200 text-green-800 border border-green-400 rounded-lg p-4 my-4 relative" id="success-alert">
+                        {{ session('success') }}
+                        <button type="button" class="absolute right-0 mt-2 mr-4" id="close-alert">
+                            <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    @endif
+                    
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        const successAlert = document.getElementById('success-alert');
+                        const closeAlertButton = document.getElementById('close-alert');
+
+                        if (successAlert && closeAlertButton) {
+                            closeAlertButton.addEventListener('click', function () {
+                                successAlert.style.display = 'none';
+                            });
+                        }
+                    });
                     </script>
                     <div class="w-full flex">
                         <div class="w-1/2 pr-5">
@@ -99,20 +125,4 @@
         </div>
     </div>
 </section>
-
-<script>
-    function previewImage() {
-        const image = document.querySelector('#image');
-        const imgPreview = document.querySelector('.img-preview');
-
-        imgPreview.style.display = 'block';
-
-        const reader = new FileReader();
-        reader.readAsDataURL(image.files[0]);
-
-        reader.onload = function(event) {
-            imgPreview.src = event.target.result;
-        }
-    }
-</script>
 @endsection

@@ -27,18 +27,6 @@
             </div>
             @endif
         </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const successAlert = document.getElementById('success-alert');
-                const closeAlertButton = document.getElementById('close-alert');
-
-                if (successAlert && closeAlertButton) {
-                    closeAlertButton.addEventListener('click', function() {
-                        successAlert.style.display = 'none';
-                    });
-                }
-            });
-        </script>
 
         <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
         <div class="w-full h-full flex flex-col items-center overflow-x-auto">
@@ -81,7 +69,7 @@
                                     {{ $employee->firstname . ' ' . $employee->lastname }}
                                 </div>
                             </td>
-                            {{-- Position Employee --}}
+                            {{-- Role Employee --}}
                             <td class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg">
                                     {{ $employee->role}}
@@ -104,7 +92,7 @@
                                 <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
                                     <a href="/userlist/edituser/{{ $employee->id }}" class="hover:scale-110 duration-500">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                         </svg>
                                     </a>
                                 </div>
@@ -114,6 +102,12 @@
                 </tbody>
             </table>
         </div>
+        @can('hr')
+        <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+        <div class="bg-dark flex rounded-full text-white ml-auto">
+            <a href="/createuser" class="gradcolor rounded-md py-2 px-7">Add New Employee</a>
+        </div>
+        @endcan
     </div>
 </section>
 

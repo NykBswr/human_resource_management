@@ -46,3 +46,31 @@ profile.addEventListener('click', () => {
     profile.classList.remove('flex');
     profile.classList.add('hidden');
 });
+
+// SUCCESS ALERT
+document.addEventListener('DOMContentLoaded', function () {
+    const successAlert = document.getElementById('success-alert');
+    const closeAlertButton = document.getElementById('close-alert');
+
+    if (successAlert && closeAlertButton) {
+        closeAlertButton.addEventListener('click', function () {
+            successAlert.style.display = 'none';
+        });
+    }
+});
+
+// PROFILE PICTURE
+
+function previewImage() {
+    const image = document.querySelector('#image');
+    const imgPreview = document.querySelector('.img-preview');
+
+    imgPreview.style.display = 'block';
+
+    const reader = new FileReader();
+    reader.readAsDataURL(image.files[0]);
+
+    reader.onload = function (event) {
+        imgPreview.src = event.target.result;
+    }
+}

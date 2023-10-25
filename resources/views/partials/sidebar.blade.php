@@ -8,22 +8,23 @@
             <a href="/task" class="{{ Request::is('task') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Task</h1>
             </a>
-            @can('manager')
-            <a href="/createtask" class="{{ Request::is('createtask') ? 'text-primary' : 'text-slate-500' }}">
-                <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Input Task</h1>
-            </a>
-            @endcan
             <a href="" class="{{ Request::is('') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Payroll and Administration</h1>
             </a>
             <a href="" class="{{ Request::is('') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Reports and Analysis</h1>
             </a>
+            <a href="/facility" class="{{ Request::is('facility') ? 'text-primary' : 'text-slate-500' }}">
+                <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Facility</h1>
+            </a>
             @can('atasan')
             <a href="/userlist" class="{{ Request::is('userlist') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Employee List</h1>
             </a>
             @endcan
+            <a href="/attendance" class="{{ Request::is('attendance') ? 'text-primary' : 'text-slate-500' }}">
+                <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Atendance</h1>
+            </a>
         </div>
     </div>
 </div>

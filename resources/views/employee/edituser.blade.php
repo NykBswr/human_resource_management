@@ -41,20 +41,20 @@
                         <div class="w-full flex">
                             <div class="w-1/2 pr-5">
                                 <label class="text-primary" for="username">Username</label>
-                                <input type="text" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4" name="username" value="{{ old('username', $list->username)  }}"/>
+                                <input type="text" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4 placeholder:text-primary" name="username" placeholder="{{ $list->username }}" value="{{ old('username')  }}"/>
                                 @error('username')
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="w-1/2">
                                 <label class="text-primary" for="email">Email</label>
-                                <input type="email" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4" name="email" value="{{ old('email', $list->email)  }}"/>
+                                <input type="email" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4 placeholder:text-primary" name="email" placeholder="{{ $list->email }}" value="{{ old('email')  }}"/>
                                 @error('email')
                                     <div class="text-red-500">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-                        <div class="w-full">
+                        <div class="w-full mt-4">
                             <label class="text-primary" for="role">Role</label>
                             <select class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3" name="role">
                                 <option value="0" {{ $list->role == '0' ? 'selected' : '' }}>Employee</option>
@@ -77,7 +77,7 @@
                             8 => 'CS',
                             ];
                         @endphp
-                        <div class="w-full">
+                        <div class="w-full mt-4">
                             <label class="text-primary" for="position">Position</label>
                             <select class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3" name="position">
                                 @foreach($positions as $key => $value)
@@ -88,16 +88,16 @@
                                 <span class="text-red-500">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="w-full pr-5">
+                        <div class="w-full pr-5 mt-4">
                             <label class="text-primary" for="password">Password</label>
-                            <input type="password" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4" name="password" value="{{ $list->password)  }}"/>
+                            <input type="password" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4 placeholder:text-primary" name="password" placeholder="**********"/>
                             @error('password')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="w-full pr-5">
                             <label class="text-primary" for="password_confirmation">Confirm Password</label>
-                            <input type="password" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4" name="password_confirmation" value="{{ $list->password)  }}"/>
+                            <input type="password" class="bg-secondary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4 placeholder:text-primary" name="password_confirmation" placeholder="**********"/>
                             @error('password_confirmation')
                                 <div class="text-red-500">{{ $message }}</div>
                             @enderror

@@ -30,7 +30,7 @@
                 </svg>
             </div>
         </div>
-        <div class="w-full h-[90%] bg-dark rounded-2xl flex flex-col items-center justify-center py-8 px-20">
+        <div class="w-full h-[90%] bg-dark rounded-2xl flex flex-col items-center justify-center py-10 px-20">
             <div class="w-full h-screen overflow-auto p-2">
 
                 {{-- Manager --}}

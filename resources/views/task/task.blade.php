@@ -343,6 +343,12 @@
                 </tbody>
             </table>
         </div>
+        @can('manager')
+            <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+            <div class="bg-dark flex rounded-full text-white ml-auto">
+                <a href="/createtask" class="gradcolor rounded-md py-2 px-7">Input Task</a>
+            </div>
+        @endcan
     </div>
 </section>
 

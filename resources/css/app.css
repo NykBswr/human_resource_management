@@ -7,16 +7,54 @@
     background: linear-gradient(93deg, #FF9898 0.48%, #3E2681 100%);
 }
 
-.gradcolor2 {
-    background: linear-gradient(136deg, #EBAEAE 14.73%, #3E2681 86.33%);
-}
-
 .gradcolor:hover {
     transition: 500ms;
     background: linear-gradient(-136deg, #FF9898 0.48%, #3E2681 100%);
 }
 
+.gradcolor2 {
+    background: linear-gradient(136deg, #EBAEAE 14.73%, #3E2681 86.33%);
+}
+
 .gradcolor3 {
     background: linear-gradient(93deg, #FF9898 0.48%, #3E2681 100%);
     border-bottom-left-radius: 30px;
+}
+
+.gradcolorrevisi {
+    background: #341784;
+}
+
+.gradcolorrevisi:hover {
+    transition: 500ms;
+    background: linear-gradient(-136deg, #FF9898 0.48%, #3E2681 100%);
+}
+
+/* HUMBERGER */
+#burger:hover .humber {
+    background: linear-gradient(-136deg, #6349ab 0.48%, #3E2681 100%);
+}
+
+/* IMAGE LOGIN */
+
+/* Keyframes untuk menggerakkan gambar naik dari bawah ke atas */
+@keyframes moveUp {
+    0% {
+        transform: translateY(100%);
+    }
+
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+/* Menggunakan keyframes yang telah didefinisikan di atas */
+#img1,
+#img3 {
+    animation: moveUp 50s linear infinite;
+}
+
+#img2 {
+    animation: moveUp 50s linear infinite;
+    animation-direction: reverse;
 }

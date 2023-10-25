@@ -22,7 +22,7 @@ class UsersController extends Controller
 
         // Periksa apakah data pengguna dan karyawan ada atau tidak
         if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
-            return redirect('/dashboard');
+            return redirect('/employee');
         }
 
         if ($employee->position !== null) {
@@ -74,7 +74,9 @@ class UsersController extends Controller
         ]);
         
         if ($request->file('image')) {
-            Storage::delete($request->oldImage);
+            if ($request->oldImage) {
+                Storage::delete('public/images/' . $request->oldImage);
+            }
             $uploadedFile = $request->file('image');
             $imagename = time() . '.' . $uploadedFile->getClientOriginalExtension();
 
@@ -82,8 +84,9 @@ class UsersController extends Controller
             $user->image = $imagename;
             $user->save();
         }
-
-        return redirect("/dashboard/profile/$user->id/edit"); // Mengubah URL dengan variabel user->id
+        // Tambah ganti images
+        return redirect("/dashboard/profile/$user->id/edit")->with("success","Your profile image has been successfully
+        changed.");
     }
 
     public function create()
@@ -97,7 +100,7 @@ class UsersController extends Controller
         })
         ->get();
 
-        return view('dashboard.createuser', [
+        return view('employee.createuser', [
             'employee' => $employee
         ]);
     }
@@ -140,7 +143,7 @@ class UsersController extends Controller
 
         // Periksa apakah data pengguna memiliki peran (role) yang sesuai
         if ($employee->role == 2 && $employee->role !== 3 && $employee->role !== 1) {
-            return redirect('/dashboard');
+            return redirect('/employee');
         }
         
         // Jika peran employee adalah 1, maka ambil data karyawan dengan posisi yang sama
@@ -150,7 +153,7 @@ class UsersController extends Controller
                 ->where('employees.position', $employee->position) // Filter berdasarkan posisi yang sama
                 ->where('users.role', 0) // Hanya role employee
                 ->get();
-        } else {
+        } elseif ($employee->role == 2) {
             // Jika bukan peran 1, maka ambil semua data karyawan dengan peran 0 dan 1
             $list = Employee::join('users', 'users.employee_id', '=', 'employees.id')
                 ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary', 'users.role')
@@ -158,10 +161,17 @@ class UsersController extends Controller
                     $query->where('users.role', 0)->orWhere('users.role', 1);
                 })
                 ->get();
+        } else {
+            $list = Employee::join('users', 'users.employee_id', '=', 'employees.id')
+                ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary', 'users.role')
+                ->where(function ($query) {
+                    $query->whereNot('users.role', 3);
+                })
+                ->get();
         }
-
         // Mengganti posisi karyawan berdasarkan data yang sesuai
         $positions = [
+            null => 'Branch Manager',
             0 => 'Business Analysis',
             1 => 'Data Analyst',
             2 => 'Data Scientist',
@@ -182,15 +192,13 @@ class UsersController extends Controller
         $employee->role = $role[$employee->role];
 
         foreach ($list as $lists) {
-            if ($lists->position !== null) {
-                $lists->position = $positions[$lists->position];
-            }
+            $lists->position = $positions[$lists->position];
             if ($lists->role !== null) {
                 $lists->role = $role[$lists->role];
             }
         }
 
-        return view('dashboard.userlist', [
+        return view('employee.userlist', [
             'employee' => $employee,
             'list' => $list,
         ]);
@@ -221,41 +229,75 @@ class UsersController extends Controller
             return redirect('/userlist');
         } 
 
-        return view('dashboard.edituser', [
+        return view('employee.edituser', [
                 'list' => $list,
             ]);
     }
 
     public function userupdated(Request $request, $id)
     {
+        $user = User::find($id);
+        $employee = Employee::find($id);
+
+        if (!$user || !$employee) {
+            return redirect('/userlist')->with('error', 'User not found');
+        }
+
+        if ($request->input('username') !== null) {
+            $request->validate(['username' => 'min:3|max:20|unique:users']);
+            $user->update(['username' => $request->input('username')]);
+        }
+
+        if ($request->input('email') !== null) {
+            $request->validate(['email' => 'email|email:dns|unique:users']);
+            $user->update(['email' => $request->input('email')]);
+        }
+
+        if ($request->input('role') !== null) {
+            $request->validate(['role' => 'in:0,1']);
+            $user->update(['role' => $request->input('role')]);
+        }
+
+        if ($request->input('password') !== null) {
+            $validatedData = $request->validate([
+                'password' => 'required|same:password_confirmation|min:8|max:225',
+                'password_confirmation' => 'required|same:password|min:8|max:225',
+            ]);
+
+            $validatedData['password'] = Hash::make($validatedData['password']);
+            $user->update(['password' => $validatedData['password']]);
+        }
+
+        if ($request->input('position') !== null) {
+            $request->validate(['position' => 'in:0,1,2,3,4,5,6,7,8,9']);
+            $employee->update(['position' => $request->input('position')]);
+        }
+
+        return redirect('/userlist')->with('success', 'User edited successfully');
+    }
+
+    public function changepassword () {
+        // Mengambil data pengguna (user) berdasarkan ID dan menggabungkan data karyawan (employee)
+        $employee = User::join('employees', 'users.employee_id', '=', 'employees.id')
+        ->select('users.*', 'employees.position','employees.firstname', 'employees.lastname', 'users.role')
+        ->where('users.id', auth()->user()->id)
+        ->first();
+
+        return view('dashboard.changepassword.main', [
+        'employee' => $employee,
+        ]);
+    }
+    public function change (Request $request, User $user) {
         $validatedData = $request->validate([
-            'username' => 'min:3|max:20|unique:users',
-            'email' => 'email|email:dns|unique:users',
-            'role' => 'in:0,1',
-            'position' => 'in:1,2,3,4,5,6,7,8,9',
             'password' => 'required|same:password_confirmation|min:8|max:225',
             'password_confirmation' => 'required|same:password|min:8|max:225',
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
-        
-        // Mengambil pengguna berdasarkan ID yang diberikan.
-        $user = User::find($id);
-        $employee = Employee::find($id);
-
-        if (!$user) {
-            return redirect('/userlist')->with('error', 'User not found');
-        }
-
         $user->update([
-            'username' => $validatedData['username'],
-            'email' => $validatedData['email'],
-            'role' => $validatedData['role'],
-            'password' => $validatedData['password'],
+        'password' => Hash::make($validatedData['password']),
         ]);
 
-        $employee->update(['position' => $validatedData['position']]);
-
-        return redirect('/userlist')->with('success', 'User edited successfully');
+        return redirect("/dashboard/changepassword/$user->id")->with('success', 'Your password has been changed
+        successfully');
     }
 }
