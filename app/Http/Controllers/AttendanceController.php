@@ -23,7 +23,8 @@ class AttendanceController extends Controller
 
         $attendances = Attendance::join('employees', 'attendances.employee_id', '=', 'employees.id')
         ->join('users', 'users.employee_id', '=', 'employees.id')
-        ->select('attendances.id', 'attendances.employee_id', 'attendances.date', 'employees.firstname',
+        ->select('attendances.id', 'attendances.employee_id', 'attendances.status', 'attendances.date',
+        'employees.firstname',
         'employees.lastname', 'employees.position',
         'users.role');
 
@@ -80,22 +81,41 @@ class AttendanceController extends Controller
         // Tanggal hari ini
         $today = now()->toDateString();
 
-        // Loop melalui daftar karyawan dan masukkan ke dalam tabel attendance
+        $errorMessages = [];
+
+        // Loop melalui daftar karyawan
         foreach ($employees as $employee) {
-        Attendance::create([
-                'employee_id' => $employee->id,
-                'date' => $today
-            ]);
+            try {
+                Attendance::firstOrCreate([
+                    'employee_id' => $employee->id,
+                    'date' => $today
+                ]);
+            } catch (\Exception $e) {
+                // Tangani kesalahan jika entri sudah ada
+                $errorMessages[] = "Attendance for {$employee->firstname} {$employee->lastname} already exists for today.";
+            }
         }
-        
-        return redirect('/attendance')->with('success',"Today's attendance has been successfully added");
+
+        if (count($errorMessages) > 0) {
+            return redirect('/attendance')->with('error', implode("<br>", $errorMessages));
+        } else {
+            return redirect('/attendance')->with('success', "Today's attendance has been successfully added");
+        }
     }
 
     public function present($id)
     {
-        Attendance::where('id', $id)
-        ->update(['status' => 1]);
+        // Tanggal hari ini
+        $today = now()->toDateString();
 
-        return redirect('/attendance')->with('success',"You have successfully presented your attendance.");
+        $date = Attendance::where('id', $id)->first();
+
+        if ($today == $date->date){
+            Attendance::where('id', $id)
+            ->update(['status' => 1]);
+            return redirect('/attendance')->with('success',"You have successfully presented your attendance.");
+        } else {
+            return redirect('/attendance')->with('error',"You unsuccessfully presented your attendance.");
+        }
     }
 }

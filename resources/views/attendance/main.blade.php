@@ -23,10 +23,20 @@
             @endif
             @endcan
         </div>
-        <div class="w-full mb-5">
+        <div class="w-full mt-5">
             @if (session()->has('success'))
             <div class="w-full h-auto bg-green-200 text-green-800 border border-green-400 rounded-lg p-4 my-4 relative" id="success-alert">
                 {{ session('success') }}
+                <button type="button" class="absolute right-0 mt-2 mr-4" id="close-alert">
+                    <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/>
+                    </svg>
+                </button>
+            </div>
+            @endif
+            @if (session()->has('error'))
+            <div class="w-full h-auto bg-red-200 text-red-800 border border-red-400 rounded-lg p-4 my-4 relative" id="success-alert">
+                {{ session('error') }}
                 <button type="button" class="absolute right-0 mt-2 mr-4" id="close-alert">
                     <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/>
@@ -130,16 +140,19 @@
                                 <div class="bg-secondary py-5 m-1 rounded-lg">
                                     @php
                                         $date = \Carbon\Carbon::parse($employeelist->date);
+                                        $today = now()->toDateString();
                                     @endphp
                                     {{ $date->isoFormat('dddd, D MMMM Y') }}
                                 </div>
                             </td>
                             @endif
+                            
                             {{-- Attend --}}
                             <td class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
-                                    @if ($date->isToday() && $employeelist->status == 0 && $employee->role == 'Employee' || $employee->role == 'Human Resource')
-                                        <form action="/attendance/present/{{ $employeelist->id }}">
+                                    @if ($date->isToday() && $employeelist->status == 0 && ($employee->role == 'Employee' || $employee->role == 'Human Resource'))
+                                        <form action="/attendance/present/{{ $employeelist->id }}" method="post">
+                                            @csrf
                                             <button type="submit" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
                                                 Click to Present
                                             </button>
@@ -148,11 +161,11 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                    @elseif ($employeelist->status = 1)
+                                    @elseif ($employeelist->status == 1)
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                    @elseif ($employeelist->status == 0 && $date->isFuture())
+                                    @else
                                         Not Yet Present
                                     @endif
                                 </div>

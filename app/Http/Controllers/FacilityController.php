@@ -71,16 +71,16 @@ class FacilityController extends Controller
             if ($employee->role == 0) {
                 // Filter karyawan berdasarkan peran
                 $employeefacilities = array_filter($employeefacilities, function ($item) {
-                    return $item['role'] == 0 || $item['employees'] == auth()->user()->id;
+                    return $item['role'] == 0 && $item['employees'] == auth()->user()->id;
                 });
             } elseif ($employee->role == 1) {
                 $userPosition = $employee->position;
                 $employeefacilities = array_filter($employeefacilities, function ($item) use ($userPosition) {
-                return $item['role'] == 0 && $item['position'] == $userPosition;
+                    return $item['role'] == 1 && $item['employees'] == auth()->user()->id;
                 });
             } elseif ($employee->role == 2) {
                 $employeefacilities = array_filter($employeefacilities, function ($item) {
-                    return $item['role'] == 0 || $item['role'] == 1;
+                    return $item['role'] == 2 && $item['employees'] == auth()->user()->id;
                 });
             } else {
                 $employeefacilities = array_filter($employeefacilities, function ($item) {
@@ -119,7 +119,7 @@ class FacilityController extends Controller
         ->where('users.id', auth()->user()->id)
         ->first();
 
-        if ($employee->role != '3' && $employee->role != '2') {
+        if ($employee->role != '3') {
         return redirect('/task');
         }
 

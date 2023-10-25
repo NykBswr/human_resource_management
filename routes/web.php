@@ -84,4 +84,4 @@ Route::delete('/facility/{facility}', [FacilityController::class, 'destroy']);
 Route::get('/attendance', [AttendanceController::class,'index']);
 Route::get('/attendance/createattend', [AttendanceController::class,'createattend']);
 
-Route::get('/attendance/present/{employee}', [AttendanceController::class,'present']);
+Route::post('/attendance/present/{employee}', [AttendanceController::class,'present']);

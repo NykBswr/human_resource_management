@@ -9,7 +9,7 @@
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Task</h1>
             </a>
             <a href="" class="{{ Request::is('') ? 'text-primary' : 'text-slate-500' }}">
-                <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Payroll and Administration</h1>
+                <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Payroll and Benefits</h1>
             </a>
             <a href="" class="{{ Request::is('') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="py-5 px-12 mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Reports and Analysis</h1>

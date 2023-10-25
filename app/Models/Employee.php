@@ -2,7 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Task;
 use App\Models\User;
+use App\Models\Benefit;
+use App\Models\Payroll;
+use App\Models\Attendance;
+use App\Models\Performance;
+use App\Models\BenefitsApplication;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,5 +33,23 @@ class Employee extends Model
     public function attendances()
     {
         return $this->hasMany(Attendance::class, 'employee_id');
+    }
+    public function payrolls()
+    {
+        return $this->hasMany(Payroll::class, 'employee_id');
+    }
+
+    public function benefits()
+    {
+        return $this->hasMany(Benefit::class, 'employee_id');
+    }
+
+    public function offDays()
+    {
+        return $this->hasMany(OffDays::class, 'employee_id');
+    }
+    public function benefitsApplication()
+    {
+        return $this->hasMany(BenefitsApplication::class, 'employee_id');
     }
 }

@@ -64,19 +64,17 @@
                                 Remaining
                             </div>
                         </th>
-                        @can('atasan')
+                        @can('hr')
                         <th class="w-auto h-14">
                             <div class="bg-secondary py-5 m-1 rounded-lg">
                                 Edit
                             </div>
                         </th>
-                        @endcan
-                        @can('cabang')
-                            <th class="w-auto h-14">
-                                <div class="bg-secondary py-5 m-1 rounded-lg">
-                                    Delete
-                                </div>
-                            </th>
+                        <th class="w-auto h-14">
+                            <div class="bg-secondary py-5 m-1 rounded-lg">
+                                Delete
+                            </div>
+                        </th>
                         @endcan
                     </tr>
                     @endif
@@ -145,7 +143,7 @@
                                 </div>
                             </td>
                             {{-- Edit Facility --}}
-                            @can('atasan')
+                            @can('hr')
                             <td class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
                                     <a href="/facility/edit/{{ $facility->facility_id }}" class="hover:scale-110 duration-500">
@@ -155,8 +153,6 @@
                                     </a>
                                 </div>
                             </td> 
-                            @endcan
-                            @can('cabang')
                             {{-- DELETE --}}
                                 <td class="w-auto h-14">
                                     <form class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center" action='{{'facility' . '/' . $facility->facility_id }}' method="POST">
@@ -227,14 +223,17 @@
                                         @php
                                             $facilityNames = array_filter($facility['facilities']);
                                         @endphp
-
+                                        
                                         @if (count($facilityNames) > 1)
-                                            @foreach ($facilityNames as $key => $facilityName)
-                                                {{ $key + 1 }}. {{ $facilityName }}<br>
-                                            @endforeach
-                                        @else
+                                            <ul>
+                                                @foreach ($facilityNames as $key => $facilityName)
+                                                    <li>{{ $key + 1 }}. {{ $facilityName }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @elseif (count($facilityNames) === 1)
                                             {{ reset($facilityNames) }}<br>
                                         @endif
+
                                     @else
                                         -
                                     @endif
