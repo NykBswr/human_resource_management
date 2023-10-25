@@ -12,14 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        // Dummy data for the 'employees' table
         $employees = [
             [
                 // Manager
@@ -27,6 +19,7 @@ class DatabaseSeeder extends Seeder
                 'lastname' => 'Doe',
                 'position' => 0,
                 'salary' => '50000',
+                'joining_date' => '2023-10-26'
             ],
             [
                 // Karyawan 1
@@ -34,12 +27,14 @@ class DatabaseSeeder extends Seeder
                 'lastname' => 'Smith',
                 'position' => 0,
                 'salary' => '40000',
+                'joining_date' => '2023-10-26'
             ],
             [
                 // Kepala Cabang
                 'firstname' => 'Nayaka',
                 'lastname' => 'Baswara',
                 'salary' => '999999999',
+                'joining_date' => '2023-10-26'
             ],
             [
                 // Karyawan 2
@@ -47,12 +42,14 @@ class DatabaseSeeder extends Seeder
                 'lastname' => 'Baswara',
                 'position' => 1,
                 'salary' => '999999999',
+                'joining_date' => '2023-10-26'
             ],
             [
                 // Human Resources
                 'firstname' => 'Nayaka',
                 'lastname' => 'Baswara',
                 'salary' => '9999999999999999999',
+                'joining_date' => '2023-10-26'
             ],
         ];
 
@@ -74,20 +71,20 @@ class DatabaseSeeder extends Seeder
                 'employee_id' => 2,
             ],
             [
+                // Karyawan 2
+                'username' => 'karyawan2',
+                'email' => 'nyk@example.com',
+                'password' => bcrypt('nayaka123'),
+                'role' => 0,
+                'employee_id' => 4,
+            ],
+            [
                 // Kepala cabang
                 'username' => 'kepala cabang',
                 'email' => 'nayaka@gmail.com',
                 'password' => bcrypt('nayaka123'),
                 'role' => 2,
                 'employee_id' => 3,
-            ],
-            [
-                // Karyawan 2
-                'username' => 'karyawan2',
-                'email' => 'hafiz@example.com',
-                'password' => bcrypt('nayaka123'),
-                'role' => 0,
-                'employee_id' => 4,
             ],
             [
                 // Human Resources

@@ -49,53 +49,53 @@
                 <thead>
                     <tr class="w-full">
                         <th class="w-auto h-14">
-                            <div class="bg-secondary py-5 m-1 rounded-lg">
-                                No.
+                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                No
                             </div>
                         </th>
 
                         @can('hr')
                         <th class="w-auto h-14">
-                            <div class="bg-secondary py-5 m-1 rounded-lg">
+                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                 Employee Name
                             </div>
                         </th>
                         <th class="w-auto h-14">
-                            <div class="bg-secondary py-5 m-1 rounded-lg">
+                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                 Role
                             </div>
                         </th>
                         <th class="w-auto h-14">
-                            <div class="bg-secondary py-5 m-1 rounded-lg">
+                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                 Position
                             </div>
                         </th>
                         @endcan
                         
                         <th class="w-auto h-14">
-                            <div class="bg-secondary py-5 m-1 rounded-lg">
+                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                 Date
                             </div>
                         </th>
                         <th class="w-auto h-14">
-                            <div class="bg-secondary py-5 m-1 rounded-lg">
+                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                 Reason
                             </div>
                         </th>
                         <th class="w-auto h-14">
-                            <div class="bg-secondary py-5 m-1 rounded-lg">
+                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                 Information
                             </div>
                         </th>
                         @if(request()->query('type_filter') == 'pending' || request()->query('type_filter') == '')
                             @can('hr')
                                 <th class="w-auto h-14">
-                                    <div class="bg-secondary py-5 m-1 rounded-lg">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                         Refuse
                                     </div>
                                 </th>
                                 <th class="w-auto h-14">
-                                    <div class="bg-secondary py-5 m-1 rounded-lg">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                         Approve
                                     </div>
                                 </th>
@@ -108,20 +108,20 @@
                         <tr class="w-full">
                             {{-- Nomor --}}
                             <td class="w-auto h-14">
-                                <div class="bg-secondary py-5 m-1 rounded-lg">
+                                <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                     {{ '1' + $key }}
                                 </div>
                             </td>
                             {{-- Employee Name --}}
                             @can ('hr')
                             <td class="w-auto h-14">
-                                <div class="bg-secondary py-5 m-1 rounded-lg">
+                                <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                     {{ $offday->firstname . '' . $offday->lastname }} 
                                 </div>
                             </td>
                             {{-- Role --}}
                             <td class="w-auto h-14">
-                                <div class="bg-secondary py-5 m-1 rounded-lg">
+                                <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                     @php
                                         $rolenMapping = [
                                             0 => 'Employee',
@@ -134,7 +134,7 @@
                             </td>
                             {{-- Position --}}
                             <td class="w-auto h-14">
-                                <div class="bg-secondary py-5 m-1 rounded-lg">
+                                <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                     @php
                                         $positionMapping = [
                                             null => 'Branch Manager',
@@ -155,7 +155,7 @@
                             @endcan
                             {{-- Date --}}
                             <td class="w-auto h-14">
-                                <div class="bg-secondary py-5 m-1 rounded-lg">
+                                <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                     @php
                                         $start = \Carbon\Carbon::parse($offday->start);
                                         $end = \Carbon\Carbon::parse($offday->end);
@@ -169,13 +169,13 @@
                             </td>
                             {{-- Reason --}}
                             <td class="w-auto h-14">
-                                <div class="bg-secondary py-5 m-1 rounded-lg">
+                                <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                     {{ $offday->reason }}
                                 </div>
                             </td>
                             {{-- Information --}}
                             <td class="w-auto h-14">
-                                <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
+                                <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
                                     <a href="{{'/storage/Proof of Leave Application/' . $offday->info }}" class="hover:scale-110 duration-500">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -189,7 +189,7 @@
                                 @can('hr')
                                     {{-- Refuse --}}
                                     <td class="w-auto h-14">
-                                        <form action="/offdays/refuse/{{ $offday->id }}" method="post" class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
+                                        <form action="/offdays/refuse/{{ $offday->id }}" method="post" class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
                                         @csrf
                                             <button type="submit" class="hover:scale-110 duration-500">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-auto h-6">
@@ -200,7 +200,7 @@
                                     </td> 
                                     {{-- Approve --}}
                                     <td class="w-auto h-14">
-                                        <form action="/offdays/approve/{{ $offday->id }}" method="post" class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
+                                        <form action="/offdays/approve/{{ $offday->id }}" method="post" class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
                                             @csrf
                                             <button type="submit" class="hover:scale-110 duration-500">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-auto h-6">
