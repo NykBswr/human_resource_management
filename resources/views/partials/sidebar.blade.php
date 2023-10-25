@@ -14,7 +14,7 @@
             <a href="/task" class="{{ Request::is('task') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="w-[100%] py-5 px-16 flex justify-start mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Task</h1>
             </a>
-            <a href="" class="{{ Request::is('') ? 'text-primary' : 'text-slate-500' }}">
+            <a href="PayrollandBenefit" class="{{ Request::is('PayrollandBenefit') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="w-[100%] py-5 px-16 flex justify-start mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Payroll and Benefits</h1>
             </a>
             <a href="/facility" class="{{ Request::is('facility') ? 'text-primary' : 'text-slate-500' }}">

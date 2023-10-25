@@ -7,6 +7,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\OffdaysController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\PayrollandBenefitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,7 +88,7 @@ Route::get('/attendance/createattend', [AttendanceController::class,'createatten
 
 Route::post('/attendance/present/{employee}', [AttendanceController::class,'present']);
 
-// Off Days
+// OFF DAYS
 Route::get('/offdays', [OffdaysController::class,'index']);
 
 Route::get('/sumbitapplication', [OffdaysController::class,'applications']);
@@ -95,3 +96,6 @@ Route::post('/addoffdays', [OffdaysController::class,'addoffdays']);
 
 Route::post('/offdays/refuse/{offday}', [OffdaysController::class,'refuse']);
 Route::post('/offdays/approve/{offday}', [OffdaysController::class,'approve']);
+
+// PAYROLL AND BENEFIT
+Route::get('/PayrollandBenefit', [PayrollandBenefitController::class,'index']);
