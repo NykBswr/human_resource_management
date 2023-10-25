@@ -10,14 +10,14 @@
 <section class="w-full h-full pt-36 pb-12 px-20 flex items-center" id="main"> 
     <div class="w-full h-full bg-tertiary py-5 px-20 rounded-2xl flex flex-col items-center" id="main2">
         {{-- Sampai sini --}}
-        <div class="w-full flex items-center justify-center @if($employee->role != 2 || $employee->role != 1) mb-6 @endif">
+        <div class="w-full flex items-center justify-center @if($employee->role != 'Branch Manager' || $employee->role != 'Manager') mb-6 @endif">
             <h1 class="text-xl text-primary mb-1 uppercase">
                 Attendance @can('hr')List @endcan
             </h1>
         </div>
         <div class="bg-dark flex rounded-full text-white ml-auto -mt-9">
             @can('atasan')
-            @if($employee->role == 2 || $employee->role == 1)
+            @if($employee->role == 'Branch Manager' || $employee->role == 'Manager')
             <a href="{{ request()->fullUrlWithQuery(['type_filter' => 'attend']) }}" class="{{ ($typeFilter === '' || request()->path() === 'attendance' && $typeFilter !== 'employeelist') ? 'gradcolor' : 'bg-dark' }} rounded-full py-2 px-7">Attendance</a>
             <a href="{{ request()->fullUrlWithQuery(['type_filter' => 'employeelist']) }}" class="{{ (request()->path() === 'attendance' && $typeFilter === 'employeelist') ? 'gradcolor' : 'bg-dark' }} rounded-full py-2 px-7">Employee Attendance</a>
             @endif
@@ -37,11 +37,11 @@
         </div>
 
         <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
-        <div class="w-full h-full flex flex-col items-center overflow-x-auto">
+        <div class="w-full h-full flex flex-col items-center overflow-x-auto mb-5">
             <table class="w-full text-primary text-center">
                 <thead>
                     <tr class="w-full">
-                        @if ($employee->role == 3 || request()->query('type_filter') == 'employeelist')
+                        @if ($employee->role == 'Human Resource' || request()->query('type_filter') == 'employeelist')
                             @can('atasan')
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 m-1 rounded-lg">
@@ -61,7 +61,7 @@
                             @endcan
                         @endif
 
-                        @if(request()->query('type_filter') == 'employeelist' || request()->query('type_filter') == 'attend' || request()->query('type_filter') == '' || $employee->role == 0 || $employee->role == 3)
+                        @if(request()->query('type_filter') == 'employeelist' || request()->query('type_filter') == 'attend' || request()->query('type_filter') == '' || $employee->role == 'Employee' || $employee->role == 'Human Resource')
                             <th class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg">
                                     Date
@@ -79,7 +79,7 @@
                 <tbody>
                     @foreach($attend as $employeelist)
                         <tr class="w-full">
-                            @if ($employee->role == 3 || request()->query('type_filter') == 'employeelist')
+                            @if ($employee->role == 'Human Resource' || request()->query('type_filter') == 'employeelist')
                             @can('atasan')
                             {{-- Nama Employee --}}
                             <td class="w-auto h-14">
@@ -90,27 +90,47 @@
                             {{-- Role Employee --}}
                             <td class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg">
-                                    {{ $employeelist->role }}
+                                    @php
+                                        $rolenMapping = [
+                                            0 => 'Employee',
+                                            1 => 'Manager',
+                                            2 => 'Branch Manager'
+                                        ];
+                                    @endphp
+                                    {{ $rolenMapping[$employeelist->role] }}
                                 </div>
                             </td>
                             {{-- Position Employee --}}
                             <td class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg">
-                                    {{ $employeelist->position }}
+                                    @php
+                                        $positionMapping = [
+                                            null => 'Branch Manager',
+                                            0 => 'Business Analysis',
+                                            1 => 'Data Analyst',
+                                            2 => 'Data Scientist',
+                                            3 => 'Teller',
+                                            4 => 'Auditor',
+                                            5 => 'Staff',
+                                            6 => 'Sales',
+                                            7 => 'Akuntan',
+                                            8 => 'CS',
+                                        ];
+                                    @endphp
+                                    {{ $positionMapping[$employeelist->position] }}
                                 </div>
                             </td>
                             @endcan
                             @endif
 
 
-                            @if(request()->query('type_filter') == 'employeelist' || request()->query('type_filter') == 'attend' || request()->query('type_filter') == '' || $employee->role == 0 || $employee->role == 3)
+                            @if(request()->query('type_filter') == 'employeelist' || request()->query('type_filter') == 'attend' || request()->query('type_filter') == '' || $employee->role == 'Employee' || $employee->role == 'Human Resource')
                             {{-- Date --}}
                             <td class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg">
                                     @php
                                         $date = \Carbon\Carbon::parse($employeelist->date);
                                     @endphp
-
                                     {{ $date->isoFormat('dddd, D MMMM Y') }}
                                 </div>
                             </td>
@@ -118,19 +138,21 @@
                             {{-- Attend --}}
                             <td class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
-                                    @if ($date->isToday() && $employeelist->status == 0 && $employee->role == 0 || $employee->role == 3)
-                                        <a href="" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
-                                            Click to Present
-                                        </a>
+                                    @if ($date->isToday() && $employeelist->status == 0 && $employee->role == 'Employee' || $employee->role == 'Human Resource')
+                                        <form action="/attendance/present/{{ $employeelist->id }}">
+                                            <button type="submit" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
+                                                Click to Present
+                                            </button>
+                                        </form>
                                     @elseif ($date->isFuture() && $employeelist->status == 0)
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                    @elseif ($employeelist->status == 1)
+                                    @elseif ($employeelist->status = 1)
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                    @else 
+                                    @elseif ($employeelist->status == 0 && $date->isFuture())
                                         Not Yet Present
                                     @endif
                                 </div>

@@ -56,6 +56,15 @@ class AttendanceController extends Controller
             $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
         }
 
+        if ($employee->role !== null) {
+            $role = [
+                '0' => 'Employee',
+                '1' => 'Manager',
+                '2' => 'Branch Manager',
+                '3' => 'Human Resource',
+            ];
+            $employee->role = $role[$employee->role];
+        }
         return view('attendance.main', [
             'employee' => $employee,
             'attend' => $attendances,
@@ -80,5 +89,13 @@ class AttendanceController extends Controller
         }
         
         return redirect('/attendance')->with('success',"Today's attendance has been successfully added");
+    }
+
+    public function present($id)
+    {
+        Attendance::where('id', $id)
+        ->update(['status' => 1]);
+
+        return redirect('/attendance')->with('success',"You have successfully presented your attendance.");
     }
 }
