@@ -175,17 +175,17 @@
                     {{-- Employee --}}
                     @if(request()->query('type_filter') == 'employee')
                     @foreach ($employeefacilities as $facility)
-                        <tr class="w-full">
+                        <tr class="w-full h-auto">
                             @can('atasan')
                                 {{-- Nama Employee --}}
                                 <td class="w-auto h-auto">
-                                    <div class="bg-secondary py-5 m-1 rounded-lg">
+                                    <div class="bg-secondary py-5 m-1 rounded-lg h-auto">
                                         {{ $facility['firstname'] . ' ' . $facility['lastname'] }}
                                     </div>
                                 </td>
                                 {{-- Role Employee --}}
                                 <td class="w-auto h-auto">
-                                    <div class="bg-secondary py-5 m-1 rounded-lg">
+                                    <div class="bg-secondary py-5 m-1 rounded-lg h-auto">
                                         @if ($facility['role'] == 0)
                                             Employee
                                         @elseif ($facility['role'] == 1)
@@ -197,7 +197,7 @@
                                 </td>
                                 {{-- Position Employee --}}
                                 <td class="w-auto h-auto">
-                                    <div class="bg-secondary py-5 m-1 rounded-lg">
+                                    <div class="bg-secondary py-5 m-1 rounded-lg h-auto">
                                         @php
                                             $positionMapping = [
                                                 null => 'Branch Manager',
@@ -218,40 +218,26 @@
                             @endcan
                             {{-- Facility List --}}
                             <td class="w-auto h-auto">
-                                <div class="bg-secondary py-5 pl-10 m-1 rounded-lg flex">
-                                    @if (!empty($facility['facilities']) && array_filter($facility['facilities']))
-                                        @php
-                                            $facilityNames = array_filter($facility['facilities']);
-                                        @endphp
-                                        
-                                        @if (count($facilityNames) > 1)
-                                            <ul>
-                                                @foreach ($facilityNames as $key => $facilityName)
-                                                    <li>{{ $key + 1 }}. {{ $facilityName }}</li>
-                                                @endforeach
-                                            </ul>
-                                        @elseif (count($facilityNames) === 1)
-                                            {{ reset($facilityNames) }}<br>
-                                        @endif
-
-                                    @else
-                                        -
+                                <div class="bg-secondary py-5 m-1 rounded-lg h-auto flex flex-row justify-center">
+                                @if (!empty($facility['facilities']) && array_filter($facility['facilities']))
+                                    @php
+                                        $facilityNames = array_filter($facility['facilities']);
+                                    @endphp
+                                    @if (count($facilityNames) > 1)
+                                        <ul>
+                                            @foreach ($facilityNames as $key => $facilityName)
+                                                <li class="text-start">{{ $key + 1 }}. {{ $facilityName }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    @elseif (count($facilityNames) === 1)
+                                        {{ reset($facilityNames) }}
                                     @endif
+                                @else
+                                    -
+                                @endif
                                 </div>
                             </td>
-                            
-                            {{-- Pengajuan Facility --}}
-                            {{-- @can('hr')
-                            <td class="w-auto h-auto">
-                                <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
-                                    <a href="/facility/employeeadd/{{ $facility['employee_facility_id'] }}" class="hover:scale-110 duration-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                                        </svg>
-                                    </a>
-                                </div>
-                            </td>
-                            @endcan --}}
                         </tr>
                     @endforeach
                     @endif

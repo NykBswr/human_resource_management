@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('reason');
             $table->date('start');
             $table->date('end');
-            $table->string('status');
+            $table->string('status')->default(0);
             $table->string('info');
             $table->timestamps();
 

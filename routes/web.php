@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\OffdaysController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\AttendanceController;
 
@@ -85,3 +86,12 @@ Route::get('/attendance', [AttendanceController::class,'index']);
 Route::get('/attendance/createattend', [AttendanceController::class,'createattend']);
 
 Route::post('/attendance/present/{employee}', [AttendanceController::class,'present']);
+
+// Off Days
+Route::get('/offdays', [OffdaysController::class,'index']);
+
+Route::get('/sumbitapplication', [OffdaysController::class,'applications']);
+Route::post('/addoffdays', [OffdaysController::class,'addoffdays']);
+
+Route::post('/offdays/refuse/{offday}', [OffdaysController::class,'refuse']);
+Route::post('/offdays/approve/{offday}', [OffdaysController::class,'approve']);

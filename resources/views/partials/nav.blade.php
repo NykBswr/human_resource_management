@@ -6,7 +6,21 @@
             <div class="humber bg-primary rounded-xl h-1.5 w-10"></div>
         </div>
         <div class="flex items-center">
-            <h1 class="text-primary mr-5 text-xl">Welcome, {{ $employee->firstname ." ".$employee->lastname ." - ". $employee->role}}</h1>
+            @php
+                $positionMapping = [
+                    null => '',
+                    0 => 'Business Analysis',
+                    1 => 'Data Analyst',
+                    2 => 'Data Scientist',
+                    3 => 'Teller',
+                    4 => 'Auditor',
+                    5 => 'Staff',
+                    6 => 'Sales',
+                    7 => 'Akuntan',
+                    8 => 'CS',
+                ];
+            @endphp
+            <h1 class="text-primary mr-5 text-xl">Welcome, {{ $employee->firstname ." ".$employee->lastname ." - ". $positionMapping[$employee['position']] ." " . $employee->role}}</h1>
             <img src="{{ asset('storage/images/' . $employee->image) }}" class="w-14 h-14 rounded-full border border-primary" id="logoprofile">  
         </div>
     </div>
