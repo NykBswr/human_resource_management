@@ -68,7 +68,8 @@
                 <table class="w-full text-primary text-center">
                     <thead>
                         <tr class="w-full">
-                            @if (request()->query('type_filter') == 'payroll' || request()->query('type_filter') == 'benefit' || $typeFilter === '' || request()->path() === 'PayrollandBenefit')
+                            {{-- JUDUL --}}
+                            @if (request()->query('type_filter') == 'payroll' || request()->query('type_filter') == '' || request()->query('benefitsFilter') == 'employeebenefits')
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                         Employee Name
@@ -85,7 +86,9 @@
                                     </div>
                                 </th>
                             @endif
-                            @if (request()->query('type_filter') == 'payroll' || $typeFilter === '' && request()->path() === 'PayrollandBenefit')
+
+                            {{-- JUDUL PAYROLL --}}
+                            @if (request()->query('type_filter') == 'payroll' || request()->query('type_filter') == '')
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                         Salary Amount
@@ -108,11 +111,13 @@
                                 </th>
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        Pengajuan
+                                        Application
                                     </div>
                                 </th>
                             @endif
+                            {{-- END JUDUL PAYROLL --}}
 
+                            {{-- END BENEFIT --}}
                             @if (request()->query('type_filter') == 'benefit')
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
@@ -124,16 +129,22 @@
                                         Benefit Amount
                                     </div>
                                 </th>
+                                @if (request()->query('benefitsFilter') == 'employeebenefits')
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        Pengajuan
+                                        Application
                                     </div>
                                 </th>
+                                @endif
                             @endif
+                            {{-- END JUDUL BENEFIT --}}
+
+                            {{-- END JUDUL --}}
                         </tr>
                     </thead>
                     <tbody>
-                        @if (request()->query('type_filter') == 'payroll')
+                        {{-- ISI PAYROLL HR --}}
+                        @if (request()->query('type_filter') == 'payroll' || request()->query('type_filter') == '')
                             @foreach($payroll as $payroll)
                                 <tr class="w-full">
                                     {{-- Employee Name --}}
@@ -214,7 +225,7 @@
                                             </a>
                                         </div>
                                     </td>
-                                    {{-- Pengajuan --}}
+                                    {{-- Application --}}
                                     <td class="w-auto h-14">
                                         @if ($payroll->status === 1)
                                             <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
@@ -242,63 +253,71 @@
                                 </tr>
                             @endforeach
                         @endif
+                        {{-- ISI BENEFIT HR --}}
                         @if (request()->query('type_filter') == 'benefit')
+                            @foreach ($listbenefit as $benefit)
                             <tr class="w-full">
-                                {{-- Employee Name --}}
+                                @if (request()->query('benefitsFilter') == 'employeebenefits')
+                                    {{-- Employee Name --}}
+                                    <td class="w-auto h-14">
+                                        <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                            {{ $benefit->firstname . '' . $benefit->lastname }} 
+                                        </div>
+                                    </td>
+                                    {{-- Role --}}
+                                    <td class="w-auto h-14">
+                                        <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                            {{-- @php
+                                                $rolenMapping = [
+                                                    0 => 'Employee',
+                                                    1 => 'Manager',
+                                                    2 => 'Branch Manager'
+                                                ];
+                                            @endphp
+                                            {{ $rolenMapping[$benefit->role] }} --}}
+                                        </div>
+                                    </td>
+                                    {{-- Position --}}
+                                    <td class="w-auto h-14">
+                                        <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                            {{-- @php
+                                                $positionMapping = [
+                                                    null => 'Branch Manager',
+                                                    0 => 'Business Analysis',
+                                                    1 => 'Data Analyst',
+                                                    2 => 'Data Scientist',
+                                                    3 => 'Teller',
+                                                    4 => 'Auditor',
+                                                    5 => 'Staff',
+                                                    6 => 'Sales',
+                                                    7 => 'Akuntan',
+                                                    8 => 'CS',
+                                                ];
+                                            @endphp
+                                            {{ $positionMapping[$benefit->position] }} --}}
+                                        </div>
+                                    </td>
+                                @endif
+                                {{-- Benefits Name --}}
                                 <td class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        {{ $payroll->firstname . '' . $payroll->lastname }} 
+                                        {{ $benefit->benefit_name }}
                                     </div>
                                 </td>
-                                {{-- Role --}}
                                 <td class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        {{-- @php
-                                            $rolenMapping = [
-                                                0 => 'Employee',
-                                                1 => 'Manager',
-                                                2 => 'Branch Manager'
-                                            ];
-                                        @endphp
-                                        {{ $rolenMapping[$offday->role] }} --}}
+                                        {{ $benefit->benefit_amount }}
                                     </div>
                                 </td>
-                                {{-- Position --}}
-                                <td class="w-auto h-14">
-                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        {{-- @php
-                                            $positionMapping = [
-                                                null => 'Branch Manager',
-                                                0 => 'Business Analysis',
-                                                1 => 'Data Analyst',
-                                                2 => 'Data Scientist',
-                                                3 => 'Teller',
-                                                4 => 'Auditor',
-                                                5 => 'Staff',
-                                                6 => 'Sales',
-                                                7 => 'Akuntan',
-                                                8 => 'CS',
-                                            ];
-                                        @endphp
-                                        {{ $positionMapping[$offday->position] }} --}}
-                                    </div>
-                                </td>
+                                @if (request()->query('benefitsFilter') == 'employeebenefits')
                                 <td class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                         
                                     </div>
                                 </td>
-                                <td class="w-auto h-14">
-                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        
-                                    </div>
-                                </td>
-                                <td class="w-auto h-14">
-                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        
-                                    </div>
-                                </td>
+                                @endif
                             </tr>
+                            @endforeach
                         @endif
                     </tbody>
                 </table>
@@ -306,7 +325,17 @@
             @if(request()->query('type_filter') == 'payroll' || request()->query('type_filter') == '')
                 <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
                 <div class="bg-dark flex rounded-full text-white ml-auto">
-                    <a href="/sumbitapplication" class="gradcolor rounded-md py-2 px-7">Salary Increase Request</a>
+                    <a href="" class="gradcolor rounded-md py-2 px-7">Salary Increase Request</a>
+                </div>
+            @elseif(request()->query('type_filter') == 'benefit' && request()->query('benefitsFilter') == 'benefitlist' || request()->query('benefitsFilter') == '')
+                <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+                <div class="bg-dark flex rounded-full text-white ml-auto">
+                    <a href="" class="gradcolor rounded-md py-2 px-7">Add or Delete Employee Benefit</a>
+                </div>
+            @elseif(request()->query('type_filter') == 'benefit' && request()->query('benefitsFilter') == 'employeebenefits')
+                <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+                <div class="bg-dark flex rounded-full text-white ml-auto">
+                    <a href="" class="gradcolor rounded-md py-2 px-7">Benefit Application</a>
                 </div>
             @endif
         {{-- END TAMPILAN HUMAN RESOURCE --}}
@@ -397,7 +426,7 @@
                                     </th>
                                     <th class="w-auto h-14">
                                         <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            Pengajuan
+                                            Application
                                         </div>
                                     </th>
                                 </tr>
