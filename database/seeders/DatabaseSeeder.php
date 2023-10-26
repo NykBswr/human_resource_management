@@ -530,7 +530,78 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-
+        $employee_benefits = [
+            [
+                'employee_id' => 1,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 2,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 3,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 4,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 5,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 6,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 7,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 8,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 9,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 10,
+                'benefit_id' => 1,
+                'amount' => 250000000,
+            ],
+            [
+                'employee_id' => 10,
+                'benefit_id' => 2,
+                'amount' => 500000000,
+            ],
+            [
+                'employee_id' => 10,
+                'benefit_id' => 3,
+                'amount' => 300000000,
+            ],
+            [
+                'employee_id' => 10,
+                'benefit_id' => 4,
+                'amount' => 400000000,
+            ],
+            [
+                'employee_id' => 10,
+                'benefit_id' => 5,
+                'amount' => 500000000,
+            ],
+        ];
 
         foreach ($employees as $employeeData) {
         \App\Models\Employee::create($employeeData);
@@ -562,6 +633,10 @@ class DatabaseSeeder extends Seeder
 
         foreach ($benefits as $benefitsData) {
         \App\Models\Benefit::create($benefitsData);
+        }
+
+        foreach ($employee_benefits as $employeebenefitsData) {
+        \App\Models\BenefitsApplication::create($employeebenefitsData);
         }
     }
 }

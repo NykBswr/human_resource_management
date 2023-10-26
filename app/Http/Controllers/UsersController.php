@@ -150,8 +150,8 @@ class UsersController extends Controller
             ->first();
 
         // Periksa apakah data pengguna memiliki peran (role) yang sesuai
-        if ($employee->role == 2 && $employee->role !== 3 && $employee->role !== 1) {
-            return redirect('/employee');
+        if ($employee->role != 2 || $employee->role !== 3 || $employee->role !== 1) {
+            return redirect('/task');
         }
         
         // Jika peran employee adalah 1, maka ambil data karyawan dengan posisi yang sama

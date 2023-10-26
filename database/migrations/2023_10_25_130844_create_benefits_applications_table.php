@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('benefit_id');
             $table->integer('amount');
-            $table->string('info');
-            $table->string('status');
+            $table->string('info')->nullable();
+            $table->string('status')->default(0);
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
