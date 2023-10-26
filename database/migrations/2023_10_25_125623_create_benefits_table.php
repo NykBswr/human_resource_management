@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('benefits', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('employee_id');
+            // $table->unsignedBigInteger('employee_id');
             $table->string('benefit_name');
             $table->integer('benefit_amount');
             $table->timestamps();
 
-            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+            // $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
         });
     }
 

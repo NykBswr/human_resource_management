@@ -39,10 +39,10 @@ class Employee extends Model
         return $this->hasMany(Payroll::class, 'employee_id');
     }
 
-    public function benefits()
-    {
-        return $this->hasMany(Benefit::class, 'employee_id');
-    }
+    // public function benefits()
+    // {
+    //     return $this->hasMany(Benefit::class, 'employee_id');
+    // }
 
     public function offDays()
     {
