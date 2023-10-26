@@ -197,77 +197,77 @@ class DatabaseSeeder extends Seeder
                 // Manager 1
                 'employee_id' => 1,
                 'salary_amount' => 12000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Manager 2
                 'employee_id' => 2,
                 'salary_amount' => 12000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Manager 3
                 'employee_id' => 3,
                 'salary_amount' => 12000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Karyawan 1
                 'employee_id' => 4,
                 'salary_amount' => 4000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Karyawan 2
                 'employee_id' => 5,
                 'salary_amount' => 4000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Karyawan 3
                 'employee_id' => 6,
                 'salary_amount' => 4000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Karyawan 4
                 'employee_id' => 7,
                 'salary_amount' => 4000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Karyawan 5
                 'employee_id' => 8,
                 'salary_amount' => 4000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Karyawan 6
                 'employee_id' => 9,
                 'salary_amount' => 4000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Kepala cabang
                 'employee_id' => 10,
                 'salary_amount' => 20000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
             [
                 // Human Resources
                 'employee_id' => 11,
                 'salary_amount' => 4000000,
-                'tax_deduction' => 0.05,
+                'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
             ],
         ];
