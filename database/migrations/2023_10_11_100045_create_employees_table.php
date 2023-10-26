@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('lastname');
             $table->integer('position')->nullable();
             $table->string('salary')->default('0');
-            $table->date('joining_date');
+            $table->date('joining_date')->nullable();
             $table->timestamps();
         });
     }

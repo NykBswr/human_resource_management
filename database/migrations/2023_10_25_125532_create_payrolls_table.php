@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
-            $table->integer('salary_amount');
-            $table->string('status');
-            $table->integer('tax_deduction');
-            $table->date('payment_date');
+            $table->integer('salary_amount')->default(0);
+            $table->integer('status')->default(0);
+            $table->integer('tax_deduction')->default(0);
+            $table->date('payment_date')->nullable();
             $table->timestamps();
             
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');

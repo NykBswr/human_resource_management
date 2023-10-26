@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Payroll;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -109,26 +110,33 @@ class UsersController extends Controller
     {
         $validatedData1 = $request->validate([
             'username' => 'required|min:3|max:20|unique:users',
-            'email' => 'required|email|email:dns|unique:users',
-            'role' => 'in:0,1',
-            'password' => 'required|same:password_confirmation|min:8|max:225',
-            'password_confirmation' => 'required|same:password|min:8|max:225',
+            'email' => 'required|email|unique:users',
+            'role' => 'required|in:0,1',
+            'password' => 'required|confirmed|min:8|max:255',
         ]);
+
         $validatedData2 = $request->validate([
             'firstname' => 'required|min:3|max:20|unique:employees',
             'lastname' => 'required|min:3|max:20|unique:employees',
-            'position' => 'in:1,2,3,4,5,6,7,8,9',
+            'position' => 'required|in:0,1,2,3,4,5,6,7,8',
         ]);
+
         // Simpan data pengguna baru
         $user = User::create($validatedData1);
         $employee = Employee::create($validatedData2);
 
+        // Setel joining_date ke tanggal hari ini
+        $employee->joining_date = now();
+        $employee->save();
+        
         // Hubungkan user dengan employee
-        $user->employee()->associate($employee);
+        $user->employee_id = $employee->id;
         $user->save();
 
-        event(new Registered($user));
-        event(new Registered($employee));
+        // Simpan data payroll
+        $payroll = new Payroll();
+        $payroll->employee_id = $employee->id;
+        $payroll->save();
 
         return redirect('/userlist')->with('success', 'New user has been added.');
     }
@@ -288,6 +296,9 @@ class UsersController extends Controller
         ]);
     }
     public function change (Request $request, User $user) {
+        if (auth()->user()->id != 3) {
+            return redirect('/userlist')->with('error','You are not allowed to edit users');
+        }
         $validatedData = $request->validate([
             'password' => 'required|same:password_confirmation|min:8|max:225',
             'password_confirmation' => 'required|same:password|min:8|max:225',
@@ -299,5 +310,12 @@ class UsersController extends Controller
 
         return redirect("/dashboard/changepassword/$user->id")->with('success', 'Your password has been changed
         successfully');
+    }
+    public function deleteuser($id) {
+        if (auth()->user()->id != 3) {
+            return redirect('/userlist')->with('error','You are not allowed to delete users');
+        }
+        User::where('id', $id)->delete();
+        return redirect("/userlist")->with('success', 'The user has been deleted successfully');
     }
 }

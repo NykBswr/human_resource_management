@@ -38,7 +38,7 @@
                                         </span>
                                     </label>
                                 </div>
-                            @elseif ($employee->image != 'img/logo-white.svg')
+                            @else
                                 <img src="{{ asset('storage/images/' . $employee->image) }}" class="img-preview w-20 lg:w-40 h-20 lg:h-40 rounded-full border border-primary mb-8">
                                 <input type="file" name="image" class="hidden" id="image" onchange="previewImage()" accept="image/jpeg, image/png, image/bmp, image/gif, image/svg+xml, image/webp">
                                 <div class="z-1 ml-24 -mt-16">

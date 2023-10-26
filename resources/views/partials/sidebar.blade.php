@@ -1,7 +1,7 @@
 <div class="hidden h-screen w-[27rem] bg-secondary py-20" style="border-top-right-radius: 30px;" id="sidebar">
     <div class="flex flex-col justify-center items-center">
         <img class="w-24 h-14 mb-10 cursor-pointer" src="{{ URL::asset('img/logo-white.svg') }}" id="logo">
-        <div class="w-full px-12">
+        <div class="w-full px-12 pb-10 overflow-y-auto">
             {{-- <a href="/dashboard" class="{{ Request::is('dashboard') ? 'text-primary' : 'text-slate-500' }}">
                 <h1 class="w-[100%] py-5 px-16 flex justify-start mb-5 text-xl rounded-md bg-tertiary hover:text-white hover:bg-opacity-50">Dashboard</h1>
             </a> --}}

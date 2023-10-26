@@ -21,7 +21,11 @@
                 ];
             @endphp
             <h1 class="text-primary mr-5 text-xl">Welcome, {{ $employee->firstname ." ".$employee->lastname ." - ". $positionMapping[$employee['position']] ." " . $employee->role}}</h1>
-            <img src="{{ asset('storage/images/' . $employee->image) }}" class="w-14 h-14 rounded-full border border-primary" id="logoprofile">  
+            @if($employee->image == 'logo-white.svg')
+                <img src="{{ asset('img/' . $employee->image) }}" class="w-14 h-14 rounded-full border border-primary" id="logoprofile">
+            @else
+                <img src="{{ asset('storage/images/' . $employee->image) }}" class="w-14 h-14 rounded-full border border-primary" id="logoprofile">
+            @endif 
         </div>
     </div>
     <div class="hidden flex-col items-end" id="profile">

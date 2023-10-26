@@ -68,7 +68,7 @@
                 <table class="w-full text-primary text-center">
                     <thead>
                         <tr class="w-full">
-                            @if (request()->query('type_filter') == 'payroll' || request()->query('type_filter') == 'benefit')
+                            @if (request()->query('type_filter') == 'payroll' || request()->query('type_filter') == 'benefit' || $typeFilter === '' || request()->path() === 'PayrollandBenefit')
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                         Employee Name
@@ -85,7 +85,7 @@
                                     </div>
                                 </th>
                             @endif
-                            @if (request()->query('type_filter') == 'payroll')
+                            @if (request()->query('type_filter') == 'payroll' || $typeFilter === '' && request()->path() === 'PayrollandBenefit')
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
                                         Salary Amount
@@ -98,19 +98,19 @@
                                 </th>
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        Status
+                                        Payment Date
                                     </div>
                                 </th>
                                 <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        Payment Date
+                                        Edit
                                     </div>
                                 </th>
-                                {{-- <th class="w-auto h-14">
+                                <th class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        Salary Increase Request
+                                        Pengajuan
                                     </div>
-                                </th> --}}
+                                </th>
                             @endif
 
                             @if (request()->query('type_filter') == 'benefit')
@@ -133,32 +133,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach($offday as $key => $offday) --}}
-                            <tr class="w-full">
-                                @if (request()->query('type_filter') == 'payroll' || request()->query('type_filter') == 'benefit')
+                        @if (request()->query('type_filter') == 'payroll')
+                            @foreach($payroll as $payroll)
+                                <tr class="w-full">
                                     {{-- Employee Name --}}
                                     <td class="w-auto h-14">
                                         <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            {{-- {{ $offday->firstname . '' . $offday->lastname }}  --}}
+                                            {{ $payroll->firstname . '' . $payroll->lastname }} 
                                         </div>
                                     </td>
                                     {{-- Role --}}
                                     <td class="w-auto h-14">
                                         <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            {{-- @php
+                                            @php
                                                 $rolenMapping = [
                                                     0 => 'Employee',
                                                     1 => 'Manager',
                                                     2 => 'Branch Manager'
                                                 ];
                                             @endphp
-                                            {{ $rolenMapping[$offday->role] }} --}}
+                                            {{ $rolenMapping[$payroll->role] }}
                                         </div>
                                     </td>
                                     {{-- Position --}}
                                     <td class="w-auto h-14">
                                         <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            {{-- @php
+                                            @php
                                                 $positionMapping = [
                                                     null => 'Branch Manager',
                                                     0 => 'Business Analysis',
@@ -172,64 +172,134 @@
                                                     8 => 'CS',
                                                 ];
                                             @endphp
-                                            {{ $positionMapping[$offday->position] }} --}}
+                                            {{ $positionMapping[$payroll->position] }}
                                         </div>
                                     </td>
-                                @endif
-
-                                @if (request()->query('type_filter') == 'payroll')
                                     {{-- Salary Amount --}}
                                     <td class="w-auto h-14">
                                         <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            
+                                            @if ($payroll->salary_amount == null)
+                                                -
+                                            @else
+                                                {{ $payroll->salary_amount }} 
+                                            @endif
                                         </div>
                                     </td>
                                     {{-- Tax Deduction --}}
                                     <td class="w-auto h-14">
                                         <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            
-                                        </div>
-                                    </td>
-                                    {{-- Status  --}}
-                                    <td class="w-auto h-14">
-                                        <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            
+                                            @if ($payroll->tax_deduction == null)
+                                                -
+                                            @else
+                                                {{ $payroll->tax_deduction }} 
+                                            @endif
                                         </div>
                                     </td>
                                     {{-- Payment Date  --}}
                                     <td class="w-auto h-14">
                                         <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            {{-- @php
-                                                $start = \Carbon\Carbon::parse($offday->start);
-                                                $end = \Carbon\Carbon::parse($offday->end);
+                                            @php
+                                                $payment_date = \Carbon\Carbon::parse($payroll->payment_date);
                                             @endphp
-                                            @if ($start->isoFormat('Y') === $end->isoFormat('Y'))
-                                                {{ $start->isoFormat('D MMMM') . ' - ' . $end->isoFormat('D MMMM Y')}}
-                                            @else
-                                                {{ $start->isoFormat('D MMMM Y') . ' - ' . $end->isoFormat('D MMMM Y')}}
-                                            @endif --}}
+                                            {{ $payment_date->isoFormat('D MMMM Y') }}
                                         </div>
                                     </td>
-                                @endif
-                                @if (request()->query('type_filter') == 'benefit')
+                                    {{-- Edit --}}
                                     <td class="w-auto h-14">
-                                        <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            
+                                        <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
+                                            <a href="" class="hover:scale-110 duration-500">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-auto h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                </svg>
+                                            </a>
                                         </div>
                                     </td>
+                                    {{-- Pengajuan --}}
                                     <td class="w-auto h-14">
-                                        <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            
-                                        </div>
+                                        @if ($payroll->status === 1)
+                                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
+                                                <a href="/task/feedback/{{ $task->id }}" class="hover:scale-110 duration-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-auto h-6">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        @elseif ($payroll->status === 2)
+                                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
+                                                </svg>
+                                            </div>
+                                        @else 
+                                            {{-- Larang --}}
+                                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-auto h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                </svg>
+                                            </div>
+                                        @endif
                                     </td>
-                                    <td class="w-auto h-14">
-                                        <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                            
-                                        </div>
-                                    </td>
-                                @endif
+                                </tr>
+                            @endforeach
+                        @endif
+                        @if (request()->query('type_filter') == 'benefit')
+                            <tr class="w-full">
+                                {{-- Employee Name --}}
+                                <td class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                        {{ $payroll->firstname . '' . $payroll->lastname }} 
+                                    </div>
+                                </td>
+                                {{-- Role --}}
+                                <td class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                        {{-- @php
+                                            $rolenMapping = [
+                                                0 => 'Employee',
+                                                1 => 'Manager',
+                                                2 => 'Branch Manager'
+                                            ];
+                                        @endphp
+                                        {{ $rolenMapping[$offday->role] }} --}}
+                                    </div>
+                                </td>
+                                {{-- Position --}}
+                                <td class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                        {{-- @php
+                                            $positionMapping = [
+                                                null => 'Branch Manager',
+                                                0 => 'Business Analysis',
+                                                1 => 'Data Analyst',
+                                                2 => 'Data Scientist',
+                                                3 => 'Teller',
+                                                4 => 'Auditor',
+                                                5 => 'Staff',
+                                                6 => 'Sales',
+                                                7 => 'Akuntan',
+                                                8 => 'CS',
+                                            ];
+                                        @endphp
+                                        {{ $positionMapping[$offday->position] }} --}}
+                                    </div>
+                                </td>
+                                <td class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                        
+                                    </div>
+                                </td>
+                                <td class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                        
+                                    </div>
+                                </td>
+                                <td class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                        
+                                    </div>
+                                </td>
                             </tr>
-                        {{-- @endforeach --}}
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -241,7 +311,7 @@
             @endif
         {{-- END TAMPILAN HUMAN RESOURCE --}}
         @else
-        {{-- TAMPILAN SELAIN HUMAN RESOURCE --}}
+        {{-- TAMPILAN SELAIN EMPLOYEE --}}
             <div class="flex flex-row w-full h-full">
                 <div class="bg-secondary rounded-2xl w-1/2 h-full flex flex-col items-center overflow-x-auto mr-5 p-5">
                     <table class="w-full text-primary text-start flex">
@@ -407,7 +477,7 @@
                     @endif
                 </div>
             </div>
-        {{-- END TAMPILAN SELAIN HUMAN RESOURCE --}}
+        {{-- END TAMPILAN SELAIN EMPLOYEE --}}
         @endif
     </div>
 </section>

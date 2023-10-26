@@ -47,6 +47,7 @@ Route::get('/userlist', [UsersController::class, 'list']);
 
 Route::get('/userlist/edituser/{user}', [UsersController::class, 'edituser']);
 Route::post('/userlist/updateuser/{user}', [UsersController::class, 'userupdated']);
+Route::delete('/userlist/delete/{user}', [UsersController::class, 'deleteuser']);
 
 Route::get('/dashboard/changepassword/{user}', [UsersController::class, 'changepassword']);
 Route::post('/dashboard/changes/{user}', [UsersController::class, 'change']);

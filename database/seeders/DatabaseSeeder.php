@@ -30,17 +30,17 @@ class DatabaseSeeder extends Seeder
                 'joining_date' => '2023-10-26'
             ],
             [
-                // Kepala Cabang
-                'firstname' => 'Nayaka',
-                'lastname' => 'Baswara',
-                'salary' => '999999999',
-                'joining_date' => '2023-10-26'
-            ],
-            [
                 // Karyawan 2
                 'firstname' => 'Nayaka',
                 'lastname' => 'Baswara',
                 'position' => 1,
+                'salary' => '999999999',
+                'joining_date' => '2023-10-26'
+            ],
+            [
+                // Kepala Cabang
+                'firstname' => 'Nayaka',
+                'lastname' => 'Baswara',
                 'salary' => '999999999',
                 'joining_date' => '2023-10-26'
             ],
@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
                 'email' => 'nyk@example.com',
                 'password' => bcrypt('nayaka123'),
                 'role' => 0,
-                'employee_id' => 4,
+                'employee_id' => 3,
             ],
             [
                 // Kepala cabang
@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
                 'email' => 'nayaka@gmail.com',
                 'password' => bcrypt('nayaka123'),
                 'role' => 2,
-                'employee_id' => 3,
+                'employee_id' => 4,
             ],
             [
                 // Human Resources
@@ -96,6 +96,29 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
+        $payroll = [
+            [
+                // Manager 
+                'employee_id' => 1,
+            ],
+            [
+                // Karyawan 1
+                'employee_id' => 2,
+            ],
+            [
+                // Karyawan 2
+                'employee_id' => 3,
+            ],
+            [
+                // Kepala cabang
+                'employee_id' => 4,
+            ],
+            [
+                // Human Resources
+                'employee_id' => 5,
+            ],
+        ];
+        
         $task = [
             [
                 // Task 1
@@ -111,7 +134,7 @@ class DatabaseSeeder extends Seeder
                 'taskdescriptions' => 'Mengerjakan proyek B',
                 'deadline' => '2023-12-31',
                 'file' => 'project.pdf',
-                'employee_id' => 4
+                'employee_id' => 3
             ],
         ];
 
@@ -123,7 +146,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 // Task 2
-                'employee_id' => 4,
+                'employee_id' => 3,
                 'task_id' => 2,
             ],
         ];
@@ -135,6 +158,10 @@ class DatabaseSeeder extends Seeder
 
         foreach ($users as $userData) {
         \App\Models\User::create($userData);
+        }
+
+        foreach ($payroll as $payrollData) {
+        \App\Models\Payroll::create($payrollData);
         }
 
         foreach ($task as $taskData) {

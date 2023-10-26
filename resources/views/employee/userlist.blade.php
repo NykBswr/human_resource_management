@@ -53,11 +53,18 @@
                                 Salary
                             </div>
                         </th>
-                        <th class="w-auto h-14">
-                            <div class="bg-secondary py-5 m-1 rounded-lg">
-                                Edit
-                            </div>
-                        </th>
+                        @can('hr')
+                            <th class="w-auto h-14">
+                                <div class="bg-secondary py-5 m-1 rounded-lg">
+                                    Edit
+                                </div>
+                            </th>
+                            <th class="w-auto h-14">
+                                <div class="bg-secondary py-5 m-1 rounded-lg">
+                                    Delete
+                                </div>
+                            </th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -87,6 +94,7 @@
                                     {{ 'Rp.' . number_format($employee->salary, 0, ',', '.') }}
                                 </div>
                             </td>
+                            @can('hr')
                             {{-- Edit Employee --}}
                             <td class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
@@ -97,6 +105,21 @@
                                     </a>
                                 </div>
                             </td>   
+                            {{-- Delete Employee --}}
+                            <td class="w-auto h-14">
+                                <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
+                                    <form action="/userlist/delete/{{ $employee->id }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="hover:scale-110 duration-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-auto h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                            @endcan
                         </tr>
                     @endforeach
                 </tbody>
