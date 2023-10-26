@@ -26,6 +26,8 @@ class PayrollandBenefitController extends Controller
         // Menambahkan filter tipe surat
         $typeFilter = $request->input('type_filter');
         $benefitsFilter = $request->input('benefitsFilter');
+        $payrollFilter = $request->input('payrollFilter');
+        
         $userpayroll = null;
         $listbenefit = null;
 
@@ -88,6 +90,7 @@ class PayrollandBenefitController extends Controller
             'performances' => $performances,
             'typeFilter'=> $typeFilter,
             'benefitsFilter'=> $benefitsFilter,
+            'payrollFilter' => $payrollFilter,
             'payroll' => $userpayroll,
             'listbenefit' => $listbenefit
         ]);
@@ -143,7 +146,7 @@ class PayrollandBenefitController extends Controller
         $this->validate($request, [
             'employee_id' => 'required',
             'benefit_id' => 'required',
-            'requested_amount' => 'required',
+            'requested_amount' => 'integer|required',
             'info' => 'required|file|mimes:pdf,doc,docx,png,jpg|max:2048',
         ]);
 
@@ -353,5 +356,112 @@ class PayrollandBenefitController extends Controller
 
         return redirect('/PayrollandBenefit')
             ->with('success', 'The payroll has been successfully edited.');
+    }
+
+    public function formapplypay()
+    {
+        $user = auth()->user();
+
+        if ($user->role == 3) {
+            $employeeid = DB::table('users')
+                ->join('employees', 'users.employee_id', '=', 'employees.id')
+                ->select('users.employee_id', 'employees.*')
+                ->where('users.role', '!=', 3)
+                ->get();
+        } else {
+            $employeeid = DB::table('users')
+                ->join('employees', 'users.employee_id', '=', 'employees.id')
+                ->select('users.employee_id', 'employees.*')
+                ->where('users.id', $user->id)
+                ->first();
+        }
+
+        return view('payrollandbenefits.applypayrollform', [
+            'employeeid' => $employeeid,
+        ]);
+    }
+
+    public function applypay(Request $request)
+    {
+        $user = auth()->user();
+
+        $this->validate($request, [
+            'employee_id' => 'required',
+            'request_amount' => 'required|integer',
+        ]);
+
+        if ($user->role == 3) {
+            $payrolluser = Payroll::join('employees', 'payrolls.employee_id', '=', 'employees.id')
+                ->where('employee_id', $request->input('employee_id'))
+                ->first();
+        } else {
+            $payrolluser = Payroll::join('employees', 'payrolls.employee_id', '=', 'employees.id')
+                ->where('employee_id', $user->id)
+                ->first();
+        }
+
+        if (!$payrolluser) {
+            return redirect()->back()->with('error', 'Invalid employee or payroll record.');
+        }
+
+        // Bandingkan amount yang diinput dengan salary_amount
+        if ($request->input('request_amount') <= $payrolluser->salary_amount) {
+            return redirect()->back()->with('error', 'The requested is lower than your current salary.');
+        }
+
+        Payroll::where('employee_id', $request->input('employee_id'))
+            ->update([
+                'request_amount' => $request->input('request_amount'),
+                'status' => 1
+            ]);
+
+        return redirect('/PayrollandBenefit')
+            ->with('success', 'The application has been submitted successfully.');
+    }
+
+
+    public function accepterequest($id)
+    {
+        $user = auth()->user();
+
+        if ($user->role != 3) {
+            return redirect('/PayrollandBenefit');
+        } 
+
+        $payrolluser = Payroll::join('employees', 'payrolls.employee_id', '=', 'employees.id')
+            ->where('payrolls.id', $id)
+            ->first();
+        
+        return view('payrollandbenefits.accrequested', [
+            'payrolluser' => $payrolluser,
+            'id' => $id
+        ]);
+    }
+
+    public function accept($id, Request $request){
+        $user = auth()->user();
+        $payroll = Payroll::where('id', $id)->first();
+        
+        if ($user->role != 3 || $payroll->status != 1) {
+            return redirect('/PayrollandBenefit');
+        } 
+        
+        if ($request->has('decline')){
+            Payroll::where('id', $id)->update([
+                'status' => 3
+            ]);
+            return redirect('/PayrollandBenefit')->with('success',
+            'The request has been successfully declined.');
+
+        } else {
+            $newAmount = $payroll->request_amount;
+            Payroll::where('id', $id)->update([
+                'salary_amount' => $newAmount,
+                'status' => 2
+            ]);
+            
+            return redirect('/PayrollandBenefit')->with('success',
+            'The request has been successfully accepted.');
+        }
     }
 }

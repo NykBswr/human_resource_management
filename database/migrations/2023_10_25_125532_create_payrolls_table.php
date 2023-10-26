@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('employee_id');
             $table->integer('salary_amount')->default(0);
+            $table->integer('request_amount')->nullable();
             $table->integer('status')->default(0);
             $table->integer('tax_deduction')->default(0);
             $table->date('payment_date')->nullable();

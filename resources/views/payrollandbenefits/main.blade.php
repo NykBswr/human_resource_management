@@ -242,19 +242,19 @@
                                         @if ($payroll->status === 1)
                                             {{-- Progress --}}
                                             <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
-                                                <a href="" class="hover:scale-110 duration-500">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-auto h-6">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                                                <a href="/PayrollandBenefit/acceptedrequest/{{ $payroll->id }}" class="hover:scale-110 duration-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
                                                     </svg>
                                                 </a>
                                             </div>
-                                        @elseif ($payroll->status === 2)
+                                        {{-- @elseif ($payroll->status === 2) --}}
                                             {{-- Approve --}}
-                                            <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
+                                            {{-- <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
                                                 </svg>
-                                            </div>
+                                            </div> --}}
                                         @else 
                                             {{-- Larang --}}
                                             <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
@@ -375,7 +375,7 @@
             @if(request()->query('type_filter') == 'payroll' || request()->query('type_filter') == '')
                 <div class="w-full h-[0.0625rem] bg-slate-400 mb-5 mt-5"></div>
                 <div class="bg-dark flex rounded-full text-white ml-auto">
-                    <a href="" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
+                    <a href="/PayrollandBenefit/increaseform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
                 </div>
             @elseif(request()->query('type_filter') == 'benefit' && request()->query('benefitsFilter') == 'benefitlist' || request()->query('benefitsFilter') == '')
                 <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
@@ -392,63 +392,143 @@
         @else
         {{-- TAMPILAN SELAIN EMPLOYEE --}}
             <div class="flex flex-row w-full h-full">
-                <div class="bg-secondary rounded-2xl w-1/2 h-full flex flex-col items-center overflow-x-auto mr-5 p-5">
+                <div class="bg-secondary rounded-2xl w-1/2 h-full flex flex-col items-center justify-center overflow-x-auto mr-5 p-5">
                     <div class="w-full flex items-center justify-center">
                         <h1 class="text-xl text-primary mb-3 uppercase">
                             Payroll
                         </h1>
                     </div>
-                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
-                    <table class="w-full text-primary text-start flex">
-                        <thead class="w-1/2 h-full">
-                            <tr class="w-full h-full flex flex-col">
-                                <th class="w-full h-full text-start">
-                                    <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
-                                        Salary Amount
-                                    </div>
-                                </th>
-                                <th class="w-full h-full text-start">
-                                    <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
-                                        Tax Deduction 
-                                    </div>
-                                </th>
-                                <th class="w-full h-full text-start">
-                                    <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
-                                        Payment Date
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="w-1/2 h-full">
-                            <tr class="w-full h-14 flex flex-col">
-                                <td>
-                                    <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
-                                        Rp. {{ number_format($payroll->salary_amount, 0, ',', '.') }}
+                    <div class="bg-dark flex rounded-full text-white ml-auto -mt-10">
+                        <a href="/PayrollandBenefit" class="{{ ($typeFilter === '' || request()->path() === 'PayrollandBenefit' && $payrollFilter !== 'application') ? 'gradcolor' : 'bg-dark' }} rounded-full py-2 px-7">Info</a>
+                        <a href="{{ request()->fullUrlWithQuery(['payrollFilter' => 'application']) }}" class="{{ (request()->path() === 'PayrollandBenefit' && $payrollFilter === 'application') ? 'gradcolor' : 'bg-dark' }} rounded-full py-2 px-7">Application</a>
+                    </div>
+                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5 mt-5"></div>
+                    <table class="w-full text-primary text-start @if (request()->path() === 'PayrollandBenefit' && $payrollFilter == '') flex @endif">
+                        @if (request()->path() === 'PayrollandBenefit' && $payrollFilter == '')
+                            <thead class="w-1/2 h-full">
+                                <tr class="w-full h-full flex flex-col">
+                                    <th class="w-full h-full text-start">
+                                        <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                            Salary Amount
+                                        </div>
+                                    </th>
+                                    <th class="w-full h-full text-start">
+                                        <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                            Tax Deduction 
+                                        </div>
+                                    </th>
+                                    <th class="w-full h-full text-start">
+                                        <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                            Payment Date
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                        @else
+                            <thead>
+                                <tr class="w-full">
+                                    <th class="w-auto h-14">
+                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                            Requested Amount
+                                        </div>
+                                    </th>
+                                    <th class="w-auto h-14">
+                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                            Status
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                        @endif
+                        @if (request()->path() === 'PayrollandBenefit' && $payrollFilter == '')
+                            <tbody class="w-1/2 h-full">
+                                <tr class="w-full h-14 flex flex-col">
+                                    <td>
+                                        <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                            Rp. {{ number_format($payroll->salary_amount, 0, ',', '.') }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                            @if($payroll->tax_deduction == 0)
+                                                -
+                                            @else
+                                                {{ $payroll->tax_deduction }}
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                            @if($payroll->payment_date == 0)
+                                                -
+                                            @else
+                                                @php
+                                                    $payment_date = \Carbon\Carbon::parse($payroll->payment_date);
+                                                @endphp
+                                                {{ $payment_date->isoFormat('D MMMM Y') }}
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        @else
+                            <tbody class="w-full text-center">
+                            <tr class="w-full">
+                                <td class="w-auto h-14">
+                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                        Rp. {{ number_format($payroll->request_amount, 0, ',', '.') }}
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
-                                        @if($payroll->tax_deduction == 0)
-                                            -
+                                <td class="w-auto h-14">
+                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg flex justify-center">
+                                        @if($payroll->status == 1)
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="white"  viewBox="0 0 24 24" class="w-auto h-6">
+                                                <path d="M18.513 7.119c.958-1.143 1.487-2.577 1.487-4.036v-3.083h-16v3.083c0 1.459.528 2.892 1.487 4.035l3.086 3.68c.567.677.571 1.625.009 2.306l-3.13 3.794c-.936 1.136-1.452 2.555-1.452 3.995v3.107h16v-3.107c0-1.44-.517-2.858-1.453-3.994l-3.13-3.794c-.562-.681-.558-1.629.009-2.306l3.087-3.68zm-4.639 7.257l3.13 3.794c.652.792.996 1.726.996 2.83h-1.061c-.793-2.017-4.939-5-4.939-5s-4.147 2.983-4.94 5h-1.06c0-1.104.343-2.039.996-2.829l3.129-3.793c1.167-1.414 1.159-3.459-.019-4.864l-3.086-3.681c-.66-.785-1.02-1.736-1.02-2.834h12c0 1.101-.363 2.05-1.02 2.834l-3.087 3.68c-1.177 1.405-1.185 3.451-.019 4.863z"/>
+                                            </svg>
+                                        @elseif ($payroll->status == 2)
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        @elseif ($payroll->status == 3)
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
                                         @else
-                                            {{ $payroll->tax_deduction }}
-                                        @endif
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
-                                        @if($payroll->payment_date == 0)
-                                            -
-                                        @else
-                                            {{ $payroll->payment_date }}
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
                                         @endif
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
+                        @endif
                     </table>
+                    
+                    @php
+                        $joiningDate = \Carbon\Carbon::parse($employee->joining_date);
+                        $currentDate = \Carbon\Carbon::now();
+                        $daysSinceJoining = $currentDate->diffInDays($joiningDate);
+                    @endphp
+                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5 mt-5"></div>
+                    @if (auth()->user()->role == 2 && $daysSinceJoining > 30)
+                        <div class="bg-dark flex rounded-full text-white ml-auto">
+                            <a href="/PayrollandBenefit/increaseform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
+                        </div>
+                    @elseif(auth()->user()->role == 1 && $daysSinceJoining > 300)
+                        <div class="bg-dark flex rounded-full text-white ml-auto">
+                            <a href="/PayrollandBenefit/increaseform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
+                        </div>
+                    @elseif (auth()->user()->role == 0 && $daysSinceJoining > 30)
+                        <div class="bg-dark flex rounded-full text-white ml-auto">
+                            <a href="/PayrollandBenefit/increaseform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
+                        </div>
+                    @endif
+                    <div class="bg-dark flex rounded-full text-white ml-auto">
+                            <a href="/PayrollandBenefit/increaseform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
+                        </div>
                 </div>
-                <div class="bg-secondary rounded-2xl w-1/2 h-full flex flex-col items-center overflow-x-auto ml-5 p-5">
+                <div class="bg-secondary rounded-2xl w-1/2 h-full flex flex-col items-center justify-center overflow-x-auto ml-5 p-10">
                     <div class="w-full flex items-center justify-center">
                         <h1 class="text-xl text-primary mb-3 uppercase">
                             Benefit
@@ -459,7 +539,8 @@
                         <a href="{{ request()->fullUrlWithQuery(['benefitsFilter' => 'application']) }}" class="{{ (request()->path() === 'PayrollandBenefit' && $benefitsFilter === 'application') ? 'gradcolor' : 'bg-dark' }} rounded-full py-2 px-7">Application</a>
                     </div>
                     <div class="w-full h-[0.0625rem] bg-slate-400 mb-5 mt-5"></div>
-                    <table class="w-full text-primary mb-10">
+                    {{-- BENEFIT USER --}}
+                    <table class="w-full text-primary ">
                         <thead>
                             <tr class="w-full">
                                 <th class="w-auto h-14">
@@ -517,28 +598,11 @@
                             @endforeach
                         </tbody>
                     </table>
-                    @php
-                        $joiningDate = \Carbon\Carbon::parse($employee->joining_date);
-                        $currentDate = \Carbon\Carbon::now();
-                        $daysSinceJoining = $currentDate->diffInDays($joiningDate);
-                    @endphp
-
-                    @if (auth()->user()->role == 2 && $daysSinceJoining > 30)
-                        <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
-                        <div class="bg-dark flex rounded-full text-white ml-auto">
-                            <a href="/PayrollandBenefit/applyform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
-                        </div>
-                    @elseif(auth()->user()->role == 1 && $daysSinceJoining > 300)
-                        <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
-                        <div class="bg-dark flex rounded-full text-white ml-auto">
-                            <a href="/PayrollandBenefit/applyform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
-                        </div>
-                    @else
-                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
-                        <div class="bg-dark flex rounded-full text-white ml-auto">
-                            <a href="/PayrollandBenefit/applyform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
-                        </div>
-                    @endif
+                    
+                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5 mt-5"></div>
+                    <div class="bg-dark flex rounded-full text-white ml-auto">
+                        <a href="/PayrollandBenefit/applyform" class="gradcolor rounded-md py-2 px-7">Benefit Application</a>
+                    </div>
                 </div>
             </div>
         {{-- END TAMPILAN SELAIN EMPLOYEE --}}
