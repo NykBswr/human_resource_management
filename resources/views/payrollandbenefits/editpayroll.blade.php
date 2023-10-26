@@ -4,11 +4,11 @@
 
 
 <section class="w-full h-screen py-10 px-10 flex items-center justify-center">
-    <div class="w-[30%] h-[85%] bg-tertiary py-8 px-8 rounded-2xl flex flex-col items-center">
+    <div class="w-[45%] h-[95%] bg-tertiary py-8 px-8 rounded-2xl flex flex-col items-center">
         <div class="w-full flex items-center justify-center mb-5">
             <div class="gradcolor p-3 rounded-xl flex justify-start">
                 @if(auth()->user()->role == 3)
-                <a href="/PayrollandBenefit?benefitsFilter=benefitlist&type_filter=benefit">
+                <a href="/PayrollandBenefit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 37 24" fill="none">
                         <path d="M0.93934 10.9393C0.353553 11.5251 0.353553 12.4749 0.93934 13.0607L10.4853 22.6066C11.0711 23.1924 12.0208 23.1924 12.6066 22.6066C13.1924 22.0208 13.1924 21.0711 12.6066 20.4853L4.12132 12L12.6066 3.51472C13.1924 2.92893 13.1924 1.97918 12.6066 1.3934C12.0208 0.807612 11.0711 0.807612 10.4853 1.3934L0.93934 10.9393ZM2 13.5H37V10.5H2V13.5Z" fill="white"/>
                     </svg>
@@ -22,7 +22,7 @@
                 @endif
             </div>
             <h1 class="w-full text-2xl text-center text-primary flex justify-center uppercase">
-                Edit Benefit
+                Edit Payroll
             </h1>
             <div class="bg-transparant p-3 rounded-xl flex justify-start">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 37 24" fill="none">
@@ -41,25 +41,70 @@
         </div>
         @endif
         <div class="bg-secondary w-full h-full flex flex-col items-center overflow-x-auto p-20 rounded-lg justify-center">
-            <form method="post" action="/PayrollandBenefit/edit/{{ $id }}" class="w-full" enctype="multipart/form-data">
+            <form method="post" action="/PayrollandBenefit/edited/{{ $id }}" class="w-full">
                 @csrf
                 <div class="w-full mt-4">
-                    <label class="text-primary" for="benefit_name">Benefit</label>
-                    <input type="text" class="bg-tertiary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 placeholder:text-primary" placeholder="{{ $benefit->benefit_name }}" name="benefit_name" value="{{ old ('benefit_name') }}"/>
-                    @error('benefit_name')
+                    <label class="text-primary" for="employee_id">Employee</label>
+                    <p class="bg-tertiary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 mb-4">
+                        {{ $employeeid->firstname }} {{ $employeeid->lastname }}
+                    </p>
+                    <input type="hidden" name="employee_id" value="{{ $employeeid->employee_id }}">
+                    @error('employee')
+                        <span class="text-red-500">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="w-full mt-4 mb-4 flex flex-row">
+                    <div class="w-full pr-3">
+                        <label class="text-primary">Role</label>
+                        <p class="bg-tertiary rounded-md text-primary flex flex-start mt-4 w-full px-6 py-3">
+                            @php
+                                $rolenMapping = [
+                                    0 => 'Employee',
+                                    1 => 'Manager',
+                                    2 => 'Branch Manager'
+                                ];
+                            @endphp
+                            {{ $rolenMapping[$employeeid->role] }}
+                        </p>
+                    </div>
+                    <div class="w-full">
+                        <label class="text-primary">Position</label>
+                        <p class="bg-tertiary rounded-md text-primary flex flex-start mt-4 w-full px-6 py-3">
+                            @php
+                                $positionMapping = [
+                                    null => 'Branch Manager',
+                                    0 => 'Business Analysis',
+                                    1 => 'Data Analyst',
+                                    2 => 'Data Scientist',
+                                    3 => 'Teller',
+                                    4 => 'Auditor',
+                                    5 => 'Staff',
+                                    6 => 'Sales',
+                                    7 => 'Akuntan',
+                                    8 => 'CS',
+                                ];
+                            @endphp
+                            {{ $positionMapping[$employeeid->position] }}
+                        </p>
+                    </div>
+                </div>
+                <div class="w-full mt-4">
+                    <label class="text-primary" for="salary_amount">Salary Amount</label>
+                    <input type="text" class="bg-tertiary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 placeholder:text-primary " placeholder="{{ number_format($payroll->salary_amount, 0, ',', '.') }}" name="salary_amount" value="{{ old ('salary_amount') }}"/>
+                    @error('salary_amount')
                         <span class="text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-full mt-4">
-                    <label class="text-primary" for="benefit_amount">Benefit Amount</label>
-                    <input type="text" class="bg-tertiary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 placeholder:text-primary " placeholder="{{ number_format($benefit->benefit_amount, 0, ',', '.') }}" name="benefit_amount" value="{{ old ('benefit_amount') }}"/>
-                    @error('benefit_amount')
+                    <label class="text-primary" for="tax_deduction">Tax Deduction</label>
+                    <input type="text" class="bg-tertiary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 placeholder:text-primary " placeholder="{{ number_format($payroll->tax_deduction, 0, ',', '.') }}" name="tax_deduction" value="{{ old ('tax_deduction') }}"/>
+                    @error('tax_deduction')
                         <span class="text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="flex flex-row">
                     <button class="btn w-full py-3 px-6 gradcolor text-white rounded-md mt-8">
-                        Edit Benefit
+                        Edit Payroll
                     </button>
                 </div>
             </form>

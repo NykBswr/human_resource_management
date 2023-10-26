@@ -241,23 +241,117 @@ class PayrollandBenefitController extends Controller
     }
     public function edited($id, Request $request)
     {
-        if ($request->input('benefit_name') != null) {
-            Benefit::where('id', $id)->update([
-                'benefit_name' => $request->input('benefit_name')
-            ]);
-        }
-        if ($request->input('benefit_amount') != null) {
-            Benefit::where('id', $id)->update([
-                'benefit_amount' => $request->input('benefit_amount')
-            ]);
-        }
-        return redirect('/PayrollandBenefit?type_filter=benefit')->with('success','The benefit has been successfully edited.');
-    }
+        $existingBenefit = Benefit::where('benefit_name', $request->input('benefit_name'))
+            ->where('id', '!=', $id)
+            ->first();
 
+        if ($existingBenefit) {
+            return redirect('/PayrollandBenefit/editbenefit/' . $id)
+                ->with('error', 'Benefit name already exists.');
+        }
+
+        $updates = [];
+
+        if ($request->input('benefit_name') !== null) {
+            $updates['benefit_name'] = $request->input('benefit_name');
+        }
+
+        if ($request->input('benefit_amount') !== null) {
+            $updates['benefit_amount'] = $request->input('benefit_amount');
+        }
+
+        if (!empty($updates)) {
+            Benefit::where('id', $id)->update($updates);
+        }
+
+        return redirect('/PayrollandBenefit?type_filter=benefit')
+            ->with('success', 'The benefit has been successfully edited.');
+    }
     public function delete($id)
     {
         Benefit::where('id', $id)->delete();
         return redirect('/PayrollandBenefit?type_filter=benefit')->with('success','The benefit has been successfully deleted.');
     }
     
+    public function addbenefit()
+    {
+        return view('payrollandbenefits.addbenefit');
+    }
+
+    public function add(Request $request)
+    {
+        $this->validate($request, [
+            'benefit_name' => 'required',
+            'benefit_amount' => 'required'
+        ]);
+        
+        $existingBenefit = Benefit::where('benefit_name', $request->input('benefit_name'))
+            ->first();
+
+        if ($existingBenefit) {
+            return redirect('/PayrollandBenefit/addbenefit')
+                ->with('error', 'Benefit name already exists.');
+        }
+
+        $benefit = new Benefit;
+        $benefit->benefit_name = $request->input('benefit_name');
+        $benefit->benefit_amount = $request->input('benefit_amount');
+        
+        $benefit->save();
+
+        return redirect('/PayrollandBenefit?type_filter=benefit')->with('success','The benefit has been successfully
+        added.');
+    }
+
+    public function editpayroll($id){
+        $payroll = Payroll::where('payrolls.id', $id)
+        ->first();
+        
+        if (auth()->user()->role == 3) {
+            $employeeid = DB::table('users')
+            ->join('employees', 'users.employee_id', '=', 'employees.id')
+            ->select('users.employee_id', 'employees.*', 'users.role')
+            ->where('employees.id', $payroll->employee_id)
+            ->first();
+        } 
+        
+        return view('payrollandbenefits.editpayroll', [
+            'id' => $id,
+            'payroll' => $payroll,
+            'employeeid' => $employeeid
+        ]);
+    }
+    public function editedpay($id, Request $request)
+    {
+        $updates = [];
+
+        if ($request->input('salary_amount') !== null) {
+            $salaryAmount = $request->input('salary_amount');
+
+            if (!is_numeric($salaryAmount) || $salaryAmount <= 0) {
+                return redirect('/PayrollandBenefit')
+                    ->with('error', 'Invalid salary amount. Please enter a valid amount.');
+            }
+
+            $updates['salary_amount'] = $salaryAmount;
+        }
+
+        if ($request->input('tax_deduction') !== null) {
+            $taxDeduction = $request->input('tax_deduction');
+
+            if (!is_numeric($taxDeduction) || $taxDeduction < 0) {
+                return redirect('/PayrollandBenefit')
+                    ->with('error', 'Invalid tax deduction. Please enter a valid amount.');
+            }
+
+            $updates['tax_deduction'] = $taxDeduction;
+        }
+
+        if (!empty($updates)) {
+            Payroll::where('id', $id)->update($updates);
+        }
+
+        return redirect('/PayrollandBenefit')
+            ->with('success', 'The payroll has been successfully edited.');
+    }
 }

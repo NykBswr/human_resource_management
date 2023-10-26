@@ -108,5 +108,13 @@ Route::get('/PayrollandBenefit/acceptedapplication/{user}', [PayrollandBenefitCo
 Route::post('/PayrollandBenefit/process/{user}', [PayrollandBenefitController::class,'process']);
 
 Route::get('/PayrollandBenefit/editbenefit/{benefit}',[PayrollandBenefitController::class,'editbenefit']);
+Route::get('/PayrollandBenefit/editpayroll/{payroll}',[PayrollandBenefitController::class,'editpayroll']);
+
+Route::get('/PayrollandBenefit/addbenefit/',[PayrollandBenefitController::class,'addbenefit']);
+
+Route::post('/PayrollandBenefit/add',[PayrollandBenefitController::class,'add']);
 Route::post('/PayrollandBenefit/edit/{benefit}',[PayrollandBenefitController::class,'edited']);
-Route::delete('/PayrollandBenefit/delete/{benefit}', [FacilityController::class, 'delete']);
+
+Route::post('/PayrollandBenefit/edited/{payroll}',[PayrollandBenefitController::class,'editedpay']);
+
+Route::delete('/PayrollandBenefit/delete/{benefit}', [PayrollandBenefitController::class, 'delete']);
