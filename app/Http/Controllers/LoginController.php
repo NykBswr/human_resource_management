@@ -30,11 +30,11 @@ class LoginController extends Controller
         })->first();
 
         if (!$user) {
-            return back()->with('loginError', 'Invalid credentials');
+            return back()->with('error', 'User not found.');
         }
 
         if (!Auth::attempt(['username' => $user->username, 'password' => $credentials['password']])) {
-            return back()->with('loginError', 'Invalid credentials');
+            return back()->with('error', 'You entered the wrong password.');
         }
 
         $remember = $request->input('remember');
@@ -42,7 +42,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
             return redirect()->intended("/dashboard");
         }
-        return back()->with('loginError', 'Login fail!');
+        return back()->with('error', 'Login fail!');
     }
 
     public function logout()

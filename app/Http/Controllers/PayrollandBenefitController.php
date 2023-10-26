@@ -16,7 +16,7 @@ class PayrollandBenefitController extends Controller
 
         // Menambahkan filter tipe surat
         $typeFilter = $request->input('type_filter');
-        $typeFilter2 = $request->input('type_filter2');
+        $benefitsFilter = $request->input('benefitsFilter');
 
         if ($employee->role !== null) {
             $role = [
@@ -31,7 +31,7 @@ class PayrollandBenefitController extends Controller
         return view('payrollandbenefits.main', [
             'employee' => $employee,
             'typeFilter'=> $typeFilter,
-            'typeFilter2'=> $typeFilter2
+            'benefitsFilter'=> $benefitsFilter
         ]);
     }
 }

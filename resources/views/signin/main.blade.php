@@ -7,10 +7,34 @@
         <div class="w-full lg:w-1/2 lg:pl-20 text-center lg:text-justify flex flex-col justify-center items-center lg:items-start">
             <img src="{{ URL::asset('img/logo-white.svg') }}" class="w-32 mb-5">
             <h1 class="font-bold text-primary text-6xl mb-10">Login</h1>
+            <div class="w-[20rem] lg:w-[25rem]">
+                @if (session()->has('error'))
+                <div class="w-full h-auto bg-red-100 text-red-800 border border-red-400 rounded-lg px-6 py-3 my-4 relative" id="success-alert">
+                    {{ session('error') }}
+                    <button type="button" class="absolute right-0 mt-2 mr-4" id="close-alert">
+                        <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/>
+                        </svg>
+                    </button>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const successAlert = document.getElementById('success-alert');
+                            const closeAlertButton = document.getElementById('close-alert');
+
+                            if (successAlert && closeAlertButton) {
+                                closeAlertButton.addEventListener('click', function () {
+                                    successAlert.style.display = 'none';
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+                @endif
+            </div>
             <form action="{{ route('login') }}" method="post" class="flex flex-col">
                 @csrf
                 <input class="bg-secondary rounded-md text-primary gap-3 w-[20rem] lg:w-[25rem] px-6 py-3 mb-4 " type="text" id="identity" placeholder="Your username or email" name="identity" value="{{ old('identity') }}" required autofocus/>
-                <input class="bg-secondary rounded-md text-primary gap-3 w-[20rem] lg:w-[25rem] px-6 py-3 mb-4" type="password" id="password" placeholder="Password" name="password" value="" />
+                <input class="bg-secondary rounded-md text-primary gap-3 w-[20rem] lg:w-[25rem] px-6 py-3 mb-4" type="password" id="password" placeholder="Password" name="password"/>
                 <button type="submit" class="w-[10rem] py-3 px-6 gradcolor text-white rounded-md mb-10 lg:mb-5">
                     Sign in Now
                 </button>
