@@ -129,6 +129,25 @@
                                         Benefit Amount
                                     </div>
                                 </th>
+                                @if (request()->query('type_filter') == 'benefit' && request()->query('benefitsFilter') == 'benefitlist' || request()->query('benefitsFilter') != 'employeebenefits')
+                                <th class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                        Edit
+                                    </div>
+                                </th>
+                                <th class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                        Delete
+                                    </div>
+                                </th>
+                                @endif
+                                @if (request()->query('benefitsFilter') == 'employeebenefits')
+                                <th class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
+                                        Requested Benefits
+                                    </div>
+                                </th>
+                                @endif
                             @endif
                             {{-- END JUDUL BENEFIT --}}
 
@@ -222,7 +241,7 @@
                                     <td class="w-auto h-14">
                                         @if ($payroll->status === 1)
                                             <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
-                                                <a href="/task/feedback/{{ $task->id }}" class="hover:scale-110 duration-500">
+                                                <a href="" class="hover:scale-110 duration-500">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-auto h-6">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
                                                     </svg>
@@ -302,6 +321,49 @@
                                         Rp. {{ number_format($benefit->benefit_amount, 0, ',', '.') }}
                                     </div>
                                 </td>
+                                {{-- Edit --}}
+                                @if (request()->query('type_filter') == 'benefit' && request()->query('benefitsFilter') == 'benefitlist' || request()->query('benefitsFilter') != 'employeebenefits')
+                                <td class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
+                                        <a href="/PayrollandBenefit/editbenefit/{{ $benefit->id }}" class="hover:scale-110 duration-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-auto h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </td>
+                                {{-- Delete --}}
+                                <td class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
+                                        <form action="/PayrollandBenefit/delete/{{ $benefit->id }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="hover:scale-110 duration-500">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-auto h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                                @endif
+                                @if (request()->query('benefitsFilter') == 'employeebenefits')
+                                <td class="w-auto h-14">
+                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
+                                    @if ($benefit->status == 1)
+                                        <a href="/PayrollandBenefit/acceptedapplication/{{ $benefit->id }}" class="hover:scale-110 duration-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                                            </svg>
+                                        </a>
+                                    @else
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    @endif
+                                    </div>
+                                </td>
+                                @endif
                             </tr>
                             @endforeach
                         @endif
@@ -316,7 +378,7 @@
             @elseif(request()->query('type_filter') == 'benefit' && request()->query('benefitsFilter') == 'benefitlist' || request()->query('benefitsFilter') == '')
                 <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
                 <div class="bg-dark flex rounded-full text-white ml-auto">
-                    <a href="" class="gradcolor rounded-md py-2 px-7">Add or Delete Employee Benefit</a>
+                    <a href="/add" class="gradcolor rounded-md py-2 px-7">Add Employee Benefit</a>
                 </div>
             @elseif(request()->query('type_filter') == 'benefit' && request()->query('benefitsFilter') == 'employeebenefits')
                 <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
@@ -390,7 +452,11 @@
                             Benefit
                         </h1>
                     </div>
-                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+                    <div class="bg-dark flex rounded-full text-white ml-auto -mt-10">
+                        <a href="/PayrollandBenefit" class="{{ ($typeFilter === '' || request()->path() === 'PayrollandBenefit' && $benefitsFilter !== 'application') ? 'gradcolor' : 'bg-dark' }} rounded-full py-2 px-7">List</a>
+                        <a href="{{ request()->fullUrlWithQuery(['benefitsFilter' => 'application']) }}" class="{{ (request()->path() === 'PayrollandBenefit' && $benefitsFilter === 'application') ? 'gradcolor' : 'bg-dark' }} rounded-full py-2 px-7">Application</a>
+                    </div>
+                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5 mt-5"></div>
                     <table class="w-full text-primary mb-10">
                         <thead>
                             <tr class="w-full">
@@ -404,6 +470,13 @@
                                         Benefit Amount
                                     </div>
                                 </th>
+                                @if(request()->query('benefitsFilter') == 'application')
+                                <th class="w-auto h-14">
+                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                        Status
+                                    </div>
+                                </th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody class="w-full text-center">
@@ -419,6 +492,25 @@
                                         Rp. {{ number_format($benefit->amount, 0, ',', '.') }}
                                     </div>
                                 </td>
+                                @if(request()->query('benefitsFilter') == 'application' && $benefit->status != 0)
+                                    <td class="w-auto h-14">
+                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg flex justify-center items-center">
+                                            @if($benefit->status == 1)
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="white"  viewBox="0 0 24 24" class="w-auto h-6">
+                                                    <path d="M18.513 7.119c.958-1.143 1.487-2.577 1.487-4.036v-3.083h-16v3.083c0 1.459.528 2.892 1.487 4.035l3.086 3.68c.567.677.571 1.625.009 2.306l-3.13 3.794c-.936 1.136-1.452 2.555-1.452 3.995v3.107h16v-3.107c0-1.44-.517-2.858-1.453-3.994l-3.13-3.794c-.562-.681-.558-1.629.009-2.306l3.087-3.68zm-4.639 7.257l3.13 3.794c.652.792.996 1.726.996 2.83h-1.061c-.793-2.017-4.939-5-4.939-5s-4.147 2.983-4.94 5h-1.06c0-1.104.343-2.039.996-2.829l3.129-3.793c1.167-1.414 1.159-3.459-.019-4.864l-3.086-3.681c-.66-.785-1.02-1.736-1.02-2.834h12c0 1.101-.363 2.05-1.02 2.834l-3.087 3.68c-1.177 1.405-1.185 3.451-.019 4.863z"/>
+                                                </svg>
+                                            @elseif ($benefit->status == 2)
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            @elseif ($benefit->status == 3)
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            @endif
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

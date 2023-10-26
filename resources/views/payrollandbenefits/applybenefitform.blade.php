@@ -4,7 +4,7 @@
 
 
 <section class="w-full h-screen py-10 px-10 flex items-center justify-center">
-    <div class="w-[30%] h-[88%] bg-tertiary py-8 px-8 rounded-2xl flex flex-col items-center">
+    <div class="w-[60%] h-full bg-tertiary py-8 px-8 rounded-2xl flex flex-col items-center">
         <div class="w-full flex items-center justify-center mb-5">
             <div class="gradcolor p-3 rounded-xl flex justify-start">
                 @if(auth()->user()->role == 3)
@@ -70,6 +70,53 @@
                     @error('requested_amount')
                         <span class="text-red-500">{{ $message }}</span>
                     @enderror
+                </div>
+
+                <div class="m-2 w-full">
+                    <label class="inline-block mb-2 text-primary">Upload Additional Information (pdf, doc, docx, png, jpg)</label>
+                    <div class="flex items-center justify-center w-full">
+                        <label class="bg-secondary flex flex-col w-full h-32 border-4 border-dashed hover:bg-dark hover:border-gray-300">
+                            <div class="flex flex-col items-center justify-center pt-7">
+                                <img id="file-icon" class="w-12 h-12 text-gray-400 group-hover:text-dark" src="{{ URL::asset('img/default-icon.svg') }}" alt="File Icon">
+                                <p id="file-label" class="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-dark">
+                                    Select a file
+                                </p>
+                            </div>
+                            <input type="file" name="info" class="opacity-0" id="file-input" onchange="displayFileNameAndIcon()">
+                        </label>
+                    </div>
+                    @error('info')
+                        <span class="text-red-500">{{ $message }}</span>
+                    @enderror
+                    <script>
+                        function displayFileNameAndIcon() {
+                            const fileInput = document.getElementById("file-input");
+                            const fileLabel = document.getElementById("file-label");
+                            const fileIcon = document.getElementById("file-icon");
+
+                            if (fileInput.files.length > 0) {
+                                const fileName = fileInput.files[0].name;
+                                const fileExtension = fileName.split('.').pop().toLowerCase();
+
+                                fileLabel.textContent = fileName;
+
+                                // Replace the icon based on the file extension
+                                if (fileExtension === "pdf") {
+                                    fileIcon.src = "{{ URL::asset('img/pdflogo.png') }}";
+                                } else if (fileExtension === "doc" || fileExtension === "docx") {
+                                    fileIcon.src = "{{ URL::asset('img/docslogo.png') }}";
+                                } else if (fileExtension === "png" || fileExtension === "jpg") {
+                                    fileIcon.src = "{{ URL::asset('img/docslogo.png') }}";
+                                } else {
+                                    // Use a default icon if the format is not recognized
+                                    fileIcon.src = "{{ URL::asset('img/default-icon.svg') }}";
+                                }
+                            } else {
+                                fileLabel.textContent = "Select a file";
+                                fileIcon.src = "{{ URL::asset('img/default-icon.svg') }}";
+                            }
+                        }
+                    </script>
                 </div>
                 <div class="flex flex-row">
                     <button class="btn w-full py-3 px-6 gradcolor text-white rounded-md mt-8">

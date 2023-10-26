@@ -51,29 +51,6 @@ class PayrollandBenefitController extends Controller
                         'employees.lastname', 'users.role',
                         'employees.position', 'benefits.benefit_name', 'benefits.benefit_amount')
                         ->whereNotIn('users.role', [3])->get();
-
-                    // $employeebenefit = [];
-                    // foreach ($listbenefit as $data) {
-                    //     $employeeId = $data->employee_id;
-
-                    //     // Jika karyawan belum ada dalam $employeefacilities, tambahkan
-                    //     if (!array_key_exists($employeeId, $employeebenefit)) {
-                    //         $employeefacilities[$employeeId] = [
-                    //             'employees' => $data->employee_id,
-                    //             'employee_benefit_id' => $data->employee_facility_id,
-                    //             'firstname' => $data->firstname,
-                    //             'lastname' => $data->lastname,
-                    //             'position' => $data->position,
-                    //             'role' => $data->role,
-                    //             'benefits' => [],
-                    //         ];
-                    //     }
-
-                    //     // Tambahkan fasilitas ke dalam daftar fasilitas karyawan
-                    //     if (!in_array($data->facility_name, $employeefacilities[$employeeId]['facilities'])) {
-                    //         $employeefacilities[$employeeId]['facilities'][] = $data->facility_name;
-                    //     }
-                    // }
                 }
             }
         } else {
@@ -81,10 +58,19 @@ class PayrollandBenefitController extends Controller
             ->join('users', 'users.employee_id', '=', 'employees.id')
             ->where('users.id', auth()->user()->id)
             ->first();
-            $listbenefit = BenefitsApplication::join('employees', 'benefits_applications.employee_id', '=',
-            'employees.id')->join('benefits','benefits_applications.benefit_id', '=',
-            'benefits.id')
-            ->where('employee_id',auth()->user()->id)->get();
+            if ($benefitsFilter == 'application'){
+                $listbenefit = BenefitsApplication::join('employees', 'benefits_applications.employee_id', '=',
+                'employees.id')
+                ->join('benefits', 'benefits_applications.benefit_id', '=', 'benefits.id')
+                ->where('employee_id', auth()->user()->id)
+                ->where('status', '!=', 0)
+                ->get();
+            } else {
+                $listbenefit = BenefitsApplication::join('employees', 'benefits_applications.employee_id', '=',
+                'employees.id')->join('benefits','benefits_applications.benefit_id', '=',
+                'benefits.id')
+                ->where('employee_id',auth()->user()->id)->get();
+            }
         }
 
         if ($employee->role !== null) {
@@ -138,16 +124,27 @@ class PayrollandBenefitController extends Controller
 
     public function apply(Request $request)
     {
-        // Ambil data benefit user
-        $benefituser = BenefitsApplication::join('employees', 'benefits_applications.employee_id', '=', 'employees.id')
+        if (auth()->user()->role == 3){
+            $benefituser = BenefitsApplication::join('employees', 'benefits_applications.employee_id', '=',
+            'employees.id')
+            ->join('benefits', 'benefits_applications.benefit_id', '=', 'benefits.id')
+            ->where('employee_id', $request->input('employee_id'))
+            ->orWhere('benefits.id', $request->input('benefit_id'))
+            ->first();
+        } else {
+            // Ambil data benefit user
+            $benefituser = BenefitsApplication::join('employees', 'benefits_applications.employee_id', '=',
+            'employees.id')
             ->join('benefits', 'benefits_applications.benefit_id', '=', 'benefits.id')
             ->where('employee_id', auth()->user()->id)
-            ->first(); // Menggunakan first() karena kita hanya butuh satu baris
+            ->first();
+        }
 
         $this->validate($request, [
             'employee_id' => 'required',
             'benefit_id' => 'required',
             'requested_amount' => 'required',
+            'info' => 'required|file|mimes:pdf,doc,docx,png,jpg|max:2048',
         ]);
 
         // Bandingkan amount yang diinput dengan benefit user
@@ -155,12 +152,19 @@ class PayrollandBenefitController extends Controller
             return redirect()->back()->with('error', 'Amount exceeds available benefit.');
         }
 
-        $benefit = new BenefitsApplication;
-        $benefit->employee_id = $request->input('employee_id');
-        $benefit->benefit_id = $request->input('benefit_id');
-        $benefit->amount = $request->input('requested_amount');
-        $benefit->status = 1;
-        $benefit->save();
+        if ($request->hasFile('info')) {
+            $file = $request->file('info');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('Proof of Benefit Request', $fileName);
+        }
+
+        BenefitsApplication::where('employee_id', $request->input('employee_id'))
+        ->where('benefit_id', $request->input('benefit_id'))
+        ->update([
+            'requested_amount' => $request->input('requested_amount'),
+            'info' => $fileName,
+            'status' => 1
+        ]);
 
         if (auth()->user()->role == 3) {
             return redirect('/PayrollandBenefit?benefitsFilter=employeebenefits&type_filter=benefit')
@@ -170,4 +174,90 @@ class PayrollandBenefitController extends Controller
                 ->with('success', 'The application submitted successfully.');
         }
     }
+
+    public function acceptedapplication($id)
+    {
+        $user = auth()->user();
+
+        if ($user->role != 3) {
+            return redirect('/PayrollandBenefit');
+        } 
+
+        $benefit = BenefitsApplication::join('employees', 'benefits_applications.employee_id', '=',
+            'employees.id')->join('benefits','benefits_applications.benefit_id', '=',
+            'benefits.id')
+            ->where('benefits_applications.id',$id)->first();
+        
+        return view('payrollandbenefits.acc', [
+            'benefit' => $benefit,
+            'id' => $id
+        ]);
+    }
+
+    public function process($id, Request $request){
+        $benefit = BenefitsApplication::join('employees', 'benefits_applications.employee_id', '=', 'employees.id')
+            ->join('benefits', 'benefits_applications.benefit_id', '=', 'benefits.id')
+            ->where('benefits_applications.id', $id)
+            ->first();
+
+        if ($request->has('decline')){
+            // Jika iya, maka update aplikasi manfaat dengan status penolakan
+            BenefitsApplication::where('id', $id)->update([
+                'requested_amount' => null,
+                'info' => null,
+                'status' => 3
+            ]);
+            return redirect('/PayrollandBenefit?type_filter=benefit&benefitsFilter=employeebenefits')->with('success',
+            'The benefit has been successfully declined.');
+        } else {
+            // Jika tidak ada parameter 'decline', maka lakukan perubahan gaji karyawan dan jumlah manfaat
+            Employee::where('id', $benefit->employee_id)->update([
+                'salary' => $benefit->employee->salary + $benefit->requested_amount,
+            ]);
+
+            // Menghitung jumlah manfaat baru setelah dikurangi jumlah yang diminta
+            $newAmount = $benefit->amount - $benefit->requested_amount;
+
+            // Update aplikasi manfaat dengan jumlah yang diminta yang diatur menjadi 'null', info menjadi 'null', dan status menjadi '2'
+            BenefitsApplication::where('id', $id)->update([
+                'requested_amount' => null,
+                'info' => null,
+                'amount' => $newAmount,
+                'status' => 2
+            ]);
+            return redirect('/PayrollandBenefit?type_filter=benefit&benefitsFilter=employeebenefits')->with('success',
+            'The benefit has been successfully accepted.');
+        }
+    }
+
+    public function editbenefit($id){
+        $benefit = Benefit::where('benefits.id', $id)
+        ->first();
+        
+        return view('payrollandbenefits.editbenefit', [
+            'id' => $id,
+            'benefit' => $benefit
+        ]);
+    }
+    public function edited($id, Request $request)
+    {
+        if ($request->input('benefit_name') != null) {
+            Benefit::where('id', $id)->update([
+                'benefit_name' => $request->input('benefit_name')
+            ]);
+        }
+        if ($request->input('benefit_amount') != null) {
+            Benefit::where('id', $id)->update([
+                'benefit_amount' => $request->input('benefit_amount')
+            ]);
+        }
+        return redirect('/PayrollandBenefit?type_filter=benefit')->with('success','The benefit has been successfully edited.');
+    }
+
+    public function delete($id)
+    {
+        Benefit::where('id', $id)->delete();
+        return redirect('/PayrollandBenefit?type_filter=benefit')->with('success','The benefit has been successfully deleted.');
+    }
+    
 }

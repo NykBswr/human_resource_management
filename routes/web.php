@@ -103,3 +103,10 @@ Route::get('/PayrollandBenefit', [PayrollandBenefitController::class,'index']);
 
 Route::get('/PayrollandBenefit/applyform', [PayrollandBenefitController::class,'formapply']);
 Route::post('/PayrollandBenefit/apply', [PayrollandBenefitController::class,'apply']);
+
+Route::get('/PayrollandBenefit/acceptedapplication/{user}', [PayrollandBenefitController::class,'acceptedapplication']);
+Route::post('/PayrollandBenefit/process/{user}', [PayrollandBenefitController::class,'process']);
+
+Route::get('/PayrollandBenefit/editbenefit/{benefit}',[PayrollandBenefitController::class,'editbenefit']);
+Route::post('/PayrollandBenefit/edit/{benefit}',[PayrollandBenefitController::class,'edited']);
+Route::delete('/PayrollandBenefit/delete/{benefit}', [FacilityController::class, 'delete']);
