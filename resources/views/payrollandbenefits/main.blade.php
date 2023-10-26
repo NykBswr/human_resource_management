@@ -129,13 +129,6 @@
                                         Benefit Amount
                                     </div>
                                 </th>
-                                @if (request()->query('benefitsFilter') == 'employeebenefits')
-                                <th class="w-auto h-14">
-                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        Application
-                                    </div>
-                                </th>
-                                @endif
                             @endif
                             {{-- END JUDUL BENEFIT --}}
 
@@ -192,7 +185,7 @@
                                             @if ($payroll->salary_amount == null)
                                                 -
                                             @else
-                                                {{ $payroll->salary_amount }} 
+                                                Rp. {{ number_format($payroll->salary_amount, 0, ',', '.') }}
                                             @endif
                                         </div>
                                     </td>
@@ -202,7 +195,7 @@
                                             @if ($payroll->tax_deduction == null)
                                                 -
                                             @else
-                                                {{ $payroll->tax_deduction }} 
+                                                Rp. {{ number_format($payroll->tax_deduction, 0, ',', '.') }}
                                             @endif
                                         </div>
                                     </td>
@@ -306,18 +299,9 @@
                                 </td>
                                 <td class="w-auto h-14">
                                     <div class="bg-secondary py-5 px-2 m-1 rounded-lg">
-                                        {{ $benefit->benefit_amount }}
+                                        Rp. {{ number_format($benefit->benefit_amount, 0, ',', '.') }}
                                     </div>
                                 </td>
-                                @if (request()->query('benefitsFilter') == 'employeebenefits')
-                                <td class="w-auto h-14">
-                                    <div class="bg-secondary py-5 px-2 m-1 rounded-lg justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                        </svg>
-                                    </div>
-                                </td>
-                                @endif
                             </tr>
                             @endforeach
                         @endif
@@ -325,9 +309,9 @@
                 </table>
             </div>
             @if(request()->query('type_filter') == 'payroll' || request()->query('type_filter') == '')
-                <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+                <div class="w-full h-[0.0625rem] bg-slate-400 mb-5 mt-5"></div>
                 <div class="bg-dark flex rounded-full text-white ml-auto">
-                    <a href="" class="gradcolor rounded-md py-2 px-7">Salary Increase Request</a>
+                    <a href="" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
                 </div>
             @elseif(request()->query('type_filter') == 'benefit' && request()->query('benefitsFilter') == 'benefitlist' || request()->query('benefitsFilter') == '')
                 <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
@@ -337,7 +321,7 @@
             @elseif(request()->query('type_filter') == 'benefit' && request()->query('benefitsFilter') == 'employeebenefits')
                 <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
                 <div class="bg-dark flex rounded-full text-white ml-auto">
-                    <a href="" class="gradcolor rounded-md py-2 px-7">Benefit Application</a>
+                    <a href="/PayrollandBenefit/applyform" class="gradcolor rounded-md py-2 px-7">Benefit Application</a>
                 </div>
             @endif
         {{-- END TAMPILAN HUMAN RESOURCE --}}
@@ -345,35 +329,27 @@
         {{-- TAMPILAN SELAIN EMPLOYEE --}}
             <div class="flex flex-row w-full h-full">
                 <div class="bg-secondary rounded-2xl w-1/2 h-full flex flex-col items-center overflow-x-auto mr-5 p-5">
+                    <div class="w-full flex items-center justify-center">
+                        <h1 class="text-xl text-primary mb-3 uppercase">
+                            Payroll
+                        </h1>
+                    </div>
+                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
                     <table class="w-full text-primary text-start flex">
-                        {{-- <thead>
-                            <tr class="w-full">
-                                <th class="w-auto h-14" colspan="2">
-                                    <div class="text-xl bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                        PAYROLL
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead> --}}
                         <thead class="w-1/2 h-full">
                             <tr class="w-full h-full flex flex-col">
                                 <th class="w-full h-full text-start">
-                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                    <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
                                         Salary Amount
                                     </div>
                                 </th>
                                 <th class="w-full h-full text-start">
-                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                    <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
                                         Tax Deduction 
                                     </div>
                                 </th>
                                 <th class="w-full h-full text-start">
-                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                        Status
-                                    </div>
-                                </th>
-                                <th class="w-full h-full text-start">
-                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                    <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
                                         Payment Date
                                     </div>
                                 </th>
@@ -382,23 +358,26 @@
                         <tbody class="w-1/2 h-full">
                             <tr class="w-full h-14 flex flex-col">
                                 <td>
-                                    <div class="w-full bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                        1
+                                    <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                        Rp. {{ number_format($payroll->salary_amount, 0, ',', '.') }}
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="w-full bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                        2
+                                    <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                        @if($payroll->tax_deduction == 0)
+                                            -
+                                        @else
+                                            {{ $payroll->tax_deduction }}
+                                        @endif
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="w-full bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                        3
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="w-full bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                        4
+                                    <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                        @if($payroll->payment_date == 0)
+                                            -
+                                        @else
+                                            {{ $payroll->payment_date }}
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -406,105 +385,65 @@
                     </table>
                 </div>
                 <div class="bg-secondary rounded-2xl w-1/2 h-full flex flex-col items-center overflow-x-auto ml-5 p-5">
-                    <div class="flex justify-center mt-2 mb-5">
-                        <div class="bg-tertiary flex rounded-full text-white ml-auto">
-                            <a href="{{ request()->fullUrlWithQuery(['benefitsFilter' => 'benefitlist']) }}" class="{{ ($typeFilter === '' || request()->path() === 'PayrollandBenefit' && $benefitsFilter !== 'employeebenefits') ? 'gradcolor' : 'bg-tertiary' }} rounded-full py-2 px-7">Benefits List</a>
-                            <a href="{{ request()->fullUrlWithQuery(['benefitsFilter' => 'employeebenefits']) }}" class="{{ (request()->path() === 'PayrollandBenefit' && $benefitsFilter === 'employeebenefits') ? 'gradcolor' : 'bg-tertiary' }} rounded-full py-2 px-7">Employee Benefits</a>
-                        </div>
+                    <div class="w-full flex items-center justify-center">
+                        <h1 class="text-xl text-primary mb-3 uppercase">
+                            Benefit
+                        </h1>
                     </div>
-                    @if($benefitsFilter === 'benefitlist')
-                        <table class="w-full text-primary">
-                            <thead>
-                                <tr class="w-full">
-                                    <th class="w-auto h-14">
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            Benefit
-                                        </div>
-                                    </th>
-                                    <th class="w-auto h-14">
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            Benefit Amount
-                                        </div>
-                                    </th>
-                                    <th class="w-auto h-14">
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            Application
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="w-auto h-14">
-                                    <td>
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            
-                                        </div>
-                                    </td>
-                                    
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+                    <table class="w-full text-primary mb-10">
+                        <thead>
+                            <tr class="w-full">
+                                <th class="w-auto h-14">
+                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                        Benefit
+                                    </div>
+                                </th>
+                                <th class="w-auto h-14">
+                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                        Benefit Amount
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="w-full text-center">
+                            @foreach ($listbenefit as $benefit)
+                            <tr class="w-full">
+                                <td class="w-auto h-14">
+                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                        {{ $benefit->benefit_name }}
+                                    </div>
+                                </td>
+                                <td class="w-auto h-14">
+                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                        Rp. {{ number_format($benefit->amount, 0, ',', '.') }}
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @php
+                        $joiningDate = \Carbon\Carbon::parse($employee->joining_date);
+                        $currentDate = \Carbon\Carbon::now();
+                        $daysSinceJoining = $currentDate->diffInDays($joiningDate);
+                    @endphp
+
+                    @if (auth()->user()->role == 2 && $daysSinceJoining > 30)
+                        <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+                        <div class="bg-dark flex rounded-full text-white ml-auto">
+                            <a href="/PayrollandBenefit/applyform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
+                        </div>
+                    @elseif(auth()->user()->role == 1 && $daysSinceJoining > 300)
+                        <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+                        <div class="bg-dark flex rounded-full text-white ml-auto">
+                            <a href="/PayrollandBenefit/applyform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
+                        </div>
                     @else
-                        <table class="w-full text-primary flex">
-                            <thead class="w-1/2 h-full">
-                                <tr class="w-full h-full flex flex-col">
-                                    <th class="w-full h-full text-start">
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            Salary Amount
-                                        </div>
-                                    </th>
-                                    <th class="w-full h-full text-start">
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            Tax Deduction 
-                                        </div>
-                                    </th>
-                                    <th class="w-full h-full text-start">
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            Status
-                                        </div>
-                                    </th>
-                                    <th class="w-full h-full text-start">
-                                        <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            Payment Date
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="w-1/2 h-full">
-                                <tr class="w-full h-14 flex flex-col">
-                                    <td>
-                                        <div class="w-full bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            1
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="w-full bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            2
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="w-full bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            3
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="w-full bg-tertiary py-5 px-2 m-1 rounded-lg">
-                                            4
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="w-full h-[0.0625rem] bg-slate-400 mb-5"></div>
+                        <div class="bg-dark flex rounded-full text-white ml-auto">
+                            <a href="/PayrollandBenefit/applyform" class="gradcolor rounded-md py-2 px-7">Increase Request</a>
+                        </div>
                     @endif
                 </div>
             </div>

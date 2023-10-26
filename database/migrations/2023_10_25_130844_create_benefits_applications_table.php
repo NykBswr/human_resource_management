@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('benefit_id');
             $table->integer('amount');
+            $table->integer('requested_amount')->nullable();
             $table->string('info')->nullable();
             $table->string('status')->default(0);
             $table->timestamps();

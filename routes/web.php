@@ -100,3 +100,6 @@ Route::post('/offdays/approve/{offday}', [OffdaysController::class,'approve']);
 
 // PAYROLL AND BENEFIT
 Route::get('/PayrollandBenefit', [PayrollandBenefitController::class,'index']);
+
+Route::get('/PayrollandBenefit/applyform', [PayrollandBenefitController::class,'formapply']);
+Route::post('/PayrollandBenefit/apply', [PayrollandBenefitController::class,'apply']);
