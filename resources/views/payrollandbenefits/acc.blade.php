@@ -47,7 +47,7 @@
                 </div>
                 <div class="w-full mt-4">
                     <label class="text-primary" for="requested_amount">Requested Amount</label>
-                    <input type="text" class="bg-tertiary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 " name="requested_amount" value="Rp. {{ number_format($payrolluser->requested_amount, 0, ',', '.') }}" disabled/>
+                    <input type="text" class="bg-tertiary rounded-md text-primary flex flex-start gap-3 mt-4 w-full px-6 py-3 " name="requested_amount" value="Rp. {{ number_format($benefit->requested_amount, 0, ',', '.') }}" disabled/>
                 </div>
                 <div class="w-full mt-4">
                     <label class="text-primary" for="requested_amount">Proof of Submission</label>

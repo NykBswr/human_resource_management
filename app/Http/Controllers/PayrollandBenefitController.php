@@ -32,7 +32,7 @@ class PayrollandBenefitController extends Controller
         $listbenefit = null;
 
         if (auth()->user()->role == 3) {
-            if ($typeFilter == 'payroll' ||request()->query('type_filter') == '') {
+            if ($typeFilter == 'payroll' || request()->query('type_filter') == '') {
                 $userpayroll = DB::table('employees')
                     ->select('employees.id as employee_id', 'employees.firstname', 'employees.lastname',
                         'employees.position',

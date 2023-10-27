@@ -30,23 +30,32 @@ class AttendanceController extends Controller
 
         $typeFilter = $request->input('type_filter');
 
-        if ($employee->role == 0 && $typeFilter === 'attend') {
-            return redirect('/attendance');
-        } elseif ($employee->role == 3 && $typeFilter === 'attend') {
-            return redirect('/attendance');
-        } elseif ($employee->role == 0 && $typeFilter === '' || $employee->role == 0){
-            $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
-        } elseif ($employee->role == 3 && $typeFilter === '' || $employee->role == 3) {
-            $attendances = $attendances->get();
-        } elseif ($typeFilter === 'attend' || $typeFilter === '') {
-            $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+        if (request()->query('type_filter') == 'attend'){
+            if ($employee->role == 0){
+                return redirect('/attendance');
+            } elseif ($employee->role == 3) {
+                return redirect('/attendance');
+            } else {
+                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+            }
+        } elseif (request()->query('type_filter') == '') {
+            if ($employee->role == 3) {
+                $attendances = $attendances->get();
+            } elseif ($employee->role == 2) {
+                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+            } elseif ($employee->role == 1) {
+                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+            } elseif ($employee->role == 0) {
+                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+            }
         } elseif ($typeFilter === 'employeelist') {
             if ($employee->role == 0){
                 return redirect('/attendance');
             } elseif ($employee->role == 3){
                 return redirect('/attendance');
             } elseif ($employee->role == 1) {
-                $attendances = $attendances->where('employees.position', $employee->position)->get();
+                $attendances = $attendances->where('employees.position', $employee->position)
+                ->where('users.role', '<>', 1)->get();
             } else {
                 $attendances = $attendances
                     ->where('users.role', '!=', 3)

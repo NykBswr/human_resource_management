@@ -409,7 +409,12 @@
                                 <tr class="w-full h-full flex flex-col">
                                     <th class="w-full h-full text-start">
                                         <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
-                                            Salary Amount
+                                            Received 
+                                        </div>
+                                    </th>
+                                    <th class="w-full h-full text-start">
+                                        <div class="bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                            Salary Per Month
                                         </div>
                                     </th>
                                     <th class="w-full h-full text-start">
@@ -443,6 +448,11 @@
                         @if (request()->path() === 'PayrollandBenefit' && $payrollFilter == '')
                             <tbody class="w-1/2 h-full">
                                 <tr class="w-full h-14 flex flex-col">
+                                    <td>
+                                        <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
+                                            Rp. {{ number_format($payroll->salary, 0, ',', '.') }}
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="w-full bg-tertiary py-5 px-5 m-1 rounded-lg">
                                             Rp. {{ number_format($payroll->salary_amount, 0, ',', '.') }}
@@ -549,9 +559,15 @@
                                     </div>
                                 </th>
                                 <th class="w-auto h-14">
+                                @if(request()->query('benefitsFilter') == '')
                                     <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
                                         Benefit Amount
                                     </div>
+                                @elseif (request()->query('benefitsFilter') == 'application')
+                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                        Requested Amount
+                                    </div>
+                                @endif
                                 </th>
                                 @if(request()->query('benefitsFilter') == 'application')
                                 <th class="w-auto h-14">
@@ -571,9 +587,15 @@
                                     </div>
                                 </td>
                                 <td class="w-auto h-14">
+                                @if(request()->query('benefitsFilter') == '')
                                     <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
                                         Rp. {{ number_format($benefit->amount, 0, ',', '.') }}
                                     </div>
+                                @elseif (request()->query('benefitsFilter') == 'application')
+                                    <div class="bg-tertiary py-5 px-2 m-1 rounded-lg">
+                                        Rp. {{ number_format($benefit->requested_amount, 0, ',', '.') }}
+                                    </div>
+                                @endif
                                 </td>
                                 @if(request()->query('benefitsFilter') == 'application' && $benefit->status != 0)
                                     <td class="w-auto h-14">

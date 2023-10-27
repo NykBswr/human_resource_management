@@ -150,13 +150,21 @@
                             {{-- Attend --}}
                             <td class="w-auto h-14">
                                 <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
-                                    @if ($date->isToday() && $employeelist->status == 0 && ($employee->role == 'Employee' || $employee->role == 'Human Resource'))
+                                    @if ($date->isToday() && $employeelist->status == 0 && (auth()->user()->role == 0 || auth()->user()->role == 3) && request()->query('type_filter') == '')
                                         <form action="/attendance/present/{{ $employeelist->id }}" method="post">
                                             @csrf
                                             <button type="submit" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
                                                 Click to Present
                                             </button>
                                         </form>
+                                    @elseif ($date->isToday() && $employeelist->status == 0 && (auth()->user()->role == 1 || auth()->user()->role == 2) && (request()->query('type_filter') == 'attend' || request()->query('type_filter') == ''))
+                                        <form action="/attendance/present/{{ $employeelist->id }}" method="post">
+                                            @csrf
+                                            <button type="submit" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
+                                                Click to Present
+                                            </button>
+                                        </form>
+                                    {{-- Telat --}}
                                     @elseif ($date->isFuture() && $employeelist->status == 0)
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -166,7 +174,9 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     @else
-                                        Not Yet Present
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
                                     @endif
                                 </div>
                             </td>
