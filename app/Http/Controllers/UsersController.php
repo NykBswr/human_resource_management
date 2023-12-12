@@ -148,7 +148,10 @@ class UsersController extends Controller
             ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary', 'users.role')
             ->where('users.id', auth()->user()->id)
             ->first();
-
+            
+        if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
+        return redirect('/task');
+        }
         // Periksa apakah data pengguna memiliki peran (role) yang sesuai
         if (auth()->user()->role !== 3 && auth()->user()->role !== 2 && auth()->user()->role !== 1) {
             return redirect('/task');

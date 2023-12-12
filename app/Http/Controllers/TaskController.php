@@ -21,8 +21,7 @@ class TaskController extends Controller
             ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary')
             ->where('users.id', auth()->user()->id)
             ->first();
-
-        // Periksa apakah data pengguna dan karyawan ada atau tidak
+            
         if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
             return redirect('/task');
         }

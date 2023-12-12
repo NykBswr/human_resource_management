@@ -84,10 +84,11 @@ Route::post('/facility/update/{facility}', [FacilityController::class, 'update']
 Route::delete('/facility/{facility}', [FacilityController::class, 'destroy']);
 
 // ATTENDANCE
-Route::get('/attendance', [AttendanceController::class,'index']);
+Route::get('/attendance', [AttendanceController::class,'index'])->middleware(['auth']);
 Route::get('/attendance/createattend', [AttendanceController::class,'createattend']);
 
 Route::post('/attendance/present/{employee}', [AttendanceController::class,'present']);
+Route::post('/attendance/leave/{employee}', [AttendanceController::class,'leave']);
 
 // OFF DAYS
 Route::get('/offdays', [OffdaysController::class,'index']);
@@ -99,7 +100,7 @@ Route::post('/offdays/refuse/{offday}', [OffdaysController::class,'refuse']);
 Route::post('/offdays/approve/{offday}', [OffdaysController::class,'approve']);
 
 // PAYROLL AND BENEFIT
-Route::get('/PayrollandBenefit', [PayrollandBenefitController::class,'index']);
+Route::get('/PayrollandBenefit', [PayrollandBenefitController::class,'index'])->middleware(['auth']);
 
 Route::get('/PayrollandBenefit/applyform', [PayrollandBenefitController::class,'formapply']);
 Route::post('/PayrollandBenefit/apply', [PayrollandBenefitController::class,'apply']);

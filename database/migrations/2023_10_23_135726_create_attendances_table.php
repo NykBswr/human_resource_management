@@ -17,6 +17,9 @@ return new class extends Migration
             $table->date('date');
             $table->integer('status')->default(0); 
 
+            $table->time('in')->nullable();
+            $table->time('out')->nullable();
+
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');

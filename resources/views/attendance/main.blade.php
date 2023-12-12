@@ -81,7 +81,7 @@
                         
                         <th class="w-auto h-14">
                             <div class="bg-secondary py-5 m-1 rounded-lg">
-                                Attend
+                                Attendance
                             </div>
                         </th>
                     </tr>
@@ -147,33 +147,68 @@
                             </td>
                             @endif
                             
-                            {{-- Attend --}}
+                            {{-- Attendance --}}
                             <td class="w-auto h-14">
+                                @php
+                                    $today = now()->toDateString();
+                                    $currentHour = now();
+                                    $lateThreshold = now()->setHour(9)->setMinute(0)->setSecond(0)->format('H:i:s');
+                                    $workDuration = $currentHour->diff($employeelist->in);
+                                @endphp
                                 <div class="bg-secondary py-5 m-1 rounded-lg flex justify-center items-center">
-                                    @if ($date->isToday() && $employeelist->status == 0 && (auth()->user()->role == 0 || auth()->user()->role == 3) && request()->query('type_filter') == '')
-                                        <form action="/attendance/present/{{ $employeelist->id }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
-                                                Click to Present
-                                            </button>
-                                        </form>
-                                    @elseif ($date->isToday() && $employeelist->status == 0 && (auth()->user()->role == 1 || auth()->user()->role == 2) && (request()->query('type_filter') == 'attend' || request()->query('type_filter') == ''))
-                                        <form action="/attendance/present/{{ $employeelist->id }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
-                                                Click to Present
-                                            </button>
-                                        </form>
-                                    {{-- Telat --}}
-                                    @elseif ($date->isFuture() && $employeelist->status == 0)
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
+                                    {{-- Absen --}}
+                                    @if ($employeelist->status == 0)
+                                        {{-- Employee & Manager --}}
+                                        @if ((auth()->user()->role == 0 && request()->query('type_filter') == '') || ((auth()->user()->role == 2 || auth()->user()->role == 1) && (request()->query('type_filter') == 'attend' || request()->query('type_filter') == '')))
+                                            {{-- Bisa Absen --}}
+                                            @if ($today == $employeelist->date && $currentHour < $lateThreshold)
+                                                <form action="/attendance/present/{{ $employeelist->id }}" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
+                                                        Click to attend.
+                                                    </button>
+                                                </form>
+                                            {{-- Time Over --}}
+                                            @elseif ($currentHour > $lateThreshold)
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            @endif
+                                        {{-- HR --}}
+                                        @elseif (auth()->user()->role == 3)
+                                            <form action="/attendance/present/{{ $employeelist->id }}" method="post">
+                                                @csrf
+                                                <button type="submit" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
+                                                    Click to attend.
+                                                </button>
+                                            </form>
+                                        @endif
+                                    {{-- Sudah Absen Masuk --}}
                                     @elseif ($employeelist->status == 1)
+                                        {{-- Jika sudah kerja 8 jam atau lebih --}}
+                                        @if ($today == $employeelist->date && $workDuration->h >= 8 || auth()->user()->role == 3)
+                                            <form action="/attendance/leave/{{ $employeelist->id }}" method="post">
+                                                @csrf
+                                                <button type="submit" class="hover:scale-110 hover:underline hover:underline-offset-4 duration-500">
+                                                    Click to leave.
+                                                </button>
+                                            </form>
+                                        {{-- Jika lupa absen pulang --}}
+                                        @elseif ($employeelist->out == 0 && $workDuration >= $employeelist->in)
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        {{-- Jika belum absensi pulang dan sudah masuk --}}
+                                        @else
+                                            <img class="w-auto h-[3vh]" src="\img\late.png">
+                                        @endif
+                                    {{-- Jika sudah absensi pulang --}}
+                                    @elseif ($employeelist->status == 2 && $workDuration >= $employeelist->in)
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     @else
+                                    {{-- Tidak bisa --}}
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-auto h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>

@@ -19,7 +19,7 @@ class PayrollandBenefitController extends Controller
         ->select('users.*', 'employees.position', 'employees.firstname', 'employees.lastname')
         ->where('users.id', auth()->user()->id)
         ->first();
-        
+
         $performances = Performance::join('employees', 'performances.employee_id', '=', 'employees.id')
         ->where('employee_id', auth()->user()->id)->get();
 

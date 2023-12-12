@@ -8,7 +8,7 @@ class Attendance extends Model
 {
     protected $table = 'attendances';
     protected $primaryKey = 'id';
-    protected $fillable = ['employee_id', 'date', 'status'];
+    protected $fillable = ['employee_id', 'date', 'status', 'in', 'out'];
 
     public function employee()
     {
