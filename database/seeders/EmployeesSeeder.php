@@ -110,7 +110,7 @@ class EmployeesSeeder extends Seeder
                 'lastname' => ucfirst($faker->lastName),
                 'position' => $faker->numberBetween(0, 7),
                 'salary' => $faker->numberBetween(35000000, 99999999),
-                'joining_date' => $faker->date('Y-m-d'),
+                'joining_date' => $faker->dateTimeBetween('-2 years', 'now')->format('Y-m-d'),
             ];
 
             \App\Models\Employee::create($randomEmployee);

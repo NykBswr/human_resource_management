@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EmployeeBenefitsSeeder::class);
         $this->call(FacilitiesSeeder::class);
         $this->call(EmployeeFacilitySeeder::class);
+        $this->call(OffdaysSeeder::class);
+        $this->call(AttendanceSeeder::class);
     }
 }

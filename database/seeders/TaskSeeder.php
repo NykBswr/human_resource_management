@@ -121,7 +121,7 @@ class TaskSeeder extends Seeder
         for ($i = 10; $i < 80; $i++) {
             \App\Models\Task::create([
                 'taskname' => $faker->sentence,
-                'deadline' => $faker->date('Y-m-d'),
+                'deadline' => $faker->dateTimeBetween('-6 month', 'now')->format('Y-m-d'),
                 'file' => 'project.pdf',
                 'submitfile' => 'project.pdf',
                 'progress' => $faker->numberBetween(1, 3),
@@ -131,7 +131,7 @@ class TaskSeeder extends Seeder
         for ($i = 80; $i < 101; $i++) {
             \App\Models\Task::create([
                 'taskname' => $faker->sentence,
-                'deadline' => $faker->date('Y-m-d'),
+                'deadline' => $faker->dateTimeBetween('-6 month', 'now')->format('Y-m-d'),
                 'file' => 'project.pdf',
                 'progress' => null,
                 'employee_id' => $i,

@@ -104,7 +104,7 @@ class PayrollSeeder extends Seeder
                 'employee_id' => $i,
                 'salary_amount' => $faker->numberBetween(35000000, 99999999),
                 'tax_deduction' => 5,
-                'payment_date' => $faker->date('Y-m-d'),
+                'payment_date' => '2023-11-01',
             ];
 
             \App\Models\Payroll::create($randomEmployee);
