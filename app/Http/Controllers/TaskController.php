@@ -31,7 +31,6 @@ class TaskController extends Controller
             ->join('performances', 'tasks.id', '=', 'performances.task_id')
             ->select('tasks.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary', 'performances.rating', 'performances.feedback');
 
-        // Menambahkan filter tipe surat
         $typeFilter = $request->input('type_filter');
 
         if ($typeFilter === 'unfinished') {
