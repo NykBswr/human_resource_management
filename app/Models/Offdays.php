@@ -6,9 +6,9 @@ use App\Models\Employee;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Attendance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 class Offdays extends Model
 {
+
     use HasFactory;
 
     protected $primaryKey = 'id';

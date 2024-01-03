@@ -92,11 +92,23 @@ class EmployeeBenefitsSeeder extends Seeder
 
         $faker = Faker::create();
 
-        for ($i = 11; $i < 100; $i++) {
+        for ($i = 11; $i < 50; $i++) {
             $randomEmployee = [
                 'employee_id' => $i+1,
                 'benefit_id' => $faker->numberBetween(1, 5),
                 'amount' => $faker->numberBetween(35000000, 99999999),
+            ];
+
+            \App\Models\BenefitsApplication::create($randomEmployee);
+        }
+
+        for ($i = 50; $i < 100; $i++) {
+            $randomEmployee = [
+                'employee_id' => $i+1,
+                'benefit_id' => $faker->numberBetween(1, 5),
+                'amount' => $faker->numberBetween(35000000, 99999999),
+                'requested_amount' => $faker->numberBetween(200000, 35000000),
+                'status' => $faker->numberBetween(0,2)
             ];
 
             \App\Models\BenefitsApplication::create($randomEmployee);

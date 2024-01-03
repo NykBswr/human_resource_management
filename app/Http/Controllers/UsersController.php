@@ -23,7 +23,7 @@ class UsersController extends Controller
 
         // Periksa apakah data pengguna dan karyawan ada atau tidak
         if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
-            return redirect('/employee');
+            return redirect('/dashboard');
         }
 
         if ($employee->position !== null) {
@@ -150,35 +150,39 @@ class UsersController extends Controller
             ->first();
             
         if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
-        return redirect('/task');
+        return redirect('/dashboard');
         }
         // Periksa apakah data pengguna memiliki peran (role) yang sesuai
         if (auth()->user()->role !== 3 && auth()->user()->role !== 2 && auth()->user()->role !== 1) {
-            return redirect('/task');
+            return redirect('/dashboard');
         }
         
         // Jika peran employee adalah 1, maka ambil data karyawan dengan posisi yang sama
         if ($employee->role == 1) {
             $list = Employee::join('users', 'users.employee_id', '=', 'employees.id')
-                ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary', 'users.role')
-                ->where('employees.position', $employee->position) // Filter berdasarkan posisi yang sama
-                ->where('users.role', 0) // Hanya role employee
-                ->get();
+                ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
+                ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'payrolls.salary_amount',
+                'users.role')
+                ->where('employees.position', $employee->position)
+                ->where('users.role', 0)
+                ->orderBy('employees.firstname')->paginate(5)->withQueryString()->appends(request()->query());
         } elseif ($employee->role == 2) {
             // Jika bukan peran 1, maka ambil semua data karyawan dengan peran 0 dan 1
             $list = Employee::join('users', 'users.employee_id', '=', 'employees.id')
-                ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary', 'users.role')
+                ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
+                ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'payrolls.salary_amount', 'users.role')
                 ->where(function ($query) {
                     $query->where('users.role', 0)->orWhere('users.role', 1);
                 })
-                ->get();
+                ->orderBy('employees.firstname')->paginate(5)->withQueryString()->appends(request()->query());
         } else {
             $list = Employee::join('users', 'users.employee_id', '=', 'employees.id')
-                ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary', 'users.role')
+                ->join('payrolls', 'payrolls.employee_id', '=', 'employees.id')
+                ->select('users.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'payrolls.salary_amount', 'users.role')
                 ->where(function ($query) {
                     $query->whereNot('users.role', 3);
                 })
-                ->get();
+                ->orderBy('employees.firstname')->paginate(5)->withQueryString()->appends(request()->query());
         }
         // Mengganti posisi karyawan berdasarkan data yang sesuai
         $positions = [
@@ -208,7 +212,6 @@ class UsersController extends Controller
                 $lists->role = $role[$lists->role];
             }
         }
-
         return view('employee.userlist', [
             'employee' => $employee,
             'list' => $list,

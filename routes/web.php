@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\OffdaysController;
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\PayrollandBenefitController;
 
@@ -31,9 +32,7 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 
 // DASHBOARD
-Route::get('/dashboard', function () {
-return view('dashboard.main');
-})->middleware('auth')->middleware('guest');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth']);
 
 
 // USER

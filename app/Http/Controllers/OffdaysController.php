@@ -20,7 +20,7 @@ class OffdaysController extends Controller
             ->first();
 
         if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
-        return redirect('/task');
+        return redirect('/dashboard');
         }
 
         // Query Offdays dengan join
@@ -50,8 +50,6 @@ class OffdaysController extends Controller
             $offdayQuery = $offdayQuery->where('offdays.employee_id', $user->employee_id);
         }
 
-        $offday = $offdayQuery->get();
-
         // Menyesuaikan role dengan label
         $roleLabels = [
             '0' => 'Employee',
@@ -61,6 +59,8 @@ class OffdaysController extends Controller
         ];
 
         $employee->role = $roleLabels[$user->role];
+
+        $offday = $offdayQuery->paginate(5)->withQueryString()->appends(request()->query());
 
         return view('offdays.main', [
             'employee' => $employee,

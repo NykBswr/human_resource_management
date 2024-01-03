@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Employee;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 
@@ -18,7 +17,7 @@ class AttendanceController extends Controller
 
         // Periksa apakah data pengguna dan karyawan ada atau tidak
         if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
-        return redirect('/task');
+        return redirect('/dashboard');
         }
 
         $attendances = Attendance::join('employees', 'attendances.employee_id', '=', 'employees.id')
@@ -37,17 +36,18 @@ class AttendanceController extends Controller
             } elseif ($employee->role == 3) {
                 return redirect('/attendance');
             } else {
-                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+                $attendances = $attendances->where('attendances.employee_id',
+                auth()->user()->id)->orderByDesc('attendances.date');
             }
         } elseif (request()->query('type_filter') == '') {
             if ($employee->role == 3) {
-                $attendances = $attendances->get();
+                $attendances = $attendances->orderByDesc('attendances.date');
             } elseif ($employee->role == 2) {
-                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->orderByDesc('attendances.date');
             } elseif ($employee->role == 1) {
-                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->orderByDesc('attendances.date');
             } elseif ($employee->role == 0) {
-                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+                $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->orderByDesc('attendances.date');
             }
         } elseif ($typeFilter === 'employeelist') {
             if ($employee->role == 0){
@@ -62,17 +62,20 @@ class AttendanceController extends Controller
                 ->orWhere('attendances.status', 2);
                 })
                 ->where('users.role', '<>', 1)
-                    ->get();
+                    ->orderByDesc('attendances.date');
             } else {
                 $attendances = $attendances
                     ->where('users.role', '!=', 3)
                     ->where('users.role', '!=', 2)
-                    ->get();
+                    ->orderByDesc('attendances.date');
             }
         } else {
-            $attendances = $attendances->where('attendances.employee_id', auth()->user()->id)->get();
+            $attendances = $attendances->where('attendances.employee_id',
+            auth()->user()->id)->orderByDesc('attendances.date');
         }
 
+        $attendances = $attendances->paginate(5)->withQueryString()->appends(request()->query());
+        
         if ($employee->role !== null) {
             $role = [
                 '0' => 'Employee',
@@ -98,11 +101,14 @@ class AttendanceController extends Controller
 
         // Periksa apakah data pengguna dan karyawan ada atau tidak
         if (!$employee->role == 3) {
-            return redirect('/task');
+            return redirect('/dashboard');
         }
 
-        // Ambil semua pengguna dengan peran (role) 3 (karyawan)
-        $employees = User::whereNot('role', 3)->get();
+        // Ambil semua pengguna dengan peran (role) 3 (karyawan) dan offdays
+        $employees = User::join('offdays', 'users.employee_id', '=', 'offdays.employee_id')
+            ->select('users.*', 'offdays.status', 'offdays.start', 'offdays.end')
+            ->whereNotIn('role', [3]) // Ubah whereNot menjadi whereNotIn dan sesuaikan nilai jika perlu
+            ->get();
 
         // Tanggal hari ini
         $today = now()->toDateString();
@@ -111,10 +117,20 @@ class AttendanceController extends Controller
         // Loop melalui daftar karyawan
         foreach ($employees as $employee) {
             try {
-                Attendance::firstOrCreate([
-                    'employee_id' => $employee->id,
-                    'date' => $today
-                ]);
+                // Periksa apakah karyawan memiliki offdays dan apakah status offdays adalah 2
+                if (($today <= $employee->start || $employee->status == 2) && ($today <= $employee->end ||
+                        $employee->status == 2)) {
+                    Attendance::firstOrCreate([
+                        'employee_id' => $employee->id,
+                        'date' => $today,
+                        'status' => 1
+                    ]);
+                } else {
+                    Attendance::firstOrCreate([
+                        'employee_id' => $employee->id,
+                        'date' => $today
+                    ]);
+                }
             } catch (\Exception $e) {
                 // Tangani kesalahan jika entri sudah ada
                 $errorMessages[] = "Attendance for {$employee->firstname} {$employee->lastname} already exists for today.";

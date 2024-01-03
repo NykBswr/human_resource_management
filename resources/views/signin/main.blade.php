@@ -46,12 +46,13 @@
                 Back to company pages
             </a>
         </div>
+        <script src="anime.min.js"></script>
         <div class="w-1/2 h-full overflow-hidden hidden lg:block">
             <div class="flex flex-row w-full" id="image-container">
                 <img src="{{ URL::asset('img/loginimg-1.svg') }}" class="image animate-updown w-1/3 pl-8" id="img1">
                 <img src="{{ URL::asset('img/loginimg-2.svg') }}" class="image animate-updown w-1/3 pl-8" id="img2">
                 <img src="{{ URL::asset('img/loginimg-3.svg') }}" class="image animate-updown w-1/3 pl-8" id="img3">
-            </div>
+            </div>       
         </div>
     </div>
 </section>

@@ -23,13 +23,15 @@ class TaskController extends Controller
             ->first();
             
         if (!$employee || !$employee->employee || auth()->user()->id !== $employee->id) {
-            return redirect('/task');
+            return redirect('/dashboard');
         }
 
         $tasksQuery = DB::table('tasks')
             ->join('employees', 'tasks.employee_id', '=', 'employees.id')
+            ->join('users', 'tasks.employee_id', '=', 'users.employee_id')
             ->join('performances', 'tasks.id', '=', 'performances.task_id')
-            ->select('tasks.*', 'employees.firstname', 'employees.lastname', 'employees.position', 'employees.salary', 'performances.rating', 'performances.feedback');
+            ->select('tasks.*', 'users.id','users.role', 'employees.firstname', 'employees.lastname',
+            'employees.position', 'employees.salary', 'performances.rating', 'performances.feedback');
 
         $typeFilter = $request->input('type_filter');
 
@@ -38,24 +40,22 @@ class TaskController extends Controller
                 $query->where('progress', null)->orWhere('progress', 3)->orWhere('progress', 1);
             });
         } elseif ($typeFilter === 'finished') {
-            $tasksQuery->where('progress', 2);
+            $tasksQuery->where(function ($query) {
+                $query->where('progress', 2);
+            });
         } else {
             $tasksQuery->where(function ($query) {
-            $query->where('progress', null)->orWhere('progress', 3)->orWhere('progress', 1);
+                $query->where('progress', null)->orWhere('progress', 3)->orWhere('progress', 1);
             });
         }
-        
-        $tasks = $tasksQuery->get();
 
         // Memeriksa role dari employee
         if ($employee->role == 0) {
-            // Jika role employee == 0, tampilkan hanya task dengan ID yang sesuai
-            $tasks = $tasks->where('employee_id', auth()->user()->id);
+            $tasks = $tasksQuery->where('users.id', auth()->user()->id)->paginate(5)->appends(request()->query());
         } elseif ($employee->role == 1) {
-            // Jika role employee == 1, tampilkan task dengan posisi yang sama dengan posisi karyawan
-            $tasks = $tasks->where('position', $employee->position);
+            $tasks = $tasksQuery->where('position', $employee->position)->where('role', 0)->paginate(5)->appends(request()->query());
         } elseif ($employee->role == 2 || $employee->role == 3) {
-            $tasks = $tasks->all();
+            $tasks = $tasksQuery->where('role', 0)->paginate(5)->appends(request()->query());
         }
 
         if ($employee->role !== null) {

@@ -32,64 +32,16 @@ class FacilityController extends Controller
         // Menambahkan filter tipe surat
         $typeFilter = $request->input('type_filter');
 
-        if ($typeFilter === 'list') {
-            $facilities = Facility::all();
-        } elseif ($typeFilter === 'employee') {
-            // Ambil data karyawan dan fasilitas dari database
-            $employeeFacilityData = DB::table('employees')
-                ->select('employees.id as employee_id', 'employees.firstname', 'employees.lastname', 'employees.position', 'users.role', 'employee_facility.id as employee_facility_id', 'facilities.facility_name', 'facilities.remain')
-                ->leftJoin('users', 'employees.id', '=', 'users.employee_id')
-                ->leftJoin('employee_facility', 'employees.id', '=', 'employee_facility.employee_id')
-                ->leftJoin('facilities', 'employee_facility.facility_id', '=', 'facilities.facility_id')
-                ->get();
-
-            // Inisialisasi array untuk mengelompokkan fasilitas
-            $employeefacilities = [];
-
-            foreach ($employeeFacilityData as $data) {
-                $employeeId = $data->employee_id;
-
-                // Jika karyawan belum ada dalam $employeefacilities, tambahkan
-                if (!array_key_exists($employeeId, $employeefacilities)) {
-                    $employeefacilities[$employeeId] = [
-                        'employees' => $data->employee_id,
-                        'employee_facility_id' => $data->employee_facility_id,
-                        'firstname' => $data->firstname,
-                        'lastname' => $data->lastname,
-                        'position' => $data->position,
-                        'role' => $data->role,
-                        'facilities' => [],
-                    ];
-                }
-
-                // Tambahkan fasilitas ke dalam daftar fasilitas karyawan
-                if (!in_array($data->facility_name, $employeefacilities[$employeeId]['facilities'])) {
-                    $employeefacilities[$employeeId]['facilities'][] = $data->facility_name;
-                }
-            }
-
-            if ($employee->role == 0) {
-                // Filter karyawan berdasarkan peran
-                $employeefacilities = array_filter($employeefacilities, function ($item) {
-                    return $item['role'] == 0 && $item['employees'] == auth()->user()->id;
-                });
-            } elseif ($employee->role == 1) {
-                $userPosition = $employee->position;
-                $employeefacilities = array_filter($employeefacilities, function ($item) use ($userPosition) {
-                    return $item['role'] == 1 && $item['employees'] == auth()->user()->id;
-                });
-            } elseif ($employee->role == 2) {
-                $employeefacilities = array_filter($employeefacilities, function ($item) {
-                    return $item['role'] == 2 && $item['employees'] == auth()->user()->id;
-                });
-            } else {
-                $employeefacilities = array_filter($employeefacilities, function ($item) {
-                    return $item['role'] != 3;
-                });
-            }
-        } else {
-            $facilities = Facility::all();
-        }
+        $facilities = Facility::all();
+        // Ambil data karyawan dan fasilitas dari database
+        $employeeFacilityData = DB::table('employees')
+        ->select('employees.id as employee_id', 'employees.firstname', 'employees.lastname', 'employees.position',
+        'users.role', 'employee_facility.id as employee_facility_id', 'facilities.facility_name',
+        'facilities.remain')
+        ->leftJoin('users', 'employees.id', '=', 'users.employee_id')
+        ->leftJoin('employee_facility', 'employees.id', '=', 'employee_facility.employee_id')
+        ->leftJoin('facilities', 'employee_facility.facility_id', '=', 'facilities.facility_id')
+        ->paginate(6)->appends(request()->query());
 
         if ($employee->role !== null) {
             $role = [
@@ -104,7 +56,7 @@ class FacilityController extends Controller
         return view("facility.main", [
             'employee' => $employee,
             'facilities' => $facilities,
-            'employeefacilities' => $employeefacilities,
+            'employeeFacilityData' => $employeeFacilityData,
             'typeFilter' => $typeFilter
         ]);
     }

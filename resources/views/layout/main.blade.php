@@ -9,9 +9,12 @@
     {{-- CSS Tailwind --}}
     @vite('resources/css/app.css')
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="{{ asset('images/logo-ftmm.png') }}" />
+
+    <link rel="icon" href="{{ asset('img/logo.png') }}" />
 </head>
-<body class="bg-dark h-screen w-full">
+
+<body class="h-full w-full bg-dark">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script>
     @yield('container')
     <script src="{{ asset('js/script.js') }}"></script>
 </body>

@@ -20,6 +20,8 @@ class PayrollSeeder extends Seeder
                 'salary_amount' => 12000000,
                 'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
+                'request_amount' => 10000000,
+                'status' => '1'
             ],
             [
                 // Manager 2
@@ -27,6 +29,8 @@ class PayrollSeeder extends Seeder
                 'salary_amount' => 12000000,
                 'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
+                'request_amount' => 10000000,
+                'status' => '1'
             ],
             [
                 // Manager 3
@@ -34,6 +38,8 @@ class PayrollSeeder extends Seeder
                 'salary_amount' => 12000000,
                 'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
+                'request_amount' => 10000000,
+                'status' => '1'
             ],
             [
                 // Karyawan 1
@@ -41,6 +47,8 @@ class PayrollSeeder extends Seeder
                 'salary_amount' => 4000000,
                 'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
+                'request_amount' => 10000000,
+                'status' => '1'
             ],
             [
                 // Karyawan 2
@@ -48,6 +56,8 @@ class PayrollSeeder extends Seeder
                 'salary_amount' => 4000000,
                 'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
+                'request_amount' => 10000000,
+                'status' => '1'
             ],
             [
                 // Karyawan 3
@@ -55,6 +65,8 @@ class PayrollSeeder extends Seeder
                 'salary_amount' => 4000000,
                 'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
+                'request_amount' => 10000000,
+                'status' => '1'
             ],
             [
                 // Karyawan 4
@@ -62,6 +74,8 @@ class PayrollSeeder extends Seeder
                 'salary_amount' => 4000000,
                 'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
+                'request_amount' => 10000000,
+                'status' => '1'
             ],
             [
                 // Karyawan 5
@@ -69,6 +83,8 @@ class PayrollSeeder extends Seeder
                 'salary_amount' => 4000000,
                 'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
+                'request_amount' => 10000000,
+                'status' => '1'
             ],
             [
                 // Karyawan 6
@@ -76,6 +92,8 @@ class PayrollSeeder extends Seeder
                 'salary_amount' => 4000000,
                 'tax_deduction' => 5,
                 'payment_date' => '2023-11-01',
+                'request_amount' => 10000000,
+                'status' => '1'
             ],
             [
                 // Kepala cabang
@@ -99,7 +117,7 @@ class PayrollSeeder extends Seeder
 
         $faker = Faker::create();
 
-        for ($i = 11; $i < 100; $i++) {
+        for ($i = 12; $i < 100; $i++) {
             $randomEmployee = [
                 'employee_id' => $i,
                 'salary_amount' => $faker->numberBetween(35000000, 99999999),

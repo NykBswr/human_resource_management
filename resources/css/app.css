@@ -37,7 +37,6 @@
 
 /* IMAGE LOGIN */
 
-/* Keyframes untuk menggerakkan gambar naik dari bawah ke atas */
 @keyframes moveUp {
     0% {
         transform: translateY(100%);
@@ -48,7 +47,6 @@
     }
 }
 
-/* Menggunakan keyframes yang telah didefinisikan di atas */
 #img1,
 #img3 {
     animation: moveUp 50s linear infinite;
@@ -57,4 +55,25 @@
 #img2 {
     animation: moveUp 50s linear infinite;
     animation-direction: reverse;
+}
+
+
+/* Poor */
+.poorColor {
+    background: linear-gradient(-93deg, #c31432 0.48%, #240b36 100%);
+}
+
+/* Average */
+.averageColor {
+    background: linear-gradient(-93deg, #F3904F 0.48%, #c31432 100%);
+}
+
+/* Great */
+.greatColor {
+    baCkground: linear-gradient(-93deg, #005C97 0.48%, #363795 100%);
+}
+
+/* Excellent */
+.excellentColor {
+    background: linear-gradient(-93deg, #59C173 0.48%, #1D2671 100%);
 }

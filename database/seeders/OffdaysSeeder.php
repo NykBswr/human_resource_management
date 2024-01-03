@@ -20,7 +20,7 @@ class OffdaysSeeder extends Seeder
             'reason' => $faker->sentence,
             'start' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d'), 
             'end' => $faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
-            'status' => $faker->numberBetween(1, 2),
+            'status' => $faker->numberBetween(0, 2),
             'info' => 'project.pdf',
         ];
             \App\Models\Offdays::create($randomEmployee);
@@ -31,7 +31,7 @@ class OffdaysSeeder extends Seeder
             'reason' => $faker->sentence,
             'start' => $faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d'),
             'end' => $faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
-            'status' => $faker->numberBetween(1, 2),
+            'status' => $faker->numberBetween(0, 2),
             'info' => 'project.pdf',
         ];
             \App\Models\Offdays::create($randomEmployee2);
