@@ -12,17 +12,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <section class="flex h-auto w-full items-center bg-dark px-20 pb-12 pt-36" id="main">
-        <div class="flex h-full w-full flex-col items-center rounded-2xl bg-tertiary px-20 py-5" id="main2">
+        <div class="flex h-auto w-full flex-col items-center rounded-2xl bg-tertiary px-20 py-5" id="main2">
             <h1 class="mb-5 w-full text-center text-xl text-primary">
                 DASHBOARD
             </h1>
             <div class="mb-5 h-[0.0625rem] w-full bg-slate-400"></div>
-            <div class="@if (auth()->user()->role == 3) justify-between @endif flex h-auto w-full flex-row">
+            <div class="@if (auth()->user()->role == 3) justify-between @endif flex h-full w-full flex-row">
                 {{-- First Column --}}
                 <div
                     class="@if (auth()->user()->role == 1) flex-col @endif @if (auth()->user()->role == 3 || auth()->user()->role == 2) w-5/12 @else w-1/2 @endif mr-5 h-full">
                     {{-- Task --}}
-                    <div class="h-2/5 w-full">
+                    <div class="h-auto w-full">
                         @php
                             $todaysDate = now()->toDateString();
                             $totalTasks = $tasksQuery->count();
@@ -84,6 +84,7 @@
                                     $remaining[$position] = $totals[$position] - $completed[$position] - $revised[$position] - $checked[$position] - $late[$position];
 
                                     // Percentage
+
                                     $completionPosPercentage[$position] = number_format(($completed[$position] / $totals[$position]) * 100, 0);
                                     $checkPosPercentage[$position] = number_format(($checked[$position] / $totals[$position]) * 100, 0);
                                     $revisedPosPercentage[$position] = number_format(($revised[$position] / $totals[$position]) * 100, 0);
@@ -104,7 +105,7 @@
                                 </div>
                             </div>
 
-                            <div class="h-full rounded-lg bg-tertiary p-3">
+                            <div class="h-auto rounded-lg bg-tertiary p-3">
                                 <div class="mb-2 grid grid-cols-3 gap-3">
                                     <dl
                                         class="flex h-[78px] w-full flex-col items-center justify-center rounded-lg bg-dark">
@@ -133,7 +134,7 @@
                                     </dl>
                                 </div>
                                 <button data-collapse-toggle="more-details" type="button"
-                                    class="inline-flex h-full items-center text-xs font-medium text-gray-300 hover:underline">Show
+                                    class="inline-flex h-auto items-center text-xs font-medium text-gray-300 hover:underline">Show
                                     more
                                     details <svg class="ms-1 h-2 w-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 10 6">
@@ -141,7 +142,7 @@
                                             stroke-width="2" d="m1 1 4 4 4-4" />
                                     </svg>
                                 </button>
-                                <div id="more-details" class="mt-3 hidden h-full space-y-2 border-t border-gray-200 pt-3">
+                                <div id="more-details" class="mt-3 hidden h-auto space-y-2 border-t border-gray-200 pt-3">
                                     {{-- @if (!auth()->user()->role == 3)
                                         <dl class="flex items-center justify-between">
                                             <dt class="text-sm font-normal text-gray-400">Average task completion rate:</dt>
@@ -177,10 +178,10 @@
                                 <div id="accordion-collapse" data-accordion="collapse" class="rounded-xl bg-tertiary">
                                     <h3 id="accordion-collapse-heading-1">
                                         <button type="button"
-                                            class="flex w-full items-center justify-between gap-3 rounded-xl bg-tertiary px-5 py-2 font-medium text-white hover:underline hover:underline-offset-4 rtl:text-right"
+                                            class="flex w-full items-center justify-between gap-3 rounded-xl bg-tertiary px-5 py-2 font-medium text-white hover:underline hover:underline-offset-4 focus:bg-tertiary rtl:text-right"
                                             data-accordion-target="#accordion-collapse-body-1" aria-expanded="false"
                                             aria-controls="accordion-collapse-body-1">
-                                            <span>Select Position</span>
+                                            <span class="text-white">Select Position</span>
                                             <svg data-accordion-icon class="h-2 w-2 shrink-0 rotate-180" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -208,7 +209,7 @@
                                                         Scientist</label>
                                                 </div>
                                             </div>
-                                            <div class="mb-2 flex justify-stretch">
+                                            <div class="mb-2 flex justify-between">
                                                 <div class="me-4 flex items-center">
                                                     <input id="analysis" type="checkbox" value="analysis"
                                                         class="h-4 w-4 rounded bg-gray-700 ring-offset-gray-800 focus:ring-2 focus:ring-blue-600">
@@ -229,7 +230,7 @@
                                                         class="ms-2 text-xs font-medium text-gray-100">Staff</label>
                                                 </div>
                                             </div>
-                                            <div class="mb-2 flex justify-stretch">
+                                            <div class="mb-2 flex justify-between">
                                                 <div class="me-4 flex items-center">
                                                     <input id="teller" type="checkbox" value="teller"
                                                         class="h-4 w-4 rounded bg-gray-700 ring-offset-gray-800 focus:ring-2 focus:ring-blue-600">
@@ -451,8 +452,8 @@
 
                     {{-- Rating --}}
                     @if (auth()->user()->role == 3 || auth()->user()->role == 2 || auth()->user()->role == 1)
-                        <div class="mt-5 h-1/5 w-full rounded-lg bg-secondary p-4 shadow md:p-6">
-                            <div class="mb-3 flex h-full w-full justify-between">
+                        <div class="mt-5 h-auto w-full rounded-lg bg-secondary p-4 shadow md:p-6">
+                            <div class="mb-3 flex h-auto w-full justify-between">
                                 <div class="flex items-center">
                                     <div class="flex items-center justify-center">
                                         <h5 class="mb-2 pe-1 text-xl font-bold leading-none text-white">Your employee's
@@ -461,7 +462,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="@if (auth()->user()->role == 3 || auth()->user()->role == 2) mb-5 @endif flex h-full items-center">
+                            <div class="@if (auth()->user()->role == 3 || auth()->user()->role == 2) mb-5 @endif flex h-auto items-center">
                                 <p
                                     class="@if (number_format($ratings, 1) > 7.5) excellentColor
                                     @elseif (number_format($ratings, 1) > 5) greatColor
@@ -504,8 +505,8 @@
                                         }
                                     }
                                 @endphp
-                                <div class="h-full gap-8 sm:grid sm:grid-cols-2">
-                                    <div class="h-full w-full">
+                                <div class="h-auto gap-8 sm:grid sm:grid-cols-2">
+                                    <div class="h-auto w-full">
                                         <dl>
                                             <dt class="text-sm font-medium text-white">Business Analyst</dt>
                                             <dd class="mb-3 flex items-center">
@@ -652,47 +653,64 @@
                     {{-- End of Rating --}}
 
                     {{-- Attendance --}}
-                    <div class="mt-5 h-2/5 w-full rounded-lg bg-secondary p-4 shadow md:p-6">
-                        <div class="mb-3 flex h-full w-full flex-col items-center justify-between">
+                    <div class="mt-5 h-auto w-full rounded-lg bg-secondary p-4 shadow md:p-6">
+                        <div class="mb-3 flex h-auto w-full flex-col items-center justify-between">
                             <div class="flex h-auto w-full items-center justify-center text-center">
-                                <h5 class="mb-2 pe-1 text-xl font-bold leading-none text-white">Attendance
+                                <h5 class="mb-5 pe-1 text-xl font-bold leading-none text-white">Attendance
                                     Information
                                 </h5>
                             </div>
                             <div class="mb-5 flex w-full items-center justify-center">
                                 <!-- Dropdown menu -->
-                                @if (auth()->user()->role == 3 || auth()->user()->role == 2)
+                                @if (!auth()->user()->role == 0)
                                     <button id="dropdownDefaultButton" data-dropdown-toggle="category11"
                                         class="mr-2 inline-flex w-1/2 items-center justify-between rounded-lg bg-tertiary px-5 py-2.5 text-center text-sm font-medium text-white"
                                         type="button">
                                         @if ($filterAttend == '')
-                                            Category
-                                        @elseif ($filterAttend == 'all_attend')
-                                            All Attendance
-                                        @elseif ($filterAttend == 'absent')
-                                            Absent
-                                        @elseif ($filterAttend == 'lateness')
-                                            Lateness
-                                        @elseif ($filterAttend == 'missingOut')
-                                            Missing Out
-                                        @elseif ($filterAttend == 'present')
-                                            Present
-                                        @elseif ($filterAttend == 'business_analyst')
-                                            Business Analyst
-                                        @elseif ($filterAttend == 'data_scientist')
-                                            Data Scientist
-                                        @elseif ($filterAttend == 'data_analyst')
-                                            Data Analyst
-                                        @elseif ($filterAttend == 'teller')
-                                            Teller
-                                        @elseif ($filterAttend == 'auditor')
-                                            Auditor
-                                        @elseif ($filterAttend == 'sales')
-                                            Sales
-                                        @elseif ($filterAttend == 'staff')
-                                            Staff
-                                        @elseif ($filterAttend == 'akuntan')
-                                            Akuntan
+                                            @if (auth()->user()->role == 3)
+                                                Category
+                                            @else
+                                                {{ $employee->firstname }} {{ $employee->lastname }}
+                                            @endif
+                                        @elseif (auth()->user()->role == 3 || auth()->user()->role == 2)
+                                            @if ($filterAttend == 'all_attend')
+                                                All Attendance
+                                            @elseif ($filterAttend == 'absent')
+                                                Absent
+                                            @elseif ($filterAttend == 'lateness')
+                                                Lateness
+                                            @elseif ($filterAttend == 'missingOut')
+                                                Missing Out
+                                            @elseif ($filterAttend == 'present')
+                                                Present
+                                            @elseif ($filterAttend == 'business_analyst')
+                                                Business Analyst
+                                            @elseif ($filterAttend == 'data_scientist')
+                                                Data Scientist
+                                            @elseif ($filterAttend == 'data_analyst')
+                                                Data Analyst
+                                            @elseif ($filterAttend == 'teller')
+                                                Teller
+                                            @elseif ($filterAttend == 'auditor')
+                                                Auditor
+                                            @elseif ($filterAttend == 'sales')
+                                                Sales
+                                            @elseif ($filterAttend == 'staff')
+                                                Staff
+                                            @elseif ($filterAttend == 'akuntan')
+                                                Akuntan
+                                            @endif
+                                            @if (auth()->user()->role == 2)
+                                                @if ($filterAttend == 'employees')
+                                                    {{ $employee->firstname }} {{ $employee->lastname }}
+                                                @endif
+                                            @endif
+                                        @else
+                                            @if ($filterAttend == 'employees')
+                                                {{ $employee->firstname }} {{ $employee->lastname }}
+                                            @elseif ($filterAttend == 'all_employees')
+                                                All Employees
+                                            @endif
                                         @endif
                                         <svg class="ms-3 h-2.5 w-2.5" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -706,77 +724,71 @@
                                         class="z-10 hidden w-72 cursor-pointer rounded-lg bg-tertiary shadow">
                                         <div id="category11" class="w-full py-2 text-sm text-white"
                                             aria-labelledby="dropdownDefaseultButton">
-                                            <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'all_attend']) }}"
-                                                class="block w-full border-b border-white px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
-                                                All Attendance
-                                            </a>
-                                            <p
-                                                class="block w-full cursor-default border-b border-white px-4 py-2 text-center">
-                                                By Position
-                                            </p>
-                                            <div class="flex w-full flex-row">
-                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'business_analyst']) }}"
-                                                    class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">Business
-                                                    Analyst
+                                            @if (auth()->user()->role == 3 || auth()->user()->role == 2)
+                                                @if (auth()->user()->role == 2)
+                                                    <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'employees']) }}"
+                                                        class="block w-full border-b border-white px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
+                                                        {{ $employee->firstname }} {{ $employee->lastname }}
+                                                    </a>
+                                                @endif
+                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'all_attend']) }}"
+                                                    class="block w-full border-b border-white px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
+                                                    All Attendance
                                                 </a>
-                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'data_analyst']) }}"
-                                                    class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                    Data Analyst
+                                                <p
+                                                    class="block w-full cursor-default border-b border-white px-4 py-2 text-center">
+                                                    By Position
+                                                </p>
+                                                <div class="flex w-full flex-row">
+                                                    <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'business_analyst']) }}"
+                                                        class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">Business
+                                                        Analyst
+                                                    </a>
+                                                    <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'data_analyst']) }}"
+                                                        class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
+                                                        Data Analyst
+                                                    </a>
+                                                </div>
+                                                <div class="flex w-full flex-row">
+                                                    <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'data_scientist']) }}"
+                                                        class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">
+                                                        Data Scientist
+                                                    </a>
+                                                    <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'teller']) }}"
+                                                        class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
+                                                        Teller
+                                                    </a>
+                                                </div>
+                                                <div class="flex w-full flex-row">
+                                                    <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'auditor']) }}"
+                                                        class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">
+                                                        Auditor
+                                                    </a>
+                                                    <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'staff']) }}"
+                                                        class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
+                                                        Staff
+                                                    </a>
+                                                </div>
+                                                <div class="flex w-full flex-row">
+                                                    <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'sales']) }}"
+                                                        class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">
+                                                        Sales
+                                                    </a>
+                                                    <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'akuntan']) }}"
+                                                        class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
+                                                        Akuntan
+                                                    </a>
+                                                </div>
+                                            @else
+                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'employees']) }}"
+                                                    class="block w-full px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
+                                                    {{ $employee->firstname }} {{ $employee->lastname }}
                                                 </a>
-                                            </div>
-                                            <div class="flex w-full flex-row">
-                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'data_scientist']) }}"
-                                                    class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                    Data Scientist
+                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'all_employees']) }}"
+                                                    class="block w-full px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
+                                                    All Employees
                                                 </a>
-                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'teller']) }}"
-                                                    class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                    Teller
-                                                </a>
-                                            </div>
-                                            <div class="flex w-full flex-row">
-                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'auditor']) }}"
-                                                    class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                    Auditor
-                                                </a>
-                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'staff']) }}"
-                                                    class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                    Staff
-                                                </a>
-                                            </div>
-                                            <div class="flex w-full flex-row">
-                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'sales']) }}"
-                                                    class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                    Sales
-                                                </a>
-                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'akuntan']) }}"
-                                                    class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                    Akuntan
-                                                </a>
-                                            </div>
-                                            {{-- <p class="block w-full cursor-default border-y border-white px-4 py-2 text-center">
-                                            By Status
-                                        </p>
-                                        <div class="flex w-full flex-row">
-                                            <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'absent']) }}"
-                                                class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                Absent
-                                            </a>
-                                            <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'late']) }}"
-                                                class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                Lateness
-                                            </a>
-                                        </div>
-                                        <div class="flex w-full flex-row">
-                                            <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'missingOut']) }}"
-                                                class="block w-1/2 border-r border-white px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                Missing Out
-                                            </a>
-                                            <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'present']) }}"
-                                                class="block w-1/2 px-4 py-2 hover:bg-gray-600 hover:text-white">
-                                                Present
-                                            </a>
-                                        </div> --}}
+                                            @endif
                                         </div>
                                     </div>
                                 @endif
@@ -784,31 +796,35 @@
                                 @php
                                     if (auth()->user()->role == 2 || auth()->user()->role == 3) {
                                         if ($filterAttend == '' || $filterAttend == 'all_attend') {
-                                            // Lakukan sesuatu jika kondisi terpenuhi
                                             $attend = $attend;
                                         } else {
-                                            if ($filterAttend == 'business_analyst') {
-                                                $filling = 0;
-                                            } elseif ($filterAttend == 'data_analyst') {
-                                                $filling = 1;
-                                            } elseif ($filterAttend == 'data_scientist') {
-                                                $filling = 2;
-                                            } elseif ($filterAttend == 'teller') {
-                                                $filling = 3;
-                                            } elseif ($filterAttend == 'auditor') {
-                                                $filling = 4;
-                                            } elseif ($filterAttend == 'staff') {
-                                                $filling = 5;
-                                            } elseif ($filterAttend == 'sales') {
-                                                $filling = 6;
-                                            } elseif ($filterAttend == 'akuntan') {
-                                                $filling = 7;
+                                            if ((auth()->user()->role == 2 && ($filterAttend == 'data_analyst' || $filterAttend == 'data_scientist' || $filterAttend == 'teller' || $filterAttend == 'auditor' || $filterAttend == 'staff' || $filterAttend == 'sales' || $filterAttend == 'akuntan' || $filterAttend == 'business_analyst')) || auth()->user()->role == 3) {
+                                                if ($filterAttend == 'business_analyst') {
+                                                    $filling = 0;
+                                                } elseif ($filterAttend == 'data_analyst') {
+                                                    $filling = 1;
+                                                } elseif ($filterAttend == 'data_scientist') {
+                                                    $filling = 2;
+                                                } elseif ($filterAttend == 'teller') {
+                                                    $filling = 3;
+                                                } elseif ($filterAttend == 'auditor') {
+                                                    $filling = 4;
+                                                } elseif ($filterAttend == 'staff') {
+                                                    $filling = 5;
+                                                } elseif ($filterAttend == 'sales') {
+                                                    $filling = 6;
+                                                } elseif ($filterAttend == 'akuntan') {
+                                                    $filling = 7;
+                                                }
+                                                // Lakukan sesuatu jika kondisi tidak terpenuhi
+                                                $attend = $attend->where('position', $filling);
+                                            } else {
+                                                $attend = $attend->where('employee_id', auth()->user()->id);
                                             }
-                                            // Lakukan sesuatu jika kondisi tidak terpenuhi
-                                            $attend = $attend->where('position', $filling);
                                         }
+                                    } else {
+                                        $attend = $attend;
                                     }
-
                                     // Menghitung total kehadiran
                                     $totalAttend = $attend->whereBetween('date', [date('Y-m-d', strtotime($startDate)), date('Y-m-d', strtotime($endDate))])->count();
 
@@ -982,42 +998,54 @@
                                 }
                             </script>
 
-                            <div class="mb-5 flex w-full items-center justify-center">
-                                <button id="dropdownDefaultButton" data-dropdown-toggle="category33"
-                                    class="inline-flex w-1/2 items-center justify-between rounded-lg bg-tertiary px-5 py-2.5 text-center text-sm font-medium text-white"
-                                    type="button">
-                                    @if ($filterPlot == '')
-                                        Plot
-                                    @elseif ($filterPlot == 'pie')
-                                        Pie Chart
-                                    @elseif ($filterPlot == 'line')
-                                        Line Chart
-                                    @endif
-                                    <svg class="ms-3 h-2.5 w-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 1 4 4 4-4" />
-                                    </svg>
-                                </button>
-
-                                <!-- Dropdown menu -->
-                                <div id="category33"
-                                    class="z-10 hidden w-auto cursor-pointer rounded-lg bg-tertiary shadow">
-                                    <div id="category33" class="w-full py-2 text-sm text-white"
-                                        aria-labelledby="dropdownDefaseultButton">
-                                        <a href="{{ request()->fullUrlWithQuery(['filter_plot' => 'pie']) }}"
-                                            class="block w-full px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
+                            @if (auth()->user()->role == 3 ||
+                                    (auth()->user()->role == 1 && $filterAttend == 'all_employees') ||
+                                    (auth()->user()->role == 2 &&
+                                        ($filterAttend == 'all_attend' ||
+                                            $filterAttend == 'data_analyst' ||
+                                            $filterAttend == 'data_scientist' ||
+                                            $filterAttend == 'teller' ||
+                                            $filterAttend == 'auditor' ||
+                                            $filterAttend == 'staff' ||
+                                            $filterAttend == 'sales' ||
+                                            $filterAttend == 'akuntan' ||
+                                            $filterAttend == 'business_analyst')))
+                                <div class="mb-5 flex w-full items-center justify-center">
+                                    <button id="dropdownDefaultButton" data-dropdown-toggle="category33"
+                                        class="inline-flex w-1/2 items-center justify-between rounded-lg bg-tertiary px-5 py-2.5 text-center text-sm font-medium text-white"
+                                        type="button">
+                                        @if ($filterPlot == '')
+                                            Plot
+                                        @elseif ($filterPlot == 'pie')
                                             Pie Chart
-                                        </a>
-                                        <a href="{{ request()->fullUrlWithQuery(['filter_plot' => 'line']) }}"
-                                            class="w-ful block px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
+                                        @elseif ($filterPlot == 'line')
                                             Line Chart
-                                        </a>
+                                        @endif
+                                        <svg class="ms-3 h-2.5 w-2.5" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="m1 1 4 4 4-4" />
+                                        </svg>
+                                    </button>
+                                    <!-- Dropdown menu -->
+                                    <div id="category33"
+                                        class="z-10 hidden w-auto cursor-pointer rounded-lg bg-tertiary shadow">
+                                        <div id="category33" class="w-full py-2 text-sm text-white"
+                                            aria-labelledby="dropdownDefaseultButton">
+                                            <a href="{{ request()->fullUrlWithQuery(['filter_plot' => 'pie']) }}"
+                                                class="block w-full px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
+                                                Pie Chart
+                                            </a>
+                                            <a href="{{ request()->fullUrlWithQuery(['filter_plot' => 'line']) }}"
+                                                class="w-ful block px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
+                                                Line Chart
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
 
-                            <div class="flex h-full w-full items-center justify-between">
+                            <div class="flex h-auto w-full items-center justify-between">
                                 <div class="flex h-full w-full items-center justify-between">
                                     <canvas id="myChartAttend" class="h-full max-h-[30vh] w-full"></canvas>
                                 </div>
@@ -1029,18 +1057,18 @@
                                     const ctxAttend = document.getElementById('myChartAttend');
 
                                     new Chart(ctxAttend, {
-                                        @if ($filterPlot == 'pie')
+                                        @if ($filterPlot == 'pie' || auth()->user()->role == 0 || $filterAttend == 'employees')
                                             type: 'pie',
                                         @else
                                             type: 'line',
                                         @endif
                                         data: {
-                                            @if ($filterPlot == 'pie')
+                                            @if ($filterPlot == 'pie' || auth()->user()->role == 0 || $filterAttend == 'employees')
                                                 labels: ['Absent', 'Lateness', 'Missing Out', 'Present'],
                                             @else
                                                 labels: {!! json_encode($dateRange) !!},
                                             @endif
-                                            @if ($filterPlot == 'pie')
+                                            @if ($filterPlot == 'pie' || auth()->user()->role == 0 || $filterAttend == 'employees')
                                                 datasets: [{
                                                     label: 'Total',
                                                     data: [{{ $absent }}, {{ $lateness }}, {{ $missingOut }},
@@ -1088,7 +1116,7 @@
                                         },
                                         options: {
                                             scales: {
-                                                @if ($filterPlot == 'pie')
+                                                @if ($filterPlot == 'pie' || auth()->user()->role == 0 || $filterAttend == 'employees')
                                                     y: {
                                                         display: false
                                                     }
@@ -1126,7 +1154,7 @@
                                                         boxWidth: 15,
                                                         boxHeight: 15,
                                                         color: 'white',
-                                                        @if ($filterPlot == 'pie')
+                                                        @if ($filterPlot == 'pie' || auth()->user()->role == 0 || $filterAttend == 'employees')
                                                             useBorderRadius: true,
                                                             borderRadius: 15,
                                                         @endif
@@ -1147,7 +1175,7 @@
                 <div
                     class="@if (auth()->user()->role == 1) flex-col @endif @cannot('atasan') flex-col items-center @endcannot @can('atasan') flex-row @endcan @if (auth()->user()->role == 3 || auth()->user()->role == 2) w-4/12 flex-col mr-5 @else w-1/2 @endif flex h-full">
                     {{-- Employee Rating --}}
-                    @if ($userrole == 0)
+                    @if (auth()->user()->role == 0)
                         <div class="mb-5 h-auto w-full rounded-lg bg-secondary px-4 py-6 shadow md:p-6">
                             <div class="mb-3 flex w-full justify-between">
                                 <div class="flex items-center">
@@ -1189,7 +1217,7 @@
                     {{-- End of Employee Rating --}}
 
                     {{-- Employee Detail --}}
-                    <div class="@if ($userrole == 3 || $userrole == 2) mb-5 min-w-[5vw] max-w-[40vw] @endif h-5/12 w-full">
+                    <div class="@if (auth()->user()->role == 3 || auth()->user()->role == 2) mb-5 min-w-[5vw] max-w-[40vw] @endif h-5/12 w-full">
                         @php
                             $totalEmployee = $list->count();
                             $totalPayroll = $list2->sum('salary_amount');
@@ -1198,7 +1226,7 @@
                         <div class="h-full w-full rounded-lg bg-secondary p-4 shadow md:p-6">
                             @if (!auth()->user()->role == 0)
                                 <div class="h-full rounded-xl bg-tertiary px-5 py-5">
-                                    <div class="@if ($userrole == 3 || $userrole == 2) mb-5 @endif flex h-auto w-auto">
+                                    <div class="@if (auth()->user()->role == 3 || auth()->user()->role == 2) mb-5 @endif flex h-auto w-auto">
                                         <dl>
                                             <div class="flex h-full flex-row items-center">
                                                 <div
@@ -1222,7 +1250,7 @@
                                             </div>
                                         </dl>
                                     </div>
-                                    @if ($userrole !== 0 && $userrole !== 1)
+                                    @if (auth()->user()->role !== 0 && auth()->user()->role !== 1)
                                         {{-- chart --}}
                                         @php
                                             $business = $list->where('position', 0)->count();
@@ -1400,7 +1428,8 @@
 
                     @if ($userrole !== 0)
                         {{-- Salary --}}
-                        <div class="h-auto max-h-[80vh] w-full rounded-lg bg-secondary p-4 shadow md:p-6">
+                        <div
+                            class="@if (auth()->user()->role == 1) mt-5 @endif h-auto max-h-[80vh] w-full rounded-lg bg-secondary p-4 shadow md:p-6">
                             <div class="grid h-auto w-full grid-cols-2 py-3">
                                 <dl>
                                     <dt class="pb-1 text-xl font-bold text-white">Total Employee
@@ -1409,7 +1438,7 @@
                                         {{ 'Rp.' . number_format($totalPayroll, 0, ',', '.') }} </dd>
                                 </dl>
                             </div>
-                            @if ($userrole !== 1)
+                            @if (auth()->user()->role !== 1)
                                 @php
                                     // Employee Lists
                                     $businessEmployee = $list2->where('position', 0);
@@ -1543,7 +1572,7 @@
                         <a href="/userlist"
                             class="@if (auth()->user()->role == 1) mb-5 @endif h-2/12 mt-5 grid grid-cols-1 items-center justify-between rounded-lg bg-secondary p-3 text-white shadow hover:bg-dark hover:text-white">
                             <div class="flex items-center justify-end">
-                                <div class="inline-flex items-center rounded-lg px-3 py-2 text-sm font-semibold uppercase">
+                                <div class="inline-flex items-center rounded-lg px-3 py-1 text-sm font-semibold uppercase">
                                     See Employee List
                                     <svg class="ms-1.5 h-2.5 w-2.5 rtl:rotate-180" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
@@ -1557,97 +1586,227 @@
                     {{-- End of Detail --}}
 
                     {{-- Work Hours --}}
-                    <div class="mt-5 h-full w-full rounded-lg bg-secondary p-4 shadow md:p-6">
+                    <div
+                        class="@if (auth()->user()->role == 1) mb-5 @else  mt-5 @endif h-full w-full rounded-lg bg-secondary p-4 shadow md:p-6">
                         <div class="mb-3 flex h-full w-full flex-col items-center justify-between">
                             <div class="flex h-auto w-full items-center justify-center text-center">
                                 <h5 class="mb-5 pe-1 text-xl font-bold leading-none text-white">Working Hour Information
                                 </h5>
                             </div>
-                            {{-- Dropdown Tanggal --}}
-                            <button id="dateRangeButton2" data-dropdown-toggle="dateRangeDropdown2"
-                                data-dropdown-ignore-click-outside-class="datepicker" type="button"
-                                class="ml-2 inline-flex items-center rounded-lg bg-tertiary px-5 py-2.5 font-medium text-white hover:underline">
-                                {{ date('d M Y', strtotime($startDate2)) }}
-                                <p class="ms-1"> - {{ date('d M Y', strtotime($endDate2)) }} </p> <svg
-                                    class="ms-2 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg>
-                            </button>
+                            {{-- Category --}}
+                            <div class="flex w-full flex-row items-center justify-center">
+                                @if (!auth()->user()->role == 0)
+                                    {{-- Dropdown Employee --}}
+                                    <button id="dropdownDefaultButton" data-dropdown-toggle="category222"
+                                        class="@if (!auth()->user()->role == 0) mr-2 @endif inline-flex w-2/5 items-center justify-center rounded-lg bg-tertiary px-5 py-2.5 text-start font-medium text-white"
+                                        type="button">
+                                        @if ($employeeNameFilter)
+                                            {{ $employeeNameFilter }}
+                                        @else
+                                            @if (!auth()->user()->role == 3)
+                                                Select Employee
+                                            @else
+                                                Select Employee
+                                            @endif
+                                        @endif
+                                        <svg class="ms-3 h-2.5 w-2.5" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="m1 1 4 4 4-4" />
+                                        </svg>
+                                    </button>
 
-                            <div id="dateRangeDropdown2"
-                                class="w-50 lg:w-50 z-10 hidden divide-y divide-gray-600 rounded-lg bg-tertiary shadow">
-                                <div class="p-3" aria-labelledby="dateRangeButton2">
-                                    <form id="dateRangeForm2" onsubmit="updateDateRange()">
-                                        <div date-rangepicker datepicker-autohide
-                                            class="flex flex-col items-center justify-center">
-                                            <div class="relative">
-                                                <div
-                                                    class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
-                                                    <svg class="h-4 w-4 text-white" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                        viewBox="0 0 20 20">
-                                                        <path
-                                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                                    </svg>
-                                                </div>
-                                                <input id="startDateInp" name="start2" type="text"
-                                                    class="block w-full rounded-lg border border-gray-600 bg-dark p-2.5 ps-10 text-sm text-white placeholder-white focus:border-white focus:ring-white"
-                                                    placeholder="Start date">
-                                            </div>
-                                            <span class="py-1 text-white">to</span>
-                                            <div class="relative">
-                                                <div
-                                                    class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
-                                                    <svg class="h-4 w-4 text-white" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                        viewBox="0 0 20 20">
-                                                        <path
-                                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                                    </svg>
-                                                </div>
-                                                <input id="endDateInp" name="end2" type="text"
-                                                    class="block w-full rounded-lg border border-gray-600 bg-dark p-2.5 ps-10 text-sm text-white placeholder-white focus:border-white focus:ring-white"
-                                                    placeholder="End date">
+                                    <!-- Dropdown menu -->
+                                    <div id="category222"
+                                        class="z-10 hidden w-auto cursor-pointer rounded-lg bg-tertiary shadow">
+                                        <div id="category222" class="w-full py-2 text-sm text-white"
+                                            aria-labelledby="dropdownDefaseultButton">
+                                            @if (!auth()->user()->role == 3)
+                                                <a href="{{ request()->fullUrlWithQuery(['filter_attend' => 'employees']) }}"
+                                                    class="mb-2 block w-full px-4 py-2 text-center hover:bg-gray-600 hover:text-white">
+                                                    {{ $employee->firstname }} {{ $employee->lastname }}
+                                                </a>
+                                            @endif
+
+                                            <div class="mt-2 h-40 overflow-auto">
+                                                @php
+                                                    $uniqueEmployeeNames = [];
+
+                                                    // Mengumpulkan nama-nama unik karyawan
+                                                    foreach ($workHour as $work) {
+                                                        if (!in_array($work->employee_name, $uniqueEmployeeNames)) {
+                                                            $uniqueEmployeeNames[] = $work->employee_name;
+                                                        }
+                                                    }
+
+                                                    // Mengurutkan array nama karyawan secara alfabetis
+                                                    sort($uniqueEmployeeNames);
+                                                @endphp
+
+                                                @foreach ($uniqueEmployeeNames as $employeeName)
+                                                    <div class="flex w-full flex-row items-center justify-center">
+                                                        <a href="{{ request()->fullUrlWithQuery(['employeeNameFilter' => $employeeName]) }}"
+                                                            class="h-auto w-full p-2 hover:bg-dark">
+                                                            {{ $employeeName }}
+                                                        </a>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
-                                        <div class="flex items-center justify-center">
-                                            <button type="submit"
-                                                class="mt-3 rounded-lg bg-dark px-4 py-2 text-white hover:border hover:border-white">Apply</button>
-                                        </div>
-                                    </form>
+                                    </div>
+                                @endif
+
+                                {{-- End of Dropdown Employee --}}
+
+                                {{-- Dropdown Tanggal --}}
+                                <button id="dateRangeButton2" data-dropdown-toggle="dateRangeDropdown2"
+                                    data-dropdown-ignore-click-outside-class="datepicker" type="button"
+                                    class="inline-flex w-3/5 items-center justify-center rounded-lg bg-tertiary px-5 py-2.5 font-medium text-white hover:underline">
+                                    {{ date('d M Y', strtotime($startDate2)) }}
+                                    <p class="ms-1"> - {{ date('d M Y', strtotime($endDate2)) }} </p> <svg
+                                        class="ms-2 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </button>
+
+                                <div id="dateRangeDropdown2"
+                                    class="w-50 lg:w-50 z-10 hidden divide-y divide-gray-600 rounded-lg bg-tertiary shadow">
+                                    <div class="p-3" aria-labelledby="dateRangeButton2">
+                                        <form id="dateRangeForm2" onsubmit="updateDateRange()">
+                                            <div date-rangepicker datepicker-autohide
+                                                class="flex flex-col items-center justify-center">
+                                                <div class="relative">
+                                                    <div
+                                                        class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
+                                                        <svg class="h-4 w-4 text-white" aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                            viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                                        </svg>
+                                                    </div>
+                                                    <input id="startDateInp" name="start2" type="text"
+                                                        class="block w-full rounded-lg border border-gray-600 bg-dark p-2.5 ps-10 text-sm text-white placeholder-white focus:border-white focus:ring-white"
+                                                        placeholder="Start date">
+                                                </div>
+                                                <span class="py-1 text-white">to</span>
+                                                <div class="relative">
+                                                    <div
+                                                        class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
+                                                        <svg class="h-4 w-4 text-white" aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                            viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                                        </svg>
+                                                    </div>
+                                                    <input id="endDateInp" name="end2" type="text"
+                                                        class="block w-full rounded-lg border border-gray-600 bg-dark p-2.5 ps-10 text-sm text-white placeholder-white focus:border-white focus:ring-white"
+                                                        placeholder="End date">
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-center">
+                                                <button type="submit"
+                                                    class="mt-3 rounded-lg bg-dark px-4 py-2 text-white hover:border hover:border-white">Apply</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
+
+                                {{-- @php
+                                    $existingParams = request()->getQueryString();
+                                @endphp --}}
+
+                                <script>
+                                    function updateDateRange() {
+                                        // var startDateInp = document.getElementById('startDateInp').value;
+                                        // var endDateInp = document.getElementById('endDateInp').value;
+
+                                        // // Mendapatkan parameter yang sudah ada dari URL
+                                        // var existingParams = new URLSearchParams(window.location.search);
+
+                                        // // Menambahkan atau memperbarui nilai parameter start2 dan end2
+                                        // existingParams.set('start2', startDateInp);
+                                        // existingParams.set('end2', endDateInp);
+
+                                        // // Menambahkan parameter yang sudah ada ke dalam formulir
+                                        // document.getElementById('dateRangeForm2').action = window.location.pathname + '?' + existingParams.toString();
+
+                                        // Submit formulir
+                                        document.getElementById('dateRangeForm2').submit();
+                                    }
+                                </script>
+                                {{-- End of Dropdown Tanggal --}}
+                            </div>
+                            {{-- End of Category --}}
+
+                            {{-- Chart --}}
+                            <div class="flex h-full w-full items-center justify-between">
+                                <canvas id="myChartWorkingHour" class="h-full max-h-[30vh] w-full"></canvas>
                             </div>
 
-                            @php
-                                // Mendapatkan parameter yang sudah ada dari URL
-                                $existingParams = request()->getQueryString();
-                            @endphp
+                            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
 
                             <script>
-                                function updateDateRange() {
-                                    var startDateInp = document.getElementById('startDateInp').value;
-                                    var endDateInp = document.getElementById('endDateInp').value;
+                                const ctxWorkHour = document.getElementById('myChartWorkingHour');
 
-                                    // Mendapatkan parameter yang sudah ada dari URL
-                                    var existingParams = new URLSearchParams(window.location.search);
+                                new Chart(ctxWorkHour, {
 
-                                    // Menambahkan atau memperbarui nilai parameter start2 dan end2
-                                    existingParams.set('start2', startDateInp);
-                                    existingParams.set('end2', endDateInp);
-
-                                    // Menambahkan parameter yang sudah ada ke dalam formulir
-                                    document.getElementById('dateRangeForm2').action = window.location.pathname + '?' + existingParams.toString();
-
-                                    // Submit formulir
-                                    document.getElementById('dateRangeForm2').submit();
-                                }
+                                    type: 'line',
+                                    data: {
+                                        labels: {!! json_encode($date) !!},
+                                        datasets: [{
+                                            label: 'Hours',
+                                            data: {!! json_encode($workingHours) !!},
+                                            backgroundColor: ['#6794DC'],
+                                            borderColor: '#6794DC',
+                                            borderWidth: 1,
+                                            order: 0
+                                        }, ]
+                                    },
+                                    options: {
+                                        scales: {
+                                            x: {
+                                                display: true,
+                                                border: {
+                                                    display: true,
+                                                    color: '#FFFFFF',
+                                                },
+                                                ticks: {
+                                                    font: 'normal',
+                                                    size: 5,
+                                                    color: '#FFFFFF',
+                                                }
+                                            },
+                                            y: {
+                                                display: true,
+                                                border: {
+                                                    display: true,
+                                                    color: '#FFFFFF',
+                                                },
+                                                ticks: {
+                                                    font: 'normal',
+                                                    size: 5,
+                                                    color: '#FFFFFF',
+                                                }
+                                            },
+                                        },
+                                        plugins: {
+                                            legend: {
+                                                display: true,
+                                                labels: {
+                                                    boxWidth: 15,
+                                                    boxHeight: 15,
+                                                    color: 'white',
+                                                },
+                                            }
+                                        }
+                                    }
+                                });
                             </script>
-                            {{-- End of Dropdown Tanggal --}}
-
-                            {{-- Dropdown Employee --}}
-                            {{-- End of Dropdown Employee --}}
+                            {{-- End of Chart --}}
                         </div>
                     </div>
                     {{-- End of Work Hours --}}
@@ -1836,9 +1995,9 @@
                 @endif
                 {{-- End of Benefit, Payroll, and Off days Request Info --}}
                 @if ($userrole == 3)
-                    <div class="flex h-full w-3/12 flex-col items-center justify-between">
+                    <div class="flex h-full w-3/12 flex-col items-center">
                         {{-- Benefit, Payroll, and Off days Request Info --}}
-                        <div class="mb-2 h-1/2 w-full">
+                        <div class="mb-5 h-auto w-full">
                             <div class="w-auto rounded-lg bg-secondary p-4 shadow md:p-6">
                                 <div class="w-full">
                                     <div class="mb-5 w-full">
@@ -1954,14 +2113,14 @@
                                         </div>
                                     </div>
                                     {{-- chart --}}
-                                    @if (!$requestFilter == 'position')
+                                    @if ($requestFilter == 'request' || $requestFilter == '')
                                         <div class="h-full w-full">
                                             <canvas id="myChart3" class="h-full min-h-[10vh] w-auto"></canvas>
                                         </div>
                                     @else
                                         <div id="bar-chart2"></div>
                                     @endif
-                                    @if (!$requestFilter == 'position')
+                                    @if ($requestFilter == 'request' || $requestFilter == '')
                                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                                         <script>
                                             const ctx3 = document.getElementById('myChart3');
@@ -2159,8 +2318,8 @@
                         {{-- End of Benefit, Payroll, and Off days Request Info --}}
 
                         {{-- Facility --}}
-                        <div class="h-1/2 w-full">
-                            <div class="mt-2 h-full w-full rounded-lg bg-secondary p-4 shadow md:p-6">
+                        <div class="h-auto w-full">
+                            <div class="h-full w-full rounded-lg bg-secondary p-4 shadow md:p-6">
                                 <dl class="mb-5 flex w-full items-center justify-between">
                                     <div class="flex w-full flex-row items-center">
                                         <dd class="w-full text-center text-xl font-bold leading-none text-white">
@@ -2300,7 +2459,7 @@
                                     </div>
                                 </div>
 
-                                <div class="h-full w-full">
+                                <div class="h-auto w-full">
                                     <canvas id="myChart2" class="h-full min-h-[5vh] w-auto"></canvas>
                                 </div>
 

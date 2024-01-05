@@ -105,11 +105,10 @@ class AttendanceController extends Controller
         }
 
         // Ambil semua pengguna dengan peran (role) 3 (karyawan) dan offdays
-        $employees = User::join('offdays', 'users.employee_id', '=', 'offdays.employee_id')
+        $employees = User::leftJoin('offdays', 'users.employee_id', '=', 'offdays.employee_id')
             ->select('users.*', 'offdays.status', 'offdays.start', 'offdays.end')
-            ->whereNotIn('role', [3]) // Ubah whereNot menjadi whereNotIn dan sesuaikan nilai jika perlu
-            ->get();
-
+            ->where('users.role', '!=', 3)->get();
+            
         // Tanggal hari ini
         $today = now()->toDateString();
 
@@ -123,7 +122,9 @@ class AttendanceController extends Controller
                     Attendance::firstOrCreate([
                         'employee_id' => $employee->id,
                         'date' => $today,
-                        'status' => 1
+                        'status' => 2,
+                        'in' => date('Y-m-d 08:00:00'),
+                        'out' => date('Y-m-d 17:00:00'),
                     ]);
                 } else {
                     Attendance::firstOrCreate([
