@@ -1,9 +1,13 @@
-Sebelum mulai mengedit situs web ini, ada beberapa langkah yang perlu diikuti:
+# Human Resource Management System
+A comprehensive HR management web application for a banking company using Laravel and Tailwind CSS, featuring modules for payroll, leave management, and HR analytics. Architected and implemented an ETL pipeline using Pentaho to integrate operational data into a centralized data warehouse, enabling accurate reporting and strategic analysis.
 
-1. Pertama buka terminal dan jalankan perintah **composer install,**
-2. Lalu kita copy paste file .env.example dan kemudian ganti namanya menjadi .env saja,
-3. Setelah selesai jalankan php artisan key:generate,
-4. Selanjutnya, sebelum menjalankan Tailwind kita jalankan perintah** *npm install -D tailwindcss postcss autoprefixer*** dahulu (Pastikan sudah menginstall nodejs pada device anda),
-5. Baru jalankan perintah ***npm run dev*** untuk memulai Tailwind CSS. Ini akan mempermudah proses pengembangan situs web dengan menggunakan Tailwind CSS.
-6. Selanjutnya, jalankan perintah ***php artisan serve*** untuk mengaktifkan server. Ini akan membuat situs web Anda dapat diakses melalui server lokal.
-7. Setelah kedua perintah tersebut dijalankan, Anda sudah siap untuk mulai mengedit situs web Anda.
+# Usage
+Before starting to edit this website, there are several steps that need to be followed:
+
+1. First, open the terminal and run the command composer install,
+2. Then, copy the .env.example file and rename it to just .env,
+3. Once done, run php artisan key:generate,
+4. Next, before running Tailwind, run the command npm install -D tailwindcss postcss autoprefixer first (make sure you have installed Node.js on your device),
+5. Then, run the command npm run dev to start Tailwind CSS. This will make the website development process easier using Tailwind CSS.
+6. After that, run the command php artisan serve to activate the server. This will make your website accessible through a local server.
+7. Once both commands are running, you are ready to start editing your website.
